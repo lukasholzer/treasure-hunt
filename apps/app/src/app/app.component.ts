@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@witch-hunter/api-interfaces';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Socket } from 'ngx-socket-io';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'witch-hunter-root',
@@ -8,6 +8,22 @@ import { Message } from '@witch-hunter/api-interfaces';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+  @ViewChild('textarea', { static: true })
+  private _textarea: ElementRef<HTMLTextAreaElement>;
+
+  messages$ = new Observable(observer => {
+    this.socket.on('game', message => {
+      observer.next(message);
+    });
+  });
+
+  constructor(private socket: Socket) {}
+
+  sendMessage() {
+    const data = {
+      type: 'ClientMessage',
+      value: this._textarea.nativeElement.value
+    };
+    this.socket.emit('game', data);
+  }
 }

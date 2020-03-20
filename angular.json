@@ -215,6 +215,9 @@
     },
     "@nrwl/angular:library": {
       "unitTestRunner": "jest"
+    },
+    "@nestjs/schematics": {
+      "sourceRoot":"apps/api/src"
     }
   },
   "defaultProject": "app"

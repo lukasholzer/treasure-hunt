@@ -1,8 +1,7 @@
-<div style="text-align:center">
-  <h1>Welcome to app!</h1>
-  <img
-    width="450"
-    src="https://raw.githubusercontent.com/nrwl/nx/master/nx-logo.png"
-  />
-</div>
-<div>Message: {{ hello$ | async | json }}</div>
+<pre>{{ messages$ | async | json }}</pre>
+
+
+Write a message:
+
+<textarea #textarea rows="4"></textarea>
+<button (click)="sendMessage()">send</button>
