@@ -4,6 +4,12 @@
     "node": "<= 12.6.1"
   },
   "dependencies": {
-    "@nestjs/platform-socket.io": ""
+    "@nestjs/common": "",
+    "@nestjs/core": "",
+    "@nestjs/platform-express": "",
+    "@nestjs/platform-socket.io": "",
+    "@nestjs/websockets": "",
+    "reflect-metadata": "",
+    "rxjs": ""
   }
 }

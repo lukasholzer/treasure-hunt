@@ -1,7 +1,0 @@
-# Ignore everything (folders and files) on root only
-/**
-!dist
-!dist/**
-!now.json
-!package.json
-!package-lock.json
