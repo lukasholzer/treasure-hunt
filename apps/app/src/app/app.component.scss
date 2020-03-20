@@ -1,7 +1,6 @@
 :host {
   display: flex;
   flex-flow: column;
-  max-width: 400px;
   font-family: monospace;
 }
 
@@ -24,4 +23,36 @@ button {
   border: 1px solid black;
   padding: 0.5em 1em;
   color: white;
+}
+
+
+.messages {
+  display: flex;
+  flex-flow: column;
+  margin: 2em 0;
+}
+
+.message {
+  display: flex;
+  flex-flow: column;
+  padding: 0.5em 0.5em;
+  border-radius: 1em;
+  border: 1px solid lightgrey;
+  background-color: lightblue;
+  align-self: flex-start;
+
+  &.my-message {
+    background-color: lightgreen;
+    // color: white;
+    align-self: flex-end;
+  }
+
+  & + & {
+    margin-top: 1em;
+  }
+
+  .author {
+    font-weight: bold;
+
+  }
 }
