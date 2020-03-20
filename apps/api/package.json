@@ -1,0 +1,9 @@
+{
+  "name": "witch-hunter-api",
+  "engines": {
+    "node": "<= 12.6.1"
+  },
+  "dependencies": {
+    "@nestjs/platform-socket.io": ""
+  }
+}

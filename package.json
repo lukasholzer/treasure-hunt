@@ -68,6 +68,7 @@
     "cypress": "^4.1.0",
     "dotenv": "~6.2.0",
     "eslint": "6.8.0",
+    "generate-package-json-webpack-plugin": "^1.0.1",
     "jest": "~24.9.0",
     "jest-preset-angular": "~8.0.0",
     "prettier": "1.19.1",

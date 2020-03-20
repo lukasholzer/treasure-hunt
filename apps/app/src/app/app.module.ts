@@ -6,7 +6,10 @@ import { AppComponent } from './app.component';
 import { PlayerService } from './player.service';
 import { CommonModule } from '@angular/common';
 
-const config: SocketIoConfig = { url: 'http://localhost:3333', options: {} };
+const url = 'https://witch-hunter.now.sh';
+// const url = 'http://localhost:3333';
+
+const config: SocketIoConfig = { url, options: {} };
 
 @NgModule({
   declarations: [AppComponent],
