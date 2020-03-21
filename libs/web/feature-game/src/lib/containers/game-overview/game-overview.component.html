@@ -1,5 +1,7 @@
 <fg-header avatar="8" [player]="player$ | async"></fg-header>
 
+<fg-player-list [players]="activePlayers$ | async"></fg-player-list>
+
 <div class="cards">
   <fg-card type="1"></fg-card>
   <fg-card type="2"></fg-card>

@@ -33,11 +33,9 @@ export class GameGateway {
     switch (data.type) {
       case MESSAGE_TYPES.joinGame:
         this.gameService.join(data.value);
-        return this.gameService.players$.pipe(
-          map(players => ({
-            event: 'ALL_PLAYERS',
-            data: players
-          }))
+        return this.buildResponse(
+          MESSAGE_TYPES.playerJoined,
+          this.gameService.players$
         );
       default:
         return of({
@@ -57,5 +55,21 @@ export class GameGateway {
 
   handleConnection(client: Socket, ...args: any[]) {
     this.logger.log(`Client connected: ${client.id}`);
+  }
+
+  private buildResponse<T>(
+    type: MESSAGE_TYPES,
+    payload: Observable<T>,
+    channel: string = 'events'
+  ): Observable<WsResponse<SocketMessage<T>>> {
+    return payload.pipe(
+      map(data => ({
+        event: channel,
+        data: {
+          type,
+          value: data
+        }
+      }))
+    );
   }
 }

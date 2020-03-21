@@ -22,7 +22,10 @@
             "tsConfig": "apps/app/tsconfig.app.json",
             "aot": true,
             "assets": ["apps/app/src/favicon.ico", "apps/app/src/assets"],
-            "styles": ["apps/app/src/styles.scss"],
+            "styles": ["libs/web/styles/src/index.scss"],
+            "stylePreprocessorOptions": {
+              "includePaths": ["libs/web/styles/src/lib"]
+            },
             "scripts": []
           },
           "configurations": {
@@ -266,6 +269,21 @@
           "styleext": "scss"
         }
       }
+    },
+    "web-styles": {
+      "root": "libs/web/styles",
+      "sourceRoot": "libs/web/styles/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["libs/web/styles/tsconfig.lib.json"],
+            "exclude": ["**/node_modules/**", "!libs/web/styles/**"]
+          }
+        }
+      }
     }
   },
   "cli": {
@@ -280,7 +298,7 @@
     "@nrwl/angular:library": {
       "unitTestRunner": "jest",
       "style": "scss",
-      "directory":"web",
+      "directory": "web",
       "simpleModuleName": true
     },
     "@nestjs/schematics": {

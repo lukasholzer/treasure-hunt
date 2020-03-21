@@ -1,4 +1,5 @@
 import { CardType } from '@witch-hunter/api-interfaces';
+
 export interface GameConfiguration {
   players: number;
   empty: number;

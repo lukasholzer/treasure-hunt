@@ -1,6 +1,5 @@
-import { Player } from '@witch-hunter/api-interfaces';
+import { Player, CardType } from '@witch-hunter/api-interfaces';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
-import { CardType } from '../config';
 import { Action, ActionType } from './actions';
 import { Effect } from './effects';
 import { Reducer } from './reducer';

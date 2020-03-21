@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { share, tap } from 'rxjs/operators';
+import { share, tap, switchMap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Player } from '@witch-hunter/api-interfaces';
 
@@ -17,6 +17,10 @@ export class PlayerService {
       this.player$ = this._httpClient
         .get<Player>('http://uinames.com/api/?region=austria&ext')
         .pipe(
+          map(player => ({
+            ...player,
+            photo: `http://api.adorable.io/avatars/285/${player.name}`
+          })),
           tap(player => {
             localStorage.setItem('player', JSON.stringify(player));
           }),

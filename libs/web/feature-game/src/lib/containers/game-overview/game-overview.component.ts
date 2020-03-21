@@ -9,6 +9,7 @@ import { DataFacade } from '@witch-hunter/web/data-access';
 })
 export class GameOverviewComponent {
   player$ = this.dataFacade.player$;
+  activePlayers$ = this.dataFacade.activePlayers$;
 
   constructor(private dataFacade: DataFacade) {}
 }

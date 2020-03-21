@@ -4,6 +4,7 @@ export interface SocketMessage<T = any> {
 }
 
 export const enum MESSAGE_TYPES {
+  playerJoined = 'PLAYER_JOINED',
   joinGame = 'JOIN_GAME',
   startGame = 'START_GAME',
 }

@@ -1,12 +1,13 @@
-@import url('https://fonts.googleapis.com/css?family=Bangers|Roboto+Slab&display=swap&subset=latin-ext');
+@import './variables';
 
 html,
 body {
   margin: 0;
   font-family: 'Roboto Slab', 'Helvetica', sans-serif;
   font-size: 18px;
+  background-color: $color-blue;
+  color: $color-white;
 }
-
 
 * {
   box-sizing: border-box;

@@ -17,28 +17,6 @@
     "import-blacklist": [true, "rxjs/Rx"],
     "interface-over-type-literal": true,
     "member-access": false,
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "public-static-field",
-          "public-static-method",
-          "protected-static-field",
-          "protected-static-method",
-          "private-static-field",
-          "private-static-method",
-          "public-instance-field",
-          "protected-instance-field",
-          "private-instance-field",
-          "public-constructor",
-          "protected-constructor",
-          "private-constructor",
-          "public-instance-method",
-          "protected-instance-method",
-          "private-instance-method"
-        ]
-      }
-    ],
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],

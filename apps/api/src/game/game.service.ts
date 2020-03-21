@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Player } from '@witch-hunter/api-interfaces';
-import { Game } from './game';
 import { GameStoreFacade } from './+state';
 
 @Injectable()

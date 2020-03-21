@@ -1,15 +1,25 @@
 :host {
-  background-color: #1D243E;
-  color: white;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-flow: column;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 6em auto;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+}
+
+fg-header {
+  grid-area: header;
+}
+
+fg-player-list {
+  grid-area: sidebar;
 }
 
 .cards {
-  margin: 1em 3em;
+  grid-area: main;
+  margin: 1em;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  align-content: flex-start;
 }

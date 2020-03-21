@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Player } from '@witch-hunter/api-interfaces';
-import { Game } from '../game';
 import { createGameStore } from './store';
 import { gameReducer } from './reducer';
 import { joinGame } from './actions';
