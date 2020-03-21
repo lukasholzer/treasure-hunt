@@ -234,6 +234,38 @@
           "styleext": "scss"
         }
       }
+    },
+    "web-data-access": {
+      "projectType": "library",
+      "root": "libs/web/data-access",
+      "sourceRoot": "libs/web/data-access/src",
+      "prefix": "witch-hunter",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/web/data-access/tsconfig.lib.json",
+              "libs/web/data-access/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/web/data-access/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/web/data-access/jest.config.js",
+            "tsConfig": "libs/web/data-access/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/web/data-access/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
@@ -246,7 +278,10 @@
       "e2eTestRunner": "cypress"
     },
     "@nrwl/angular:library": {
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "style": "scss",
+      "directory":"web",
+      "simpleModuleName": true
     },
     "@nestjs/schematics": {
       "sourceRoot": "apps/api/src"

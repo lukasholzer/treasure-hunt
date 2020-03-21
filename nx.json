@@ -26,6 +26,9 @@
     },
     "web-feature-game": {
       "tags": []
+    },
+    "web-data-access": {
+      "tags": []
     }
   }
 }

@@ -12,7 +12,7 @@ export class HeaderComponent {
   /** Url for the avatar image */
   avatarUrl: string;
 
-  @Input() profile: Player;
+  @Input() player: Player;
 
   @Input()
   set avatar(type: CardType) {

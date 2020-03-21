@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { DataFacade } from '@witch-hunter/web/data-access';
 
 @Component({
   selector: 'fg-game-overview',
@@ -7,8 +7,8 @@ import { Socket } from 'ngx-socket-io';
   styleUrls: ['./game-overview.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class GameOverviewComponent implements OnInit {
-  avatarImage = `url('/assets/adventurer.png')`;
+export class GameOverviewComponent {
+  player$ = this.dataFacade.player$;
 
-  ngOnInit(): void {}
+  constructor(private dataFacade: DataFacade) {}
 }

@@ -1,13 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
-  Input,
-  OnDestroy
+  HostBinding,
+  HostListener,
+  Input
 } from '@angular/core';
 import { CardType } from '@witch-hunter/api-interfaces';
-import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { getImageUrlForType } from '../get-image-url-for-type';
 
 @Component({
@@ -16,27 +14,28 @@ import { getImageUrlForType } from '../get-image-url-for-type';
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardComponent implements OnDestroy {
+export class CardComponent {
   /** Url for the cards background image */
   imageUrl: string;
 
-  private _destroy$ = new Subject<void>();
+  @HostBinding('class.is-flipped')
+  @Input()
+  flipped = false;
 
+  /** States wether a card is flip able or not */
+  @Input() locked = false;
+
+  /** The card type */
   @Input()
   set type(type: CardType) {
     this.imageUrl = `url("/assets/${getImageUrlForType(type)}.png")`;
   }
 
-  constructor(elementRef: ElementRef<HTMLDivElement>) {
-    fromEvent(elementRef.nativeElement, 'click')
-      .pipe(takeUntil(this._destroy$))
-      .subscribe(() => {
-        elementRef.nativeElement.classList.toggle('is-flipped');
-      });
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
+  /** Flips a card to reveal its other side */
+  @HostListener('click')
+  flip(): void {
+    if (!this.locked) {
+      this.flipped = !this.flipped;
+    }
   }
 }
