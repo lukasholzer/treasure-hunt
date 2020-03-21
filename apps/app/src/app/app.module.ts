@@ -5,6 +5,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { AppComponent } from './app.component';
 import { PlayerService } from './player.service';
 import { CommonModule } from '@angular/common';
+import { AppRoutingModule } from './app.routing.module';
 
 const url = 'http://localhost:3333';
 
@@ -15,6 +16,7 @@ const config: SocketIoConfig = { url, options: {} };
   imports: [
     BrowserModule,
     CommonModule,
+    AppRoutingModule,
     HttpClientModule,
     SocketIoModule.forRoot(config)
   ],

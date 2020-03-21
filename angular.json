@@ -202,6 +202,38 @@
           }
         }
       }
+    },
+    "web-feature-game": {
+      "projectType": "library",
+      "root": "libs/web/feature-game",
+      "sourceRoot": "libs/web/feature-game/src",
+      "prefix": "fg",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/web/feature-game/tsconfig.lib.json",
+              "libs/web/feature-game/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/web/feature-game/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/web/feature-game/jest.config.js",
+            "tsConfig": "libs/web/feature-game/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/web/feature-game/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

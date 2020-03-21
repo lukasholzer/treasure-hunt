@@ -1,15 +1,4 @@
-// tslint:disable: no-bitwise
-
-export enum CardType {
-  Empty = 1 << 0,
-  Gold = 1 << 1,
-  Fire = 1 << 2,
-  Guardian = 1 << 3,
-  Adventurer = 1 << 4,
-  GameCards = Gold | Fire | Empty,
-  Characters = Guardian | Adventurer
-}
-
+import { CardType } from '@witch-hunter/api-interfaces';
 export interface GameConfiguration {
   players: number;
   empty: number;
@@ -44,7 +33,6 @@ export function generateDeck(numberOfPlayers: number) {
     );
   }
 
-
   const { empty, gold, fire, guardians, adventurers } = GAME_CONFIGURATION.find(
     ({ players }) => players === numberOfPlayers
   );
@@ -71,10 +59,6 @@ export const getRoleCards = (cards: CardType[]) =>
   cards.filter(card => Boolean(card & CardType.Characters));
 export const getGameCards = (cards: CardType[]) =>
   cards.filter(card => Boolean(card & CardType.GameCards));
-
-export const isFire = (card: CardType) => Boolean(card & CardType.Fire);
-export const isGold = (card: CardType) => Boolean(card & CardType.Gold);
-export const isEmpty = (card: CardType) => Boolean(card & CardType.Empty);
 
 export function countFiresInCollection(collection: number[]): number {
   return 1;

@@ -16,7 +16,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@witch-hunter/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@witch-hunter/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@witch-hunter/web/feature-game": ["libs/web/feature-game/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
