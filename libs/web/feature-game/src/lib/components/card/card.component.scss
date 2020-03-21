@@ -1,7 +1,7 @@
 :host {
   display: block;
   perspective: 100vw;
-  width: 120px;
+  width: 85px;
   margin-bottom: 1em;
 }
 
@@ -37,39 +37,3 @@
 .front {
   transform: rotateY(180deg);
 }
-
-// :host {
-//   perspective: 600px;
-//   display: block;
-// }
-
-// .card {
-//   // padding-top: 276px / 169px * 100%;
-//   // padding-bottom: calc(100% / (var(--aspect-ratio)));
-//   height: 5em;
-//   overflow: hidden;
-//   width: 6em;
-//   border-radius: 0.3em;
-//   position: relative;
-//   transition: transform 1s;
-//   transform-style: preserve-3d;
-//   box-shadow: -2px 5px 10px -1px rgba(0, 0, 0, 0.75);
-
-//   :host.is-flipped & {
-//     transform: rotateY(180deg);
-//   }
-// }
-
-// .front,
-// .back {
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   height: 100%;
-//   width: 100%;
-//   backface-visibility: hidden;
-// }
-
-// .front {
-//   transform: rotateY(180deg);
-// }

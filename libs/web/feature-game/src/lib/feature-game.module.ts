@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GameOverviewComponent } from './containers';
-import { CardComponent } from './components';
+import { CardComponent, HeaderComponent } from './components';
+import { EventService } from './event.service';
 
 @NgModule({
   imports: [
@@ -11,6 +12,7 @@ import { CardComponent } from './components';
       { path: '', pathMatch: 'full', component: GameOverviewComponent }
     ])
   ],
-  declarations: [GameOverviewComponent, CardComponent]
+  declarations: [GameOverviewComponent, CardComponent, HeaderComponent],
+  providers: [EventService]
 })
 export class FeatureGameModule {}

@@ -1,16 +1,14 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
+  Component,
   ElementRef,
-  OnDestroy,
-  HostBinding,
-  ChangeDetectorRef
+  Input,
+  OnDestroy
 } from '@angular/core';
 import { CardType } from '@witch-hunter/api-interfaces';
-import { fromEventPattern, fromEvent, Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { getImageUrlForType } from '../get-image-url-for-type';
 
 @Component({
   selector: 'fg-card',
@@ -40,20 +38,5 @@ export class CardComponent implements OnDestroy {
   ngOnDestroy(): void {
     this._destroy$.next();
     this._destroy$.complete();
-  }
-}
-
-function getImageUrlForType(cardType: CardType): string {
-  switch (cardType | 0) {
-    case CardType.Adventurer:
-      return 'adventurer';
-    case CardType.Guardian:
-      return 'guardian';
-    case CardType.Fire:
-      return 'fire';
-    case CardType.Gold:
-      return 'gold';
-    case CardType.Empty:
-      return 'empty';
   }
 }
