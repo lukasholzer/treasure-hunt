@@ -1,3 +1,5 @@
+<pre> {{ allPlayers$ | async | json }}</pre>
+
 <ng-container *ngIf="player">
   Hello, {{ player.name }}
 
@@ -15,5 +17,5 @@
   Write a message:
 
   <textarea #text rows="4"></textarea>
-  <button (click)="sendMessage()">send</button>
+  <button (click)="startGame()">Start game</button>
 </ng-container>

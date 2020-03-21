@@ -2,34 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { share, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-
-export interface Birthday {
-  dmy: string;
-  mdy: string;
-  raw: number;
-}
-
-export interface CreditCard {
-  expiration: string;
-  number: string;
-  pin: number;
-  security: number;
-}
-
-export interface Player {
-  name: string;
-  surname: string;
-  gender: string;
-  region: string;
-  age: number;
-  title: string;
-  phone: string;
-  birthday: Birthday;
-  email: string;
-  password: string;
-  credit_card: CreditCard;
-  photo: string;
-}
+import { Player } from '@witch-hunter/api-interfaces';
 
 @Injectable()
 export class PlayerService {

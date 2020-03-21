@@ -1,29 +1,56 @@
+import { Logger } from '@nestjs/common';
 import {
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer
+  WebSocketServer,
+  MessageBody,
+  WsResponse
 } from '@nestjs/websockets';
+import { MESSAGE_TYPES, SocketMessage } from '@witch-hunter/api-interfaces';
 import { Server } from 'http';
-import { Logger } from '@nestjs/common';
 import { Socket } from 'socket.io';
-import { PlayerService } from './player/player.service';
+import { GameService } from './game.service';
+import { of, from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @WebSocketGateway()
 export class GameGateway {
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('GameGateway');
 
-  constructor(private players: PlayerService){}
+  constructor(private gameService: GameService) {}
 
   @SubscribeMessage('game')
-  handleMessage(client: Socket, payload: any) {
-    console.log(payload)
-    this.server.emit('game', payload);
+  onGame(@MessageBody() data: SocketMessage): Observable<WsResponse<any>> {
+    return of({
+      event: 'game',
+      data: undefined
+    });
+  }
+
+  @SubscribeMessage('events')
+  onEvent(@MessageBody() data: SocketMessage): Observable<WsResponse<any>> {
+    switch (data.type) {
+      case MESSAGE_TYPES.joinGame:
+        this.gameService.join(data.value);
+        return this.gameService.players$.pipe(
+          map(players => ({
+            event: 'ALL_PLAYERS',
+            data: players
+          }))
+        );
+      default:
+        return of({
+          event: 'events',
+          data: undefined
+        });
+    }
   }
 
   afterInit(server: Server) {
     this.logger.log('Init');
   }
+
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
   }

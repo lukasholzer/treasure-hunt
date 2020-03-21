@@ -6,6 +6,9 @@
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
+import { Logger } from '@nestjs/common';
+
+const logger = new Logger('API')
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,5 +18,5 @@ async function bootstrap() {
 }
 
 bootstrap().then(url => {
-  console.log(`Listening at ${url}`);
+  logger.log(`Listening at ${url}`);
 });
