@@ -32,6 +32,9 @@
     },
     "web-styles": {
       "tags": []
+    },
+    "web-feature-lobby": {
+      "tags": []
     }
   }
 }

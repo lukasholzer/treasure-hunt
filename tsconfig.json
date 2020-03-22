@@ -18,7 +18,8 @@
     "paths": {
       "@witch-hunter/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@witch-hunter/web/feature-game": ["libs/web/feature-game/src/index.ts"],
-      "@witch-hunter/web/data-access": ["libs/web/data-access/src/index.ts"]
+      "@witch-hunter/web/data-access": ["libs/web/data-access/src/index.ts"],
+      "@witch-hunter/web/feature-lobby": ["libs/web/feature-lobby/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -3,17 +3,24 @@ import { RouterModule, Route } from '@angular/router';
 
 export const routes: Route[] = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'lobby',
+  },
+  {
     path: 'game',
     loadChildren: () =>
       import('@witch-hunter/web/feature-game').then(
-        module => module.FeatureGameModule
-      )
+        module => module.FeatureGameModule,
+      ),
   },
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'game'
-  }
+    path: 'lobby',
+    loadChildren: () =>
+      import('@witch-hunter/web/feature-lobby').then(
+        module => module.FeatureLobbyModule,
+      ),
+  },
 ];
 
 @NgModule({
@@ -23,10 +30,9 @@ export const routes: Route[] = [
       anchorScrolling: 'enabled',
       paramsInheritanceStrategy: 'always',
       enableTracing: false, // Can be set for debugging the router
-      initialNavigation: 'enabled'
-    })
+      initialNavigation: 'enabled',
+    }),
   ],
   exports: [RouterModule],
-  providers: []
 })
 export class AppRoutingModule {}

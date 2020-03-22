@@ -284,6 +284,38 @@
           }
         }
       }
+    },
+    "web-feature-lobby": {
+      "projectType": "library",
+      "root": "libs/web/feature-lobby",
+      "sourceRoot": "libs/web/feature-lobby/src",
+      "prefix": "fl",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/web/feature-lobby/tsconfig.lib.json",
+              "libs/web/feature-lobby/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/web/feature-lobby/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/web/feature-lobby/jest.config.js",
+            "tsConfig": "libs/web/feature-lobby/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/web/feature-lobby/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {
