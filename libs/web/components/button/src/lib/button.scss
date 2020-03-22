@@ -15,4 +15,9 @@
   &:active {
     transform: scale(1.08);
   }
+
+  &:focus {
+    outline: none;
+    border-color: $color-yellow;
+  }
 }

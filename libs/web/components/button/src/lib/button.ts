@@ -6,7 +6,6 @@ import {
   HostListener,
   HostBinding,
 } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations'
 
 @Component({
   selector: 'button[gc-button], a[gc-button]',
@@ -14,7 +13,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./button.scss'],
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  preserveWhitespaces: false,
+  host: {
+    '[attr.tabindex]': '0',
+  }
 })
 export class Button {
-
+  constructor() {
+    console.log('a;slkdjf')
+  }
 }
