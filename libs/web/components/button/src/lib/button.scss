@@ -1,16 +1,19 @@
 @import 'variables';
+@import 'patterns';
 
 :host {
   display: inline-block;
+  transition: transform 400ms ease-out;
+  border: 1px solid white;
+  border-radius: 1.1em;
+  background: transparent;
+  cursor: pointer;
   padding: 0.55em 1.1em;
-  font-size: 1rem;
   line-height: 1em;
   letter-spacing: 0.03em;
   color: $color-white;
   font-family: $font-primary;
-  border: 1px solid white;
-  border-radius: 1.1em;
-  transition: transform 400ms ease-out;
+  font-size: 1rem;
 
   &:active {
     transform: scale(1.08);

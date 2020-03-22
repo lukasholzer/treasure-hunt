@@ -1,0 +1,24 @@
+<div class="avatar">
+  <ng-container *ngIf="isSmall">
+    <ng-container *ngTemplateOutlet="stats"></ng-container>
+  </ng-container>
+</div>
+
+<div *ngIf="!isSmall" class="avatar-detail">
+  <div *ngIf="name" class="name">{{ name }}</div>
+  <div class="stats-list">
+    <ng-container *ngTemplateOutlet="stats"></ng-container>
+  </div>
+</div>
+
+<ng-template #stats>
+  <div *ngIf="gold" class="stats gold">
+    👑<span class="count">{{ gold }}</span>
+  </div>
+  <div *ngIf="fire" class="stats fire">
+    🔥<span class="count">{{ fire }}</span>
+  </div>
+  <div *ngIf="empty" class="stats empty">
+    💨<span class="count">{{ empty }}</span>
+  </div>
+</ng-template>

@@ -1,9 +1,10 @@
 @import './variables';
+@import './patterns';
 
 html,
 body {
+  @extend %font-main;
   margin: 0;
-  font-family: 'Roboto Slab', 'Helvetica', sans-serif;
   font-size: 18px;
   background-color: $color-blue;
   color: $color-white;
@@ -15,7 +16,5 @@ body {
 
 h1 {
   font-size: 48px;
-  font-family: $font-primary;
-  letter-spacing: 0.03em;
   text-align: center;
 }

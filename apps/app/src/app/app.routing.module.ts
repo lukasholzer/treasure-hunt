@@ -5,7 +5,7 @@ export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'lobby',
+    redirectTo: '/lobby/login',
   },
   {
     path: 'game',

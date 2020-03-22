@@ -1,3 +1,5 @@
+@import 'patterns';
+
 :host {
   display: flex;
   align-items: center;
@@ -8,17 +10,12 @@
 .profile-image {
   width: 4em;
   height: 4em;
-  background-size: cover;
-  border-radius: 50%;
-  box-shadow: -2px 5px 5px -1px rgba(0, 0, 0, 0.3);
-}
-
-.profile-image {
-  border: 2px solid white;
+  @extend %avatar;
 }
 
 .avatar {
   margin-left: -1em;
+  border: none;
 }
 
 .username {

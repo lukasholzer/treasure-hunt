@@ -38,6 +38,9 @@
     },
     "web-components-button": {
       "tags": []
+    },
+    "web-ui-game": {
+      "tags": []
     }
   }
 }

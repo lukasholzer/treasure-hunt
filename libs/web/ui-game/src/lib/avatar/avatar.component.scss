@@ -1,0 +1,87 @@
+@import 'patterns';
+@import 'variables';
+
+:host {
+  --size: 4rem;
+  display: flex;
+  padding: 0.5em;
+
+  &.is-small {
+    --size: 3rem;
+  }
+
+  &:focus {
+    outline: none;
+
+    .avatar {
+      border-color: $color-yellow;
+    }
+  }
+}
+
+.avatar {
+  @extend %avatar;
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  background-image: var(--avatar-image);
+}
+
+.avatar-detail {
+  margin-left: 0.5em;
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+
+  .name {
+    line-height: 1.2em;
+    font-size: 1.3rem;
+  }
+}
+
+.stats-list {
+  display: flex;
+
+  .stats {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    font-size: 1.2rem;
+  }
+  .stats + .stats {
+    margin-left: 0.2em;
+  }
+  .count {
+    font-size: 0.8em;
+    margin-top: 0.2em;
+  }
+}
+
+:host.is-small {
+  .stats {
+    font-size: 1.2rem;
+    position: absolute;
+    text-shadow: 1px 1px 2px $color-blue;
+
+    .count {
+      top: 0.2em;
+      right: 0em;
+    }
+  }
+
+  .gold {
+    top: -0.7em;
+    left: -0.5em;
+  }
+
+  .fire {
+    bottom: -0.35em;
+    right: -0.4em;
+    text-shadow: -1px 0px 2px $color-blue;
+  }
+
+  .count {
+    position: absolute;
+    font-size: 0.8em;
+  }
+}

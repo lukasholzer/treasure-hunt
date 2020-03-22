@@ -1,7 +1,12 @@
-<div class="sign-in-form">
-  <div class="avatar" [style.background-image]="image$ | async"></div>
+<h1>Lobby</h1>
 
-  <input #input type="text" class="name" autofocus />
+<ui-avatar
+  *ngFor="let player of activePlayers$ | async"
+  [image]="player.photo"
+  [name]="player.name"
+></ui-avatar>
 
-  <a gc-button [routerLink]="['/game']" class="join">join Game</a>
+<div class="actions">
+  <button gc-button (click)="_joinLobby()">Join Lobby</button>
+  <button gc-button (click)="_startGame()">Start Game</button>
 </div>

@@ -1,0 +1,14 @@
+@import './variables';
+
+%avatar {
+  background-size: cover;
+  border-radius: 50%;
+  box-shadow: -2px 5px 5px -1px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+}
+
+%font-main {
+  font-family: $font-primary;
+  letter-spacing: 0.03em;
+  line-height: 1em;
+}

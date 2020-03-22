@@ -348,6 +348,38 @@
           "styleext": "scss"
         }
       }
+    },
+    "web-ui-game": {
+      "projectType": "library",
+      "root": "libs/web/ui-game",
+      "sourceRoot": "libs/web/ui-game/src",
+      "prefix": "ug",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/web/ui-game/tsconfig.lib.json",
+              "libs/web/ui-game/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/web/ui-game/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/web/ui-game/jest.config.js",
+            "tsConfig": "libs/web/ui-game/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/web/ui-game/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

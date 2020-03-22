@@ -16,10 +16,6 @@ import {
   preserveWhitespaces: false,
   host: {
     '[attr.tabindex]': '0',
-  }
+  },
 })
-export class Button {
-  constructor() {
-    console.log('a;slkdjf')
-  }
-}
+export class Button {}

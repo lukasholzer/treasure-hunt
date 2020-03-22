@@ -1,0 +1,7 @@
+<div class="sign-in-form">
+  <div class="avatar" [style.background-image]="image$ | async"></div>
+
+  <input #input type="text" class="name" autofocus />
+
+  <a gc-button [routerLink]="['/lobby']" class="join">join Game</a>
+</div>

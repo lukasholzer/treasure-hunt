@@ -1,13 +1,5 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  ViewChild,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { EMPTY, fromEvent, Observable, of, defer } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, tap, startWith } from 'rxjs/operators';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { GameFacade } from '@witch-hunter/web/data-access';
 
 @Component({
   selector: 'fl-lobby',
@@ -15,26 +7,16 @@ import { debounceTime, distinctUntilChanged, map, tap, startWith } from 'rxjs/op
   styleUrls: ['./lobby.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LobbyComponent implements AfterViewInit {
-  @ViewChild('input', { static: true })
-  input: ElementRef<HTMLInputElement>;
+export class LobbyComponent {
+  activePlayers$ = this._gameFacade.activePlayers$;
 
-  image$: Observable<any> = defer(() =>
-    fromEvent<KeyboardEvent>(this.input.nativeElement, 'keydown').pipe(
-      startWith('neutral'),
-      debounceTime(200),
-      map(
-        () =>
-          `url(https://api.adorable.io/avatars/285/${this.input.nativeElement.value})`,
-      ),
-      distinctUntilChanged(),
-      tap(() => this._changeDetectorRef.markForCheck()),
-    ),
-  );
+  constructor(private _gameFacade: GameFacade) {}
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+  _joinLobby(): void {
+    this._gameFacade.joinGame();
+  }
 
-  ngAfterViewInit(): void {
-    // this.image$ = ;
+  _startGame(): void {
+    console.log('start game')
   }
 }
