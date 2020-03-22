@@ -316,6 +316,38 @@
           "styleext": "scss"
         }
       }
+    },
+    "web-components-button": {
+      "projectType": "library",
+      "root": "libs/web/components/button",
+      "sourceRoot": "libs/web/components/button/src",
+      "prefix": "gc",
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/web/components/button/tsconfig.lib.json",
+              "libs/web/components/button/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/web/components/button/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/web/components/button/jest.config.js",
+            "tsConfig": "libs/web/components/button/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "libs/web/components/button/src/test-setup.ts"
+          }
+        }
+      },
+      "schematics": {
+        "@nrwl/angular:component": {
+          "styleext": "scss"
+        }
+      }
     }
   },
   "cli": {

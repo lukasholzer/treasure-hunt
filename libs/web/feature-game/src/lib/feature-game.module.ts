@@ -19,7 +19,6 @@ import { GameOverviewComponent } from './containers';
     CardComponent,
     HeaderComponent,
     PlayerListComponent,
-    GameLobbyComponent,
   ],
 })
 export class FeatureGameModule {}

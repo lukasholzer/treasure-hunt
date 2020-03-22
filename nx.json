@@ -35,6 +35,9 @@
     },
     "web-feature-lobby": {
       "tags": []
+    },
+    "web-components-button": {
+      "tags": []
     }
   }
 }
