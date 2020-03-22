@@ -19,12 +19,12 @@ export class PlayerService {
         .pipe(
           map(player => ({
             ...player,
-            photo: `http://api.adorable.io/avatars/285/${player.name}`
+            photo: `https://api.adorable.io/avatars/285/${player.name}`,
           })),
           tap(player => {
             localStorage.setItem('player', JSON.stringify(player));
           }),
-          share()
+          share(),
         );
     }
   }

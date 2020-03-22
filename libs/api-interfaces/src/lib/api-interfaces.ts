@@ -5,12 +5,11 @@ export interface SocketMessage<T = any> {
 
 export const enum MESSAGE_TYPES {
   playerJoined = 'PLAYER_JOINED',
+  assignCharacter = 'ASSIGN_CHARACTER',
   joinGame = 'JOIN_GAME',
+  game = 'GAME',
   startGame = 'START_GAME',
 }
-
-
-
 
 export interface Birthday {
   dmy: string;

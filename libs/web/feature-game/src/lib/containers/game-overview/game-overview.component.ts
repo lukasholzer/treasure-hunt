@@ -1,15 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { DataFacade } from '@witch-hunter/web/data-access';
+import { GameFacade } from '@witch-hunter/web/data-access';
 
 @Component({
   selector: 'fg-game-overview',
   templateUrl: './game-overview.component.html',
   styleUrls: ['./game-overview.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameOverviewComponent {
-  player$ = this.dataFacade.player$;
-  activePlayers$ = this.dataFacade.activePlayers$;
+  player$ = this._gameFacade.player$;
+  character$ = this._gameFacade.character$;
+  activePlayers$ = this._gameFacade.activePlayers$;
 
-  constructor(private dataFacade: DataFacade) {}
+  constructor(private _gameFacade: GameFacade) {
+    this._gameFacade.joinGame();
+    this._gameFacade.assignCharacter();
+  }
 }

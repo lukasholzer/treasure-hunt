@@ -6,7 +6,7 @@ import { getImageUrlForType } from '../get-image-url-for-type';
   selector: 'fg-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   /** Url for the avatar image */
@@ -16,6 +16,12 @@ export class HeaderComponent {
 
   @Input()
   set avatar(type: CardType) {
-    this.avatarUrl = `url("/assets/${getImageUrlForType(type)}.png")`;
+    this.avatarUrl = this._getBackgroundUrl(
+      `/assets/${getImageUrlForType(type)}.png`,
+    );
+  }
+
+  _getBackgroundUrl(image: string): string {
+    return `url(${image})`;
   }
 }

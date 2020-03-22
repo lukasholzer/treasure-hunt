@@ -4,72 +4,64 @@ import {
   WebSocketGateway,
   WebSocketServer,
   MessageBody,
-  WsResponse
+  WsResponse,
 } from '@nestjs/websockets';
-import { MESSAGE_TYPES, SocketMessage } from '@witch-hunter/api-interfaces';
+import {
+  MESSAGE_TYPES,
+  SocketMessage,
+  CardType,
+  Player,
+} from '@witch-hunter/api-interfaces';
 import { Server } from 'http';
 import { Socket } from 'socket.io';
 import { GameService } from './game.service';
 import { of, from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { GameStoreFacade } from './+state';
 
 @WebSocketGateway()
 export class GameGateway {
   @WebSocketServer() server: Server;
-  private logger: Logger = new Logger('GameGateway');
 
-  constructor(private gameService: GameService) {}
+  constructor(private _game: GameStoreFacade) {}
 
-  @SubscribeMessage('game')
-  onGame(@MessageBody() data: SocketMessage): Observable<WsResponse<any>> {
-    return of({
-      event: 'game',
-      data: undefined
-    });
+  @SubscribeMessage(MESSAGE_TYPES.game)
+  game(@MessageBody() data: any): Observable<WsResponse<any>> {
+    return this.buildResponse(MESSAGE_TYPES.game, this._game.state$);
   }
 
-  @SubscribeMessage('events')
-  onEvent(@MessageBody() data: SocketMessage): Observable<WsResponse<any>> {
-    switch (data.type) {
-      case MESSAGE_TYPES.joinGame:
-        this.gameService.join(data.value);
-        return this.buildResponse(
-          MESSAGE_TYPES.playerJoined,
-          this.gameService.players$
-        );
-      default:
-        return of({
-          event: 'events',
-          data: undefined
-        });
-    }
+  @SubscribeMessage(MESSAGE_TYPES.joinGame)
+  joinGame(@MessageBody() data: Player): Observable<WsResponse<Player[]>> {
+    this._game.join(data);
+    return this.buildResponse(MESSAGE_TYPES.playerJoined, this._game.players$);
   }
 
-  afterInit(server: Server) {
-    this.logger.log('Init');
+  @SubscribeMessage(MESSAGE_TYPES.assignCharacter)
+  assignCharacter(): Observable<WsResponse<CardType>> {
+    return this.buildResponse(MESSAGE_TYPES.assignCharacter, of(16));
   }
 
-  handleDisconnect(client: Socket) {
-    this.logger.log(`Client disconnected: ${client.id}`);
-  }
+  // afterInit(server: Server) {
+  //   this.logger.log('Init');
+  // }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Client connected: ${client.id}`);
-  }
+  // handleDisconnect(client: Socket) {
+  //   this.logger.log(`Client disconnected: ${client.id}`);
+  // }
+
+  // handleConnection(client: Socket, ...args: any[]) {
+  //   this.logger.log(`Client connected: ${client.id}`);
+  // }
 
   private buildResponse<T>(
-    type: MESSAGE_TYPES,
+    channel: MESSAGE_TYPES,
     payload: Observable<T>,
-    channel: string = 'events'
-  ): Observable<WsResponse<SocketMessage<T>>> {
+  ): Observable<WsResponse<T>> {
     return payload.pipe(
       map(data => ({
         event: channel,
-        data: {
-          type,
-          value: data
-        }
-      }))
+        data,
+      })),
     );
   }
 }

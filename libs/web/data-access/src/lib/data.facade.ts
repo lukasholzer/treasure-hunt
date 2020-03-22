@@ -14,14 +14,8 @@ export class DataFacade {
     private _eventService: EventService,
     private _socket: Socket,
   ) {
-    this.player$.subscribe(player => {
-      this._socket.emit('events', {
-        type: MESSAGE_TYPES.joinGame,
-        value: player
-      });
-    });
+    this.player$.subscribe(player => {});
 
-
-    this._eventService.events$.subscribe(console.log)
+    this._eventService.events$.subscribe(console.log);
   }
 }

@@ -1,2 +1,12 @@
-<div class="avatar" [style.background-image]="avatarUrl"></div>
-<div class="username">{{ player.name }}</div>
+<ng-container *ngIf="player">
+  <div
+    class="profile-image"
+    [style.background-image]="_getBackgroundUrl(player.photo)"
+  ></div>
+  <div
+    *ngIf="avatarUrl"
+    class="avatar"
+    [style.background-image]="avatarUrl"
+  ></div>
+  <div class="username">{{ player.name }}</div>
+</ng-container>

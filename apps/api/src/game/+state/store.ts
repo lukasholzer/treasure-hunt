@@ -1,12 +1,13 @@
 import { Player, CardType } from '@witch-hunter/api-interfaces';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { Action, ActionType } from './actions';
-import { Effect } from './effects';
+import { Effect, startGame$ } from './effects';
 import { Reducer } from './reducer';
 import { shareReplay, withLatestFrom, map } from 'rxjs/operators';
 
 /** Interface that describes the Game state */
 export interface GameState {
+  started: boolean;
   /** The list of players taking part in this game */
   players: Player[];
   /** The played cards on the table */
@@ -17,13 +18,14 @@ export interface GameState {
 
 /** The initial Game state */
 export const initialState: GameState = {
+  started: false,
   players: [],
   tableCards: [],
-  hands: new Map<string, CardType[]>()
+  hands: new Map<string, CardType[]>(),
 };
 
 /** Array of side effects */
-const effects: Effect[] = [];
+const effects: Effect[] = [startGame$];
 
 /**
  * The Game Store is one place where the state is handled.
@@ -45,7 +47,7 @@ const effects: Effect[] = [];
 class GameStore {
   /** The current action that got dispatched */
   private readonly action$ = new BehaviorSubject<Action>({
-    type: ActionType.INIT
+    type: ActionType.INIT,
   });
 
   /** The current state that is present */
@@ -58,7 +60,7 @@ class GameStore {
       .pipe(
         shareReplay(),
         withLatestFrom(this.state$),
-        map(([action, state]) => reducer(state, action))
+        map(([action, state]) => reducer(state, action)),
       )
       .subscribe(state => {
         // Here the state gets modified through the outcome of the reducer
@@ -70,7 +72,7 @@ class GameStore {
     merge(...effects.map(epic => epic(this.action$, this.state$))).subscribe(
       (action: Action) => {
         this.dispatch(action);
-      }
+      },
     );
   }
 

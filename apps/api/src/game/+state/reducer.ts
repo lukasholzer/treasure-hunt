@@ -3,7 +3,7 @@ import { Action, ActionType } from './actions';
 import { GameState } from './store';
 import { Player } from '@witch-hunter/api-interfaces';
 
-const logger = new Logger('Game State');
+const logger = new Logger('Game Reducer');
 
 /** Type of a reducer */
 export type Reducer = (state: GameState, action: Action) => GameState;
@@ -16,7 +16,8 @@ export type Reducer = (state: GameState, action: Action) => GameState;
  * @param action The current action that should be handled.
  */
 export function gameReducer(state: GameState, action: Action): GameState {
-  logger.log(`Reducer <${action.type}> `, JSON.stringify(action.payload));
+  logger.log(`Reducer <${action.type}>`);
+  logger.verbose(JSON.stringify(action.payload));
 
   switch (action.type) {
     case ActionType.JOIN_GAME:
