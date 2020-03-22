@@ -7,6 +7,7 @@ export enum ActionType {
   ASSIGN_CHARACTER = '@@actions assign avatars',
   JOIN_GAME = '@@actions join game',
   LEAVE_GAME = '@@actions leave game',
+  END_GAME = '@@actions end game',
   START_GAME = '@@actions start game',
 }
 
@@ -30,10 +31,12 @@ export const startGame = () => action<void>(ActionType.START_GAME);
 export const joinGame = (player: Player) =>
   action<Player>(ActionType.JOIN_GAME, player);
 
-/** Leaves a game */
+/** A player leaves a game */
 export const leaveGame = (player: Player) =>
-  action<Player>(ActionType.JOIN_GAME, player);
+  action<Player>(ActionType.LEAVE_GAME, player);
 
-/** Leaves a game */
+/** Ends a game for all */
+export const endGame = () => action<Player>(ActionType.END_GAME);
+
 export const assignCharacter = (player: Player) =>
   action<Player>(ActionType.ASSIGN_CHARACTER, player);

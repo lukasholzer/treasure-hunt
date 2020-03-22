@@ -12,9 +12,5 @@ export class GameOverviewComponent {
   character$ = this._gameFacade.character$;
   activePlayers$ = this._gameFacade.activePlayers$;
 
-  constructor(private _gameFacade: GameFacade) {
-    this._gameFacade.joinGame();
-  }
-
-
+  constructor(private _gameFacade: GameFacade) {}
 }

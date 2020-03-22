@@ -5,21 +5,21 @@ import { Socket } from 'ngx-socket-io';
 import * as Actions from './game.actions';
 import * as GameSelectors from './game.selectors';
 import { GamePartialState } from './game.state';
-import { withLatestFrom, map, filter, take } from 'rxjs/operators';
+import { withLatestFrom, map, filter, take, pluck } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class GameFacade {
   _game$ = this._socket.fromEvent<any>(MESSAGE_TYPES.game);
   player$ = this._store.pipe(select(GameSelectors.getPlayer));
   character$ = this._store.pipe(select(GameSelectors.getCharacter));
-  activePlayers$ = this._socket
-    .fromEvent<Character[]>(MESSAGE_TYPES.playerJoined)
-    .pipe(
-      withLatestFrom(this.player$),
-      map(([players, { email }]) =>
-        players.filter(player => player.email !== email),
-      ),
-    );
+  allPlayers$ = this._game$.pipe(pluck('players'));
+  activePlayers$ = this.allPlayers$.pipe(
+    withLatestFrom(this.player$),
+    map(([players, { email }]) =>
+      players.filter(player => player.email !== email),
+    ),
+  );
 
   constructor(
     private _store: Store<GamePartialState>,

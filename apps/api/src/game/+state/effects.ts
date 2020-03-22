@@ -14,19 +14,3 @@ export const ofType = <T>(
   ...types: ActionType[]
 ): MonoTypeOperatorFunction<Action<T>> =>
   filter((action: Action) => types.indexOf(action.type) > -1);
-
-/** Connects to a new Data dataSource */
-export const startGame$: Effect = (
-  action$: Observable<Action>,
-  state$: Observable<GameState>,
-) =>
-  action$.pipe(
-    ofType(ActionType.JOIN_GAME),
-    withLatestFrom(state$),
-    map(([, { players, started }]) => {
-      if (!started && players.length === 4) {
-        return startGame();
-      }
-      return noop();
-    }),
-  );

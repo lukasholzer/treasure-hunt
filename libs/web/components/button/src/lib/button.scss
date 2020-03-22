@@ -23,4 +23,10 @@
     outline: none;
     border-color: $color-yellow;
   }
+
+  &[disabled] {
+    color: $color-grey;
+    border-color: $color-grey;
+    cursor: inherit;
+  }
 }

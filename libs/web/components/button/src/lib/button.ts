@@ -1,10 +1,7 @@
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
   ChangeDetectionStrategy,
-  HostListener,
-  HostBinding,
+  Component,
+  ViewEncapsulation,
 } from '@angular/core';
 
 @Component({

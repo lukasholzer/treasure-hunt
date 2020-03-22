@@ -2,7 +2,7 @@ import { CardType, Character } from '@witch-hunter/api-interfaces';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
 import { Action, ActionType } from './actions';
-import { Effect, startGame$ } from './effects';
+import { Effect } from './effects';
 import { Reducer } from './reducer';
 
 /** Interface that describes the Game state */
@@ -28,7 +28,7 @@ export const initialState: GameState = {
 };
 
 /** Array of side effects */
-const effects: Effect[] = [startGame$];
+const effects: Effect[] = [];
 
 /**
  * The Game Store is one place where the state is handled.

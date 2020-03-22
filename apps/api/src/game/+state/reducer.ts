@@ -2,7 +2,7 @@ import { Logger } from '@nestjs/common';
 import { CardType, Character, Player } from '@witch-hunter/api-interfaces';
 import { generateDeck, getRoleCards, shuffleDeck } from '../config';
 import { Action, ActionType } from './actions';
-import { GameState } from './store';
+import { GameState, initialState } from './store';
 
 const logger = new Logger('GAME Reducer');
 
@@ -34,6 +34,8 @@ export function gameReducer(state: GameState, action: Action): GameState {
         ...state,
         players: assignCharacters(state.players, state.deck),
       };
+    case ActionType.END_GAME:
+      return initialState;
     default:
       // Default return the same state as it was passed so don't modify anything
       return state;

@@ -25,6 +25,16 @@ export class GameStoreFacade {
     this._store.dispatch(Actions.joinGame(player));
   }
 
+  /** Starts the game round */
+  startGame(): void {
+    this._store.dispatch(Actions.startGame());
+  }
+
+  /** Ends the game */
+  endGame(): void {
+    this._store.dispatch(Actions.endGame());
+  }
+
   assignCharacter(player: Player): void {
     this._store.dispatch(Actions.assignCharacter(player));
   }
