@@ -4,6 +4,7 @@ import { Player } from '@witch-hunter/api-interfaces';
 export enum ActionType {
   NOOP = '@@actions no operation',
   INIT = '@@actions init',
+  ASSIGN_CHARACTER = '@@actions assign avatars',
   JOIN_GAME = '@@actions join game',
   LEAVE_GAME = '@@actions leave game',
   START_GAME = '@@actions start game',
@@ -20,6 +21,8 @@ export const action = <T>(type: ActionType, payload?: T): Action<T> => ({
   payload,
 });
 
+export const noop = () => action<void>(ActionType.NOOP);
+
 /** Action that starts the game */
 export const startGame = () => action<void>(ActionType.START_GAME);
 
@@ -31,4 +34,6 @@ export const joinGame = (player: Player) =>
 export const leaveGame = (player: Player) =>
   action<Player>(ActionType.JOIN_GAME, player);
 
-export const noop = () => action<void>(ActionType.NOOP);
+/** Leaves a game */
+export const assignCharacter = (player: Player) =>
+  action<Player>(ActionType.ASSIGN_CHARACTER, player);

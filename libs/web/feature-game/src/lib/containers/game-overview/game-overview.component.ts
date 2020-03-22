@@ -14,6 +14,5 @@ export class GameOverviewComponent {
 
   constructor(private _gameFacade: GameFacade) {
     this._gameFacade.joinGame();
-    this._gameFacade.assignCharacter();
   }
 }

@@ -1,21 +1,13 @@
-import { Logger } from '@nestjs/common';
 import {
+  MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  MessageBody,
   WsResponse,
 } from '@nestjs/websockets';
-import {
-  MESSAGE_TYPES,
-  SocketMessage,
-  CardType,
-  Player,
-} from '@witch-hunter/api-interfaces';
+import { CardType, MESSAGE_TYPES, Player } from '@witch-hunter/api-interfaces';
 import { Server } from 'http';
-import { Socket } from 'socket.io';
-import { GameService } from './game.service';
-import { of, from, Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GameStoreFacade } from './+state';
 
@@ -37,8 +29,14 @@ export class GameGateway {
   }
 
   @SubscribeMessage(MESSAGE_TYPES.assignCharacter)
-  assignCharacter(): Observable<WsResponse<CardType>> {
-    return this.buildResponse(MESSAGE_TYPES.assignCharacter, of(16));
+  assignCharacter(
+    @MessageBody() data: Player,
+  ): Observable<WsResponse<CardType>> {
+    this._game.assignCharacter(data);
+    return this.buildResponse(
+      MESSAGE_TYPES.assignCharacter,
+      this._game.character$(data),
+    );
   }
 
   // afterInit(server: Server) {

@@ -2,10 +2,9 @@ import { Injectable, Logger, Scope } from '@nestjs/common';
 import { Player, CardType } from '@witch-hunter/api-interfaces';
 import { createGameStore } from './store';
 import { gameReducer } from './reducer';
-import { joinGame, startGame } from './actions';
-import { getPlayers } from './selectors';
-
-const logger = new Logger('GAME 🎲');
+import * as Actions from './actions';
+import { getPlayers, hasGameStarted, getCharacter } from './selectors';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class GameStoreFacade {
@@ -14,20 +13,19 @@ export class GameStoreFacade {
 
   state$ = this._store.select(state$ => state$);
 
+  started$ = this._store.select(hasGameStarted);
+
   readonly players$ = this._store.select(getPlayers);
 
+  character$ = (player): Observable<CardType> =>
+    this._store.select(state$ => getCharacter(state$, player));
+
   /** Joins the game with the provided player */
-  join(player: Player) {
-    this._store.dispatch(joinGame(player));
+  join(player: Player): void {
+    this._store.dispatch(Actions.joinGame(player));
   }
 
-  assignCharacter(): CardType {
-    return 16;
-  }
-
-  /** Starts the game */
-  start() {
-    logger.log('Starting Game 💣');
-    this._store.dispatch(startGame());
+  assignCharacter(player: Player): void {
+    this._store.dispatch(Actions.assignCharacter(player));
   }
 }

@@ -23,8 +23,8 @@ export const startGame$: Effect = (
   action$.pipe(
     ofType(ActionType.JOIN_GAME),
     withLatestFrom(state$),
-    map(([, { players }]) => {
-      if (players.length === 4) {
+    map(([, { players, started }]) => {
+      if (!started && players.length === 4) {
         return startGame();
       }
       return noop();

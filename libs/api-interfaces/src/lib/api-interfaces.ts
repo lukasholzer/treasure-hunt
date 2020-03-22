@@ -1,3 +1,5 @@
+import { CardType } from './card';
+
 export interface SocketMessage<T = any> {
   type: MESSAGE_TYPES;
   value?: T;
@@ -22,6 +24,11 @@ export interface CreditCard {
   number: string;
   pin: number;
   security: number;
+}
+
+
+export interface Character extends Player {
+  character: CardType | null;
 }
 
 export interface Player {

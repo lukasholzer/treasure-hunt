@@ -1,9 +1,10 @@
 import { Logger } from '@nestjs/common';
+import { CardType, Character, Player } from '@witch-hunter/api-interfaces';
+import { generateDeck, getRoleCards, shuffleDeck } from '../config';
 import { Action, ActionType } from './actions';
 import { GameState } from './store';
-import { Player } from '@witch-hunter/api-interfaces';
 
-const logger = new Logger('Game Reducer');
+const logger = new Logger('GAME Reducer');
 
 /** Type of a reducer */
 export type Reducer = (state: GameState, action: Action) => GameState;
@@ -17,21 +18,39 @@ export type Reducer = (state: GameState, action: Action) => GameState;
  */
 export function gameReducer(state: GameState, action: Action): GameState {
   logger.log(`Reducer <${action.type}>`);
-  logger.verbose(JSON.stringify(action.payload));
 
   switch (action.type) {
     case ActionType.JOIN_GAME:
       return { ...state, players: addPlayer(action.payload, state.players) };
-
+    case ActionType.START_GAME:
+      logger.log('Starting Game 🎲', 'GAME');
+      return {
+        ...state,
+        started: true,
+        deck: generateDeck(state.players.length),
+      };
+    case ActionType.ASSIGN_CHARACTER:
+      return {
+        ...state,
+        players: assignCharacters(state.players, state.deck),
+      };
     default:
       // Default return the same state as it was passed so don't modify anything
       return state;
   }
 }
 
-function addPlayer(player: Player, players: Player[]): Player[] {
+function assignCharacters(players: Character[], deck: CardType[]): Character[] {
+  const roleCards = shuffleDeck(getRoleCards(deck)).slice(0, players.length);
+  return players.map((player, index) => ({
+    ...player,
+    character: roleCards[index],
+  }));
+}
+
+function addPlayer(player: Player, players: Character[]): Character[] {
   if (players.findIndex(({ email }) => player.email === email) < 0) {
-    return [...players, player];
+    return [...players, { ...player, character: null }];
   }
   return players;
 }

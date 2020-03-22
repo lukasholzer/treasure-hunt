@@ -6,9 +6,10 @@ import {
   CardType,
 } from '@witch-hunter/api-interfaces';
 import { Socket } from 'ngx-socket-io';
-import { switchMap, tap, map } from 'rxjs/operators';
+import { switchMap, tap, map, withLatestFrom, pluck } from 'rxjs/operators';
 import { PlayerService } from '../services/player.service';
 import * as GameActions from './game.actions';
+import { GameFacade } from './game.facade';
 
 @Injectable()
 export class GameEffects {
@@ -26,8 +27,9 @@ export class GameEffects {
   assignCharacter$ = createEffect(() =>
     this._actions$.pipe(
       ofType(GameActions.assignCharacter),
-      switchMap(() => {
-        this._socket.emit(MESSAGE_TYPES.assignCharacter);
+      withLatestFrom(this._facade.player$),
+      switchMap(([, player]) => {
+        this._socket.emit(MESSAGE_TYPES.assignCharacter, player);
         return this._socket.fromEvent<CardType>(MESSAGE_TYPES.assignCharacter);
       }),
       map(character => GameActions.assignCharacterSuccess({ character })),
@@ -37,6 +39,7 @@ export class GameEffects {
   constructor(
     private _actions$: Actions,
     private _socket: Socket,
+    private _facade: GameFacade,
     private _playerService: PlayerService,
   ) {}
 }

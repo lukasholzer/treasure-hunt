@@ -1,15 +1,17 @@
-import { Player, CardType } from '@witch-hunter/api-interfaces';
+import { CardType, Character } from '@witch-hunter/api-interfaces';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
 import { Action, ActionType } from './actions';
 import { Effect, startGame$ } from './effects';
 import { Reducer } from './reducer';
-import { shareReplay, withLatestFrom, map } from 'rxjs/operators';
 
 /** Interface that describes the Game state */
 export interface GameState {
   started: boolean;
+  /** The card deck for the game */
+  deck: CardType[];
   /** The list of players taking part in this game */
-  players: Player[];
+  players: Character[];
   /** The played cards on the table */
   tableCards: CardType[];
   /** all hands by player id in the current game */
@@ -20,6 +22,7 @@ export interface GameState {
 export const initialState: GameState = {
   started: false,
   players: [],
+  deck: [],
   tableCards: [],
   hands: new Map<string, CardType[]>(),
 };
