@@ -43,7 +43,6 @@ jobs:
           docker build -t treasurehunt/api:latest . -f ./apps/api/Dockerfile
 
       - name: Push to docker registry
-        if: success()
         uses: actions-hub/docker@master
         with:
           args: push treasurehunt/nginx:latest
