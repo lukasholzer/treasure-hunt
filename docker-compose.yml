@@ -1,0 +1,18 @@
+version: '3.2'
+
+services:
+  api:
+    image: treasurehunt/api:latest
+    restart: unless-stopped
+    container_name: treasurehunt-api
+    ports:
+      - '3333:3333'
+
+  nginx:
+    image: treasurehunt/nginx:latest
+    container_name: treasurehunt-nginx
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - api

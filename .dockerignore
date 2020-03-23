@@ -10,10 +10,13 @@
 !package-lock.json
 
 # Used by multiple projects:
-# - /Dockerfile
+# - /apps/api/Dockerfile
 !tsconfig.json
 !angular.json
-
-
-
 !dist/
+
+
+
+# Used by: /.deployment/nginx/Dockerfile
+!.deployment/
+!.ssl/
