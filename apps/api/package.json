@@ -1,5 +1,5 @@
 {
-  "name": "witch-hunter-api",
+  "name": "treasure-hunt-api",
   "engines": {
     "node": "<= 12.6.1"
   },

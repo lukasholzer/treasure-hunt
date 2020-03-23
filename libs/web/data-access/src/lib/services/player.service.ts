@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { share, tap, switchMap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Player } from '@witch-hunter/api-interfaces';
+import { Player } from '@treasure-hunt/api-interfaces';
 
 @Injectable()
 export class PlayerService {

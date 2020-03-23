@@ -1,4 +1,4 @@
-import { Player } from '@witch-hunter/api-interfaces';
+import { Player } from '@treasure-hunt/api-interfaces';
 
 /** Enum for all the possible action types */
 export enum ActionType {

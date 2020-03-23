@@ -7,7 +7,7 @@ import { routerTransition } from './router-transition';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'witch-hunter-root',
+  selector: 'treasure-hunt-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [routerTransition],

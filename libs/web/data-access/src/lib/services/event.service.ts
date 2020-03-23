@@ -5,7 +5,7 @@ import {
   SocketMessage,
   MESSAGE_TYPES,
   Player
-} from '@witch-hunter/api-interfaces';
+} from '@treasure-hunt/api-interfaces';
 import { Observable } from 'rxjs';
 
 @Injectable()

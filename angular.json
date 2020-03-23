@@ -10,7 +10,7 @@
       },
       "root": "apps/app",
       "sourceRoot": "apps/app/src",
-      "prefix": "witch-hunter",
+      "prefix": "treasure-hunt",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -242,7 +242,7 @@
       "projectType": "library",
       "root": "libs/web/data-access",
       "sourceRoot": "libs/web/data-access/src",
-      "prefix": "witch-hunter",
+      "prefix": "treasure-hunt",
       "architect": {
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",

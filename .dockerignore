@@ -1,0 +1,19 @@
+#--------------------------
+# disallow anything
+#--------------------------
+**
+
+#--------------------------
+# allow explicit
+#--------------------------
+!package.json
+!package-lock.json
+
+# Used by multiple projects:
+# - /Dockerfile
+!tsconfig.json
+!angular.json
+
+
+
+!dist/

@@ -4,7 +4,7 @@ import {
   MESSAGE_TYPES,
   SocketMessage,
   CardType,
-} from '@witch-hunter/api-interfaces';
+} from '@treasure-hunt/api-interfaces';
 import { Socket } from 'ngx-socket-io';
 import { switchMap, tap, map, withLatestFrom, pluck } from 'rxjs/operators';
 import { PlayerService } from '../services/player.service';

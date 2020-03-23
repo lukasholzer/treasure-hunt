@@ -6,7 +6,7 @@
 //   CardType
 // } from './config';
 // import { uuid } from './uuid';
-// import { Player } from '@witch-hunter/api-interfaces';
+// import { Player } from '@treasure-hunt/api-interfaces';
 // import { createGameStore } from './+state/store';
 // import { gameReducer } from './+state/reducer';
 

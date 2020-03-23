@@ -5,7 +5,7 @@ import {
   HostListener,
   Input
 } from '@angular/core';
-import { CardType } from '@witch-hunter/api-interfaces';
+import { CardType } from '@treasure-hunt/api-interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
 
 @Component({

@@ -10,14 +10,14 @@ export const routes: Route[] = [
   {
     path: 'game',
     loadChildren: () =>
-      import('@witch-hunter/web/feature-game').then(
+      import('@treasure-hunt/web/feature-game').then(
         module => module.FeatureGameModule,
       ),
   },
   {
     path: 'lobby',
     loadChildren: () =>
-      import('@witch-hunter/web/feature-lobby').then(
+      import('@treasure-hunt/web/feature-lobby').then(
         module => module.FeatureLobbyModule,
       ),
   },

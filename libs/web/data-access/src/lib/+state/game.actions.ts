@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Player, CardType } from '@witch-hunter/api-interfaces';
+import { Player, CardType } from '@treasure-hunt/api-interfaces';
 
 export const joinGame = createAction('[Game] Join Game');
 

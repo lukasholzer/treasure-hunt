@@ -1,4 +1,4 @@
-import { CardType, Character } from '@witch-hunter/api-interfaces';
+import { CardType, Character } from '@treasure-hunt/api-interfaces';
 import { BehaviorSubject, merge, Observable } from 'rxjs';
 import { map, shareReplay, withLatestFrom } from 'rxjs/operators';
 import { Action, ActionType } from './actions';

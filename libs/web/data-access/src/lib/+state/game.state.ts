@@ -1,4 +1,4 @@
-import { Player, CardType } from '@witch-hunter/api-interfaces';
+import { Player, CardType } from '@treasure-hunt/api-interfaces';
 
 export const GAME_FEATURE_KEY = 'game';
 

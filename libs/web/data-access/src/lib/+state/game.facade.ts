@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { MESSAGE_TYPES, Player, Character } from '@witch-hunter/api-interfaces';
+import { MESSAGE_TYPES, Player, Character } from '@treasure-hunt/api-interfaces';
 import { Socket } from 'ngx-socket-io';
 import * as Actions from './game.actions';
 import * as GameSelectors from './game.selectors';

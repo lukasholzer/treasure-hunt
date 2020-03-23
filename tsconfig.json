@@ -16,16 +16,16 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@witch-hunter/api-interfaces": ["libs/api-interfaces/src/index.ts"],
-      "@witch-hunter/web/feature-game": ["libs/web/feature-game/src/index.ts"],
-      "@witch-hunter/web/data-access": ["libs/web/data-access/src/index.ts"],
-      "@witch-hunter/web/feature-lobby": [
+      "@treasure-hunt/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@treasure-hunt/web/feature-game": ["libs/web/feature-game/src/index.ts"],
+      "@treasure-hunt/web/data-access": ["libs/web/data-access/src/index.ts"],
+      "@treasure-hunt/web/feature-lobby": [
         "libs/web/feature-lobby/src/index.ts"
       ],
-      "@witch-hunter/web/components/button": [
+      "@treasure-hunt/web/components/button": [
         "libs/web/components/button/src/index.ts"
       ],
-      "@witch-hunter/web/ui-game": ["libs/web/ui-game/src/index.ts"]
+      "@treasure-hunt/web/ui-game": ["libs/web/ui-game/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { GameFacade } from '@witch-hunter/web/data-access';
+import { GameFacade } from '@treasure-hunt/web/data-access';
 
 @Component({
   selector: 'fl-lobby',

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PlayerService } from './services/player.service';
 import { Socket } from 'ngx-socket-io';
-import { MESSAGE_TYPES } from '@witch-hunter/api-interfaces';
+import { MESSAGE_TYPES } from '@treasure-hunt/api-interfaces';
 import { EventService } from './services/event.service';
 
 @Injectable()

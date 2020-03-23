@@ -1,5 +1,5 @@
 {
-  "npmScope": "witch-hunter",
+  "npmScope": "treasure-hunt",
   "implicitDependencies": {
     "angular.json": "*",
     "package.json": {

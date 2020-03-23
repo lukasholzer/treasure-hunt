@@ -1,4 +1,4 @@
-import { CardType } from '@witch-hunter/api-interfaces';
+import { CardType } from '@treasure-hunt/api-interfaces';
 
 export function getImageUrlForType(cardType: CardType): string {
   // tslint:disable-next-line: no-bitwise

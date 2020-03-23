@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { GameFacade } from '@witch-hunter/web/data-access';
+import { GameFacade } from '@treasure-hunt/web/data-access';
 
 @Component({
   selector: 'fg-game-overview',

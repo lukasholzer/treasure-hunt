@@ -1,4 +1,4 @@
-import { CardType } from '@witch-hunter/api-interfaces';
+import { CardType } from '@treasure-hunt/api-interfaces';
 
 export interface GameConfiguration {
   players: number;

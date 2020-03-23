@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input
 } from '@angular/core';
-import { Player } from '@witch-hunter/api-interfaces';
+import { Player } from '@treasure-hunt/api-interfaces';
 
 @Component({
   selector: 'fg-player-list',
