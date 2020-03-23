@@ -32,14 +32,12 @@ jobs:
           npm run nx build app -- --configuration=production
 
       - name: Login to docker hub
-          if: success()
           uses: actions-hub/docker/login@master
           env:
             DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
             DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build image
-        if: success()
         run: |
           docker build -t treasurehunt/nginx:latest . -f ./.deployment/nginx/Dockerfile
           docker build -t treasurehunt/api:latest . -f ./apps/api/Dockerfile
