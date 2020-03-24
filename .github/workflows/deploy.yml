@@ -1,16 +1,24 @@
 name: Deployment 🚀
+
 on:
   push:
     branches:
       - master
+      - continous-integration
 
 jobs:
-  api:
+  deployment:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NGINX: treasurehunt/nginx
+      IMAGE_API: treasurehunt/api
+      IMAGE_APP: treasurehunt/app
+      SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      DROPLET_PATH: /var/www/treasure-hunt.app
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache node modules
+      - name: Cache node modules 🗄
         uses: actions/cache@v1
         with:
           path: ~/.npm
@@ -18,41 +26,84 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Use node 12.x
+      - name: Setup Node.js 🐍
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
 
-      - name: install
+      - name: Install Dependencies ⚙️
         run: npm ci
 
-      - name: build
+      - name: Add SSH keys 🔐
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan "$DROPLET_IP" >> ~/.ssh/known_hosts
+          ssh-agent -a "$SSH_AUTH_SOCK" > /dev/null
+          ssh-add - <<< "$SSH_PRIVATE_KEY"
+        shell: bash
+        env:
+          DROPLET_IP: ${{secrets.DROPLET_IP}}
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+
+      - name: Build Application 📦
         run: |
           npm run nx build api -- --configuration=production
           npm run nx build app -- --configuration=production
 
-      - name: Login to docker hub
-        uses: actions-hub/docker/login@master
+      - name: Write SSL keys 🔒
+        run: |
+          mkdir ./.ssl
+          echo "$SSL_KEY" > ./.ssl/treasure-hunt.app-key.pem
+          echo "$SSL_CRT" > ./.ssl/treasure-hunt.app.pem
+          echo "$SSL_DHPARAM" > ./.ssl/dhparam.pem
+        shell: bash
+        env:
+          SSH_KEY: ${{secrets.SSH_KEY}}
+          SSL_CRT: ${{secrets.SSL_CRT}}
+          SSL_DHPARAM: ${{secrets.SSL_DHPARAM}}
+
+      - name: Build and publish Docker images 🐳
+        run: |
+          docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
+
+          docker pull ${IMAGE_NGINX}:latest || true
+          docker pull ${IMAGE_API}:latest || true
+
+          docker build --cache-from ${IMAGE_NGINX}:latest -t ${IMAGE_NGINX}:latest ./ -f ./.deployment/nginx/Dockerfile
+          docker build --cache-from ${IMAGE_API}:latest -t ${IMAGE_API}:latest ./  -f ./apps/api/Dockerfile
+
+          docker push ${IMAGE_NGINX}:latest
+          docker push ${IMAGE_API}:latest
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build image
+      - name: Deploy dist 🛫
         run: |
-          docker build -t treasurehunt/nginx:latest . -f ./.deployment/nginx/Dockerfile
-          docker build -t treasurehunt/api:latest . -f ./apps/api/Dockerfile
+          scp -r \
+            ./docker-compose.yml \
+            ./docker-compose.override.yml \
+            ${DROPLET_USER}@${DROPLET_IP}:${DROPLET_PATH}/
+        shell: bash
+        env:
+          DROPLET_IP: ${{secrets.DROPLET_IP}}
+          DROPLET_USER: ${{secrets.DROPLET_USER}}
 
-      - name: Push to docker registry
-        uses: actions-hub/docker@master
-        with:
-          args: push treasurehunt/nginx:latest
+      - name: Restarting the Docker images ♻️
+        run: |
+          ssh ${DROPLET_USER}@${DROPLET_IP} /bin/bash << EOF
+            cd "${DROPLET_PATH}"
+            FILES="-f ./docker-compose.yml -f ./docker-compose.override.yml"
 
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ DROPLET_IP }}
-          username: deployer
-          password: ${{ secrets.SSH_DEPLOYER }}
-          port: 22
-          script: |
-            docker-compose -f /var/www/treasure-hunt.app/docker-compose.yml up -d --force-recreate
+            docker-compose $FILES down -v
+            docker-compose $FILES pull
+            docker-compose $FILES up -d --force-recreate
+          EOF
+        shell: bash
+        env:
+          DROPLET_USER: ${{ secrets.DROPLET_USER }}
+          DROPLET_IP: ${{ secrets.DROPLET_IP }}
+
+
+
+
