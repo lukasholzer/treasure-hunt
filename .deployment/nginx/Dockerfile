@@ -6,13 +6,9 @@ COPY .deployment/nginx/sites-available /etc/nginx/sites-available
 
 RUN ln -s /etc/nginx/sites-available /etc/nginx/sites-enabled
 
-COPY .ssl/treasure-hunt.app.crt  /etc/nginx/ssl/treasure-hunt.app.crt
-COPY .ssl/treasure-hunt.app.key  /etc/nginx/ssl/treasure-hunt.app.key
-
+COPY .ssl/treasure-hunt.app-key.pem  /etc/nginx/ssl/treasure-hunt.app-key.pem
+COPY .ssl/treasure-hunt.app.pem   /etc/nginx/ssl/treasure-hunt.app.pem
 COPY .ssl/dhparam.pem /etc/nginx/dhparam.pem
-
-# Add password protection
-# COPY .deployment/nginx/.htpasswd /etc/nginx/.htpasswd
 
 EXPOSE 80
 EXPOSE 443

@@ -1,0 +1,11 @@
+version: '3.2'
+
+services:
+  api:
+    image: treasurehunt/api:latest
+
+  nginx:
+    image: treasurehunt/nginx:latest
+    volumes:
+      - ./app:/var/www/treasure-hunt.app
+
