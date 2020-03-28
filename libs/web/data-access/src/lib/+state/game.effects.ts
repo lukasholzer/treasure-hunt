@@ -30,17 +30,35 @@ export class GameEffects {
       this._actions$.pipe(
         ofType(GameActions.joinLobby),
         withLatestFrom(this._facade.player$),
-        tap(([{ id }]) => {
-          this._lobbyService.join(id);
+        tap(([{ id }, player]) => {
+          this._lobbyService.join(id, player);
         }),
       ),
     { dispatch: false },
+  );
+
+  leaveLobby$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(GameActions.leaveLobby),
+      withLatestFrom(this._facade.lobby$, this._facade.player$),
+      map(([, name, { id }]) => {
+        this._lobbyService.leave(name, id);
+        return GameActions.leaveLobbySuccess();
+      }),
+    ),
   );
 
   joinedLobby$ = createEffect(() =>
     this._lobbyService.actions$.pipe(
       ofType(LobbyActions.joinedLobby),
       map(({ payload }) => GameActions.joinedLobbySuccess({ id: payload })),
+    ),
+  );
+
+  playerJoined$ = createEffect(() =>
+    this._lobbyService.actions$.pipe(
+      ofType(LobbyActions.playerJoined),
+      map(({ payload }) => GameActions.playerJoined({ players: payload })),
     ),
   );
 

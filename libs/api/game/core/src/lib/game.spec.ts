@@ -13,21 +13,22 @@ const players: Player[] = [
 it('', () => {
   displayInfo(players.length);
   const game = new Game(players);
-  // printPlayers(game.players);
 
-  while (!game.isFinished() || game.rounds < 0) {
-    console.log('R: ', game.rounds);
-    for (let i = 0, max = game.rounds; i < max; i++) {
-      const card = game.reveal(0, 0);
-      console.log('Revealed: ', getDisplay(card));
-    }
+  console.log(game.rounds)
 
-    console.log(
-      'REVEALED: ',
-      game['_deck'].revealed.map(card => getDisplay(card)).join(' '),
-    );
-    game.endRound();
-  }
+  // while (!game.isFinished() || game.rounds <= 0) {
+  // //   console.log('R: ', game.rounds);
+  // //   for (let i = 0, max = game.rounds; i < max; i++) {
+  // //     const card = game.reveal(0, 0);
+  // //     console.log('Revealed: ', getDisplay(card));
+  // //   }
+
+  //   console.log(
+  //     'REVEALED: ',
+  //     game['_deck'].revealed.map(card => getDisplay(card)).join(' '),
+  //   );
+  //   game.endRound();
+  // }
 
   console.log(`Finished after ${game.rounds} rounds`);
 

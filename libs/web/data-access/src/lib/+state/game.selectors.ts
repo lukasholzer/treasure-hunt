@@ -16,6 +16,12 @@ export const getLobby = createSelector(
   (state: State) => state.lobby,
 );
 
+export const getPlayers = createSelector(
+  getGameState,
+  (state: State) => state.players,
+);
+
+
 export const getCharacter = createSelector(
   getGameState,
   (state: State) => state.character,

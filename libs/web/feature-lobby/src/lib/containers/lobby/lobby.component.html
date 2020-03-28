@@ -11,7 +11,26 @@
   [name]="player.name"
 ></ui-avatar>
 
-<div class="actions">
-  <button gc-button (click)="_joinLobby()">Join Lobby</button>
-  <button gc-button (click)="_startGame()" disabled>Start Game</button>
-</div>
+<ng-container *ngIf="lobby$ | async; else loggedOut">
+  <div class="actions">
+    <button gc-button (click)="_leaveLobby()" *ngIf="lobby$ | async">
+      Leave Lobby
+    </button>
+    <button
+      gc-button
+      (click)="_startGame()"
+      [disabled]="(activePlayers$ | async).length > 1"
+    >
+      Start Game
+    </button>
+  </div>
+</ng-container>
+
+<ng-template #loggedOut>
+  <div class="lobby-input">
+    <input type="text" [(ngModel)]="lobbyName" />
+    <button gc-button (click)="_joinLobby()" [disabled]="lobbyName.length < 2">
+      Join Lobby
+    </button>
+  </div>
+</ng-template>

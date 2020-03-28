@@ -6,6 +6,9 @@ import {
   joinGameSuccess,
   assignCharacterSuccess,
   joinedLobbySuccess,
+  playerJoined,
+  leaveLobby,
+  leaveLobbySuccess,
 } from './game.actions';
 
 const gameReducer = createReducer(
@@ -22,7 +25,11 @@ const gameReducer = createReducer(
     ...state,
     lobby: id,
   })),
-
+  on(playerJoined, (state, { players }) => ({
+    ...state,
+    players,
+  })),
+  on(leaveLobbySuccess, state => ({ ...state, lobby: null, players: [] })),
   on(joinGameSuccess, (state, { player }) => ({
     ...state,
     player,

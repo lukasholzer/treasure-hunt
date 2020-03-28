@@ -5,6 +5,8 @@ import {
   shuffleDeck,
   getRoleCards,
   getGameCards,
+  GAME_CONFIGURATION,
+  GameConfiguration,
 } from './config';
 import { Deck } from './deck';
 
@@ -18,16 +20,20 @@ export class Game {
   players: PlayingPlayer[];
   /** The number of rounds to play */
   rounds: number;
-
   /** The read only unique id of the game */
   get id(): string {
     return this._id;
   }
   private _id = uuid();
-
+  /** The card deck that is used for the game */
   private _deck: Deck;
+  /** The current game configuration */
+  private _config: GameConfiguration;
 
   constructor(players: Player[]) {
+    this._config = GAME_CONFIGURATION.find(
+      config => config.players === players.length,
+    );
     // generate the deck for the amount of players
     this._deck = new Deck(players.length);
     // set the number of rounds to play
@@ -42,13 +48,15 @@ export class Game {
     this._dealCards();
   }
 
+  /** Reveals a card from a player */
   reveal(playerIndex: number, cardIndex): CardType {
     const card = this.players[playerIndex].hand.splice(cardIndex, 1);
     this._deck.revealed.push(card[0]);
     return card[0];
   }
 
-  endRound() {
+  /** Finishes a round and deals the cards again */
+  finishRound() {
     this.players.forEach(player => {
       this._deck.gameCards.push(...player.hand);
     });
@@ -57,17 +65,24 @@ export class Game {
     this._dealCards();
   }
 
+  /** Checks if the game is over */
   isFinished(): boolean {
-    const fires = this._deck.revealed.filter(card =>
-      Boolean(card & CardType.Fire),
-    );
-    const gold = this._deck.revealed.filter(card =>
-      Boolean(card & CardType.Gold),
-    );
-
-    return Boolean(fires.length === 2 || gold.length === 5);
+    return this.guardiansHaveWon() || this.adventurersHaveWon();
   }
 
+  /** Checks if the guardians have won */
+  guardiansHaveWon(): boolean {
+    const fires = this._deck.revealed.filter(card => card & CardType.Fire);
+    return fires.length === this._config.fire;
+  }
+
+  /** Checks if the adventurers have won */
+  adventurersHaveWon(): boolean {
+    const gold = this._deck.revealed.filter(card => card & CardType.Gold);
+    return gold.length === this._config.gold;
+  }
+
+  /** Deals the cards */
   private _dealCards() {
     this._clearHands();
 

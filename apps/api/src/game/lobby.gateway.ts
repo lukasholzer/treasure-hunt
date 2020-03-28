@@ -4,16 +4,23 @@ import {
   OnGatewayInit,
   WebSocketServer,
   OnGatewayConnection,
+  WsResponse,
+  MessageBody,
+  ConnectedSocket,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
-import { LobbyActions } from '@treasure-hunt/shared/interfaces';
+import { LobbyActions, Player } from '@treasure-hunt/shared/interfaces';
+import { LobbyService } from './lobby.service';
+import { of } from 'rxjs';
 
 @WebSocketGateway({ namespace: '/lobby' })
 export class LobbyGateway implements OnGatewayInit {
   @WebSocketServer() server: Server;
 
-  private logger: Logger = new Logger('LobbyGateway');
+  private logger: Logger = new Logger('Lobby Gateway');
+
+  constructor(private _lobbyService: LobbyService) {}
 
   afterInit(server: any) {
     this.logger.log('Initialized!');
@@ -28,21 +35,44 @@ export class LobbyGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage('joinLobby')
-  handleRoomJoin(client: Socket, lobby: string) {
-    client.join(lobby);
-    console.log(client.rooms);
+  handleLobbyJoin(
+    @MessageBody() data: { name: string, player: Player },
+    @ConnectedSocket() client: Socket,
+  ) {
+    if (this._lobbyService.joinLobby(data.name, data.player)) {
+      client.join(data.name)
+    }
+
     client.emit('actions', {
       type: LobbyActions.joinedLobby,
-      payload: lobby,
+      payload: data.name,
     });
+
+    // send to all in the room the updated player list
+    return {
+      event: 'actions',
+      data: {
+        type: LobbyActions.playerJoined,
+        payload: this._lobbyService.lobbies.get(data.name),
+      }
+    }
   }
 
   @SubscribeMessage('leaveLobby')
-  handleRoomLeave(client: Socket, lobby: string) {
-    client.leave(lobby);
-    client.emit('actions', {
-      type: LobbyActions.leftLobby,
-      payload: lobby,
-    });
+  handleLobbyLeave(
+    @MessageBody() data: { name: string, id: string },
+    @ConnectedSocket() client: Socket,
+  ) {
+    const { name, id } = data;
+    this._lobbyService.leaveLobby(data.name, id)
+    client.leave(name);
+
+    return {
+      event: 'actions',
+      data: {
+        type: LobbyActions.playerJoined,
+        payload: this._lobbyService.lobbies.get(name),
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 export const enum LobbyActions {
   joinedLobby = '[LOBBY SOCKET] joined the Lobby',
   leftLobby = '[LOBBY SOCKET] left the Lobby',
+  playerJoined = '[LOBBY SOCKET] Player joined the Lobby',
 }
 
 export interface SocketAction<T = any> {

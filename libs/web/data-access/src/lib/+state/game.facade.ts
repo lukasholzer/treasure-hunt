@@ -18,12 +18,11 @@ export class GameFacade {
   player$ = this._store.pipe(select(GameSelectors.getPlayer));
   lobby$ = this._store.pipe(select(GameSelectors.getLobby));
   character$ = this._store.pipe(select(GameSelectors.getCharacter));
-  // allPlayers$ = this._game$.pipe(pluck('players'));
-  activePlayers$: Observable<Player[]> = EMPTY;
-  // this.allPlayers$.pipe(
-  //   withLatestFrom(this.player$),
-  //   map(([players, { id }]) => players.filter(player => player.id !== id)),
-  // );
+  allPlayers$ = this._store.pipe(select(GameSelectors.getPlayers));
+  activePlayers$ = this.allPlayers$.pipe(
+    withLatestFrom(this.player$),
+    map(([players = [], { id }]) => players.filter(player => player.id !== id)),
+  );
 
   constructor(private _store: Store<GamePartialState>) {
     // this._socket.emit(MESSAGE_TYPES.game);
@@ -47,8 +46,12 @@ export class GameFacade {
     );
   }
 
-  joinLobby() {
-    this._store.dispatch(Actions.joinLobby({ id: 'my-lobby-name' }));
+  joinLobby(id: string) {
+    this._store.dispatch(Actions.joinLobby({ id }));
+  }
+
+  leaveLobby() {
+    this._store.dispatch(Actions.leaveLobby());
   }
 
   drawCard() {}

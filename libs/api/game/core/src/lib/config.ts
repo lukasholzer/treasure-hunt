@@ -11,6 +11,8 @@ export interface GameConfiguration {
 
 export const MIN_PLAYERS = 3;
 export const MAX_PLAYERS = 10;
+/** The maximum rounds until the witches win the game */
+export const MAX_ROUNDS = 4;
 
 export const GAME_CONFIGURATION: GameConfiguration[] = [
   { players: 3, empty: 8, gold: 5, fire: 2, guardians: 2, adventurers: 2 },

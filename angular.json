@@ -413,6 +413,20 @@
       "projectType": "library",
       "schematics": {},
       "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/libs/api/game/core",
+            "main": "libs/api/game/core/src/index.ts",
+            "tsConfig": "libs/api/game/core/tsconfig.lib.json"
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api-game-core:build"
+          }
+        },
         "lint": {
           "builder": "@nrwl/linter:lint",
           "options": {
@@ -431,16 +445,6 @@
             "jestConfig": "libs/api/game/core/jest.config.js",
             "tsConfig": "libs/api/game/core/tsconfig.spec.json",
             "passWithNoTests": true
-          }
-        },
-        "build": {
-          "builder": "@nrwl/node:package",
-          "options": {
-            "outputPath": "dist/libs/api/game/core",
-            "tsConfig": "libs/api/game/core/tsconfig.lib.json",
-            "packageJson": "libs/api/game/core/package.json",
-            "main": "libs/api/game/core/src/index.ts",
-            "assets": ["libs/api/game/core/*.md"]
           }
         }
       }

@@ -12,9 +12,17 @@ export const joinLobby = createAction(
   props<{ id: string }>(),
 );
 
+export const leaveLobby = createAction('[LOBBY] Leave Lobby');
+export const leaveLobbySuccess = createAction('[LOBBY] Leave Lobby Success');
+
 export const joinedLobbySuccess = createAction(
   '[LOBBY] Joined Lobby Success',
   props<{ id: string }>(),
+);
+
+export const playerJoined = createAction(
+  '[LOBBY] Player Joined',
+  props<{ players: Player[] }>(),
 );
 
 export const joinGameSuccess = createAction(
