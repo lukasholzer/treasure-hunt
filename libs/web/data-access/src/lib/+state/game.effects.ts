@@ -57,7 +57,7 @@ export class GameEffects {
 
   playerJoined$ = createEffect(() =>
     this._lobbyService.actions$.pipe(
-      ofType(LobbyActions.playerJoined),
+      ofType(LobbyActions.playersUpdated),
       map(({ payload }) => GameActions.playerJoined({ players: payload })),
     ),
   );

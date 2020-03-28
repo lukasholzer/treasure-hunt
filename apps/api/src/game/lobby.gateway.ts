@@ -14,16 +14,18 @@ import { LobbyActions, Player } from '@treasure-hunt/shared/interfaces';
 import { LobbyService } from './lobby.service';
 import { of } from 'rxjs';
 
+
+const logger: Logger = new Logger('Lobby Gateway');
+
 @WebSocketGateway({ namespace: '/lobby' })
 export class LobbyGateway implements OnGatewayInit {
   @WebSocketServer() server: Server;
 
-  private logger: Logger = new Logger('Lobby Gateway');
 
   constructor(private _lobbyService: LobbyService) {}
 
   afterInit(server: any) {
-    this.logger.log('Initialized!');
+    logger.log('Initialized!');
   }
 
   @SubscribeMessage('chatToServer')
@@ -39,21 +41,28 @@ export class LobbyGateway implements OnGatewayInit {
     @MessageBody() data: { name: string, player: Player },
     @ConnectedSocket() client: Socket,
   ) {
-    if (this._lobbyService.joinLobby(data.name, data.player)) {
-      client.join(data.name)
+    const { name, player } = data;
+
+    if (this._lobbyService.joinLobby(name, player)) {
+      client.join(name)
     }
 
     client.emit('actions', {
       type: LobbyActions.joinedLobby,
-      payload: data.name,
+      payload: name,
     });
 
     // send to all in the room the updated player list
+    client.in(name).emit('actions', {
+      type: LobbyActions.playersUpdated,
+      payload: this._lobbyService.lobbies.get(name),
+    });
+
     return {
       event: 'actions',
       data: {
-        type: LobbyActions.playerJoined,
-        payload: this._lobbyService.lobbies.get(data.name),
+        type: LobbyActions.playersUpdated,
+        payload: this._lobbyService.lobbies.get(name),
       }
     }
   }
@@ -67,12 +76,9 @@ export class LobbyGateway implements OnGatewayInit {
     this._lobbyService.leaveLobby(data.name, id)
     client.leave(name);
 
-    return {
-      event: 'actions',
-      data: {
-        type: LobbyActions.playerJoined,
-        payload: this._lobbyService.lobbies.get(name),
-      }
-    }
+    client.to(data.name).emit('actions', {
+      type: LobbyActions.playersUpdated,
+      payload: this._lobbyService.lobbies.get(name),
+    });
   }
 }
