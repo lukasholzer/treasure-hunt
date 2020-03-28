@@ -10,42 +10,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@treasure-hunt/web/feature-game": [
-        "libs/web/feature-game/src/index.ts"
-      ],
-      "@treasure-hunt/web/data-access": [
-        "libs/web/data-access/src/index.ts"
-      ],
+      "@treasure-hunt/web/feature-game": ["libs/web/feature-game/src/index.ts"],
+      "@treasure-hunt/web/data-access": ["libs/web/data-access/src/index.ts"],
       "@treasure-hunt/web/feature-lobby": [
         "libs/web/feature-lobby/src/index.ts"
       ],
       "@treasure-hunt/web/components/button": [
         "libs/web/components/button/src/index.ts"
       ],
-      "@treasure-hunt/web/ui-game": [
-        "libs/web/ui-game/src/index.ts"
-      ],
-      "@treasure-hunt/shared/util": [
-        "libs/shared/util/src/index.ts"
-      ],
+      "@treasure-hunt/web/ui-game": ["libs/web/ui-game/src/index.ts"],
+      "@treasure-hunt/shared/util": ["libs/shared/util/src/index.ts"],
       "@treasure-hunt/shared/interfaces": [
         "libs/shared/interfaces/src/index.ts"
-      ]
+      ],
+      "@treasure-hunt/api/game/core": ["libs/api/game/core/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }

@@ -406,6 +406,44 @@
           }
         }
       }
+    },
+    "api-game-core": {
+      "root": "libs/api/game/core",
+      "sourceRoot": "libs/api/game/core/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:lint",
+          "options": {
+            "linter": "eslint",
+            "config": "libs/api/game/core/.eslintrc",
+            "tsConfig": [
+              "libs/api/game/core/tsconfig.lib.json",
+              "libs/api/game/core/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/api/game/core/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/api/game/core/jest.config.js",
+            "tsConfig": "libs/api/game/core/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        },
+        "build": {
+          "builder": "@nrwl/node:package",
+          "options": {
+            "outputPath": "dist/libs/api/game/core",
+            "tsConfig": "libs/api/game/core/tsconfig.lib.json",
+            "packageJson": "libs/api/game/core/package.json",
+            "main": "libs/api/game/core/src/index.ts",
+            "assets": ["libs/api/game/core/*.md"]
+          }
+        }
+      }
     }
   },
   "cli": {

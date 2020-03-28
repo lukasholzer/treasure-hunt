@@ -83,6 +83,10 @@
     "tslint": "~6.0.0",
     "typescript": "~3.7.4",
     "@ngrx/schematics": "9.0.0",
-    "@ngrx/store-devtools": "9.0.0"
+    "@ngrx/store-devtools": "9.0.0",
+    "@nrwl/eslint-plugin-nx": "9.1.2",
+    "@typescript-eslint/parser": "2.19.2",
+    "@typescript-eslint/eslint-plugin": "2.19.2",
+    "eslint-config-prettier": "6.0.0"
   }
 }

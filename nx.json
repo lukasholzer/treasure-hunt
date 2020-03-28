@@ -16,9 +16,7 @@
     },
     "app-e2e": {
       "tags": [],
-      "implicitDependencies": [
-        "app"
-      ]
+      "implicitDependencies": ["app"]
     },
     "api": {
       "tags": []
@@ -45,6 +43,9 @@
       "tags": []
     },
     "shared-interfaces": {
+      "tags": []
+    },
+    "api-game-core": {
       "tags": []
     }
   }
