@@ -41,6 +41,9 @@
     },
     "web-ui-game": {
       "tags": []
+    },
+    "shared-util": {
+      "tags": []
     }
   }
 }

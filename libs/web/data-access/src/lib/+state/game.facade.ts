@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { MESSAGE_TYPES, Player, Character } from '@treasure-hunt/api-interfaces';
+import {
+  MESSAGE_TYPES,
+  Player,
+  Character,
+} from '@treasure-hunt/api-interfaces';
 import { Socket } from 'ngx-socket-io';
 import * as Actions from './game.actions';
 import * as GameSelectors from './game.selectors';
@@ -14,11 +18,9 @@ export class GameFacade {
   player$ = this._store.pipe(select(GameSelectors.getPlayer));
   character$ = this._store.pipe(select(GameSelectors.getCharacter));
   allPlayers$ = this._game$.pipe(pluck('players'));
-  activePlayers$ = this.allPlayers$.pipe(
+  activePlayers$: Observable<Player[]> = this.allPlayers$.pipe(
     withLatestFrom(this.player$),
-    map(([players, { email }]) =>
-      players.filter(player => player.email !== email),
-    ),
+    map(([players, { id }]) => players.filter(player => player.id !== id)),
   );
 
   constructor(
@@ -37,6 +39,15 @@ export class GameFacade {
       });
 
     this._game$.subscribe(console.log);
+  }
+
+  login(name: string, image: string) {
+    this._store.dispatch(
+      Actions.login({
+        name,
+        image,
+      }),
+    );
   }
 
   joinGame() {

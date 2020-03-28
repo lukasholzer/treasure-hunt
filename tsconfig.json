@@ -25,7 +25,8 @@
       "@treasure-hunt/web/components/button": [
         "libs/web/components/button/src/index.ts"
       ],
-      "@treasure-hunt/web/ui-game": ["libs/web/ui-game/src/index.ts"]
+      "@treasure-hunt/web/ui-game": ["libs/web/ui-game/src/index.ts"],
+      "@treasure-hunt/shared/util": ["libs/shared/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

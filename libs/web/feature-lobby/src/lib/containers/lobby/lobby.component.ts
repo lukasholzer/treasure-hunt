@@ -9,6 +9,7 @@ import { GameFacade } from '@treasure-hunt/web/data-access';
 })
 export class LobbyComponent {
   activePlayers$ = this._gameFacade.activePlayers$;
+  player$ = this._gameFacade.player$;
 
   constructor(private _gameFacade: GameFacade) {}
 

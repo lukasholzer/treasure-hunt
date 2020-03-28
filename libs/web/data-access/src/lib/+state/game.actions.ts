@@ -1,6 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { Player, CardType } from '@treasure-hunt/api-interfaces';
 
+/** Joins the lobby with a username and a player profile */
+export const login = createAction(
+  '[LOGIN] Login into the game',
+  props<{ name: string, image: string }>(),
+);
+
 export const joinGame = createAction('[Game] Join Game');
 
 export const joinGameSuccess = createAction(

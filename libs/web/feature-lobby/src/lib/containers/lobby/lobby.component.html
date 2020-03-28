@@ -1,8 +1,12 @@
+<ng-container *ngIf="player$ | async as player">
+  <ui-avatar [image]="player.image" [name]="player.name"></ui-avatar>
+</ng-container>
+
 <h1>Lobby</h1>
 
 <ui-avatar
   *ngFor="let player of activePlayers$ | async"
-  [image]="player.photo"
+  [image]="player.image"
   [name]="player.name"
 ></ui-avatar>
 

@@ -5,6 +5,7 @@ export const GAME_FEATURE_KEY = 'game';
 export interface State {
   player: Player | null;
   character: CardType | null;
+  hand: CardType[];
 }
 
 export interface GamePartialState {
@@ -14,4 +15,5 @@ export interface GamePartialState {
 export const initialState = {
   player: null,
   character: null,
+  hand: [],
 };

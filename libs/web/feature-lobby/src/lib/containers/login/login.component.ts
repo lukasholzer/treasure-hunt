@@ -1,18 +1,16 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   ViewChild,
 } from '@angular/core';
+import { GameFacade } from '@treasure-hunt/web/data-access';
 import { defer, fromEvent, Observable } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
   map,
   startWith,
-  tap,
 } from 'rxjs/operators';
 
 @Component({
@@ -21,26 +19,32 @@ import {
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent {
+  /** The input element for the name */
   @ViewChild('input', { static: true })
   input: ElementRef<HTMLInputElement>;
 
+  /** The stream with the current image for the name */
   image$: Observable<any> = defer(() =>
     fromEvent<KeyboardEvent>(this.input.nativeElement, 'keydown').pipe(
       startWith('neutral'),
       debounceTime(200),
-      map(
-        () =>
-          `url(https://api.adorable.io/avatars/285/${this.input.nativeElement.value})`,
-      ),
+      map(() => `url(${this._getImageUrl(this.input.nativeElement.value)})`),
       distinctUntilChanged(),
-      tap(() => this._changeDetectorRef.markForCheck()),
     ),
   );
 
-  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
+  constructor(private _gameFacade: GameFacade) {}
 
-  ngAfterViewInit(): void {
-    // this.image$ = ;
+  /** Is dispatching a login action with the generated image and the name */
+  login(): void {
+    const name = this.input.nativeElement.value;
+    const image = this._getImageUrl(name);
+    this._gameFacade.login(name, image);
+  }
+
+  /** Get a funny image for a provided name */
+  private _getImageUrl(name: string): string {
+    return `https://api.adorable.io/avatars/285/${name}`;
   }
 }

@@ -7,17 +7,19 @@ import { GameEffects } from './+state/game.effects';
 import { GameFacade } from './+state/game.facade';
 import * as fromGame from './+state/game.reducer';
 import { GAME_FEATURE_KEY } from './+state/game.state';
-import { DataFacade } from './data.facade';
 import { EventService } from './services/event.service';
-import { PlayerService } from './services/player.service';
+import { AuthenticationGuard } from './guards';
+import { storageMetaReducer } from './storage.meta-reducer';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature(GAME_FEATURE_KEY, fromGame.reducer),
+    StoreModule.forFeature(GAME_FEATURE_KEY, fromGame.reducer, {
+      metaReducers: [storageMetaReducer(['player'], '_th_game-state')],
+    }),
     EffectsModule.forFeature([GameEffects]),
   ],
-  providers: [PlayerService, EventService, DataFacade, GameFacade],
+  providers: [EventService, GameFacade, AuthenticationGuard],
 })
 export class DataAccessModule {}
