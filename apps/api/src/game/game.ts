@@ -45,9 +45,8 @@ export class Game {
   reveal(playerIndex: number, cardIndex): CardType {
     const card = this.players[playerIndex].hand.splice(cardIndex, 1);
     this._deck.revealed.push(card[0]);
-    return card[0]
+    return card[0];
   }
-
 
   endRound() {
     this.players.forEach(player => {
@@ -55,14 +54,18 @@ export class Game {
     });
     this._clearHands();
     this.rounds -= 1;
-    this._dealCards()
+    this._dealCards();
   }
 
   isFinished(): boolean {
-    const fires = this._deck.revealed.filter(card => Boolean(card & CardType.Fire));
-    const gold = this._deck.revealed.filter(card => Boolean(card & CardType.Gold));
+    const fires = this._deck.revealed.filter(card =>
+      Boolean(card & CardType.Fire),
+    );
+    const gold = this._deck.revealed.filter(card =>
+      Boolean(card & CardType.Gold),
+    );
 
-    return Boolean(fires.length === 2 || gold.length === 5)
+    return Boolean(fires.length === 2 || gold.length === 5);
   }
 
   private _dealCards() {

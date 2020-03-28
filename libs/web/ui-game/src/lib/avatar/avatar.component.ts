@@ -6,10 +6,11 @@ import { Component, HostBinding, Input } from '@angular/core';
   styleUrls: ['./avatar.component.scss'],
 })
 export class AvatarComponent {
-
   @HostBinding('style.--avatar-image')
   @Input()
-  get image(): string { return this._image; }
+  get image(): string {
+    return this._image;
+  }
   set image(image: string) {
     this._image = `url(${image})`;
   }

@@ -3,7 +3,7 @@ import {
   Component,
   HostBinding,
   HostListener,
-  Input
+  Input,
 } from '@angular/core';
 import { CardType } from '@treasure-hunt/shared/interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
@@ -12,7 +12,7 @@ import { getImageUrlForType } from '../get-image-url-for-type';
   selector: 'fg-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent {
   /** Url for the cards background image */

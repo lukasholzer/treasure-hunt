@@ -7,7 +7,7 @@ export enum CardType {
   Guardian = 1 << 3,
   Adventurer = 1 << 4,
   GameCards = Gold | Fire | Empty,
-  Characters = Guardian | Adventurer
+  Characters = Guardian | Adventurer,
 }
 
 export const isFire = (card: CardType) => Boolean(card & CardType.Fire);

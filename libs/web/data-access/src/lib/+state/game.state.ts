@@ -7,7 +7,7 @@ export interface State {
   character: CardType | null;
   hand: CardType[];
   lobby: string | null;
-  players: Player[],
+  players: Player[];
 }
 
 export interface GamePartialState {

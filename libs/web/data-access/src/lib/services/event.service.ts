@@ -4,7 +4,7 @@ import { filter, map } from 'rxjs/operators';
 import {
   SocketMessage,
   MESSAGE_TYPES,
-  Player
+  Player,
 } from '@treasure-hunt/shared/interfaces';
 import { Observable } from 'rxjs';
 
@@ -15,7 +15,7 @@ export class EventService {
 
   activePlayers$: Observable<Player[]> = this.events$.pipe(
     filter(event => event.type === MESSAGE_TYPES.playerJoined),
-    map(({ value }) => value)
+    map(({ value }) => value),
   );
 
   constructor(private _socket: Socket) {}

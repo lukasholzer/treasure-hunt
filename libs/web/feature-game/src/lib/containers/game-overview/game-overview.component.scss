@@ -3,8 +3,8 @@
   grid-template-columns: auto auto;
   grid-template-rows: 6em auto;
   grid-template-areas:
-    "header header"
-    "sidebar main"
+    'header header'
+    'sidebar main';
 }
 
 fg-header {

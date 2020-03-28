@@ -20,7 +20,7 @@ export const GAME_CONFIGURATION: GameConfiguration[] = [
   { players: 7, empty: 26, gold: 7, fire: 2, guardians: 5, adventurers: 3 },
   { players: 8, empty: 30, gold: 8, fire: 2, guardians: 6, adventurers: 3 },
   { players: 9, empty: 34, gold: 9, fire: 2, guardians: 6, adventurers: 3 },
-  { players: 10, empty: 37, gold: 10, fire: 3, guardians: 7, adventurers: 4 }
+  { players: 10, empty: 37, gold: 10, fire: 3, guardians: 7, adventurers: 4 },
 ];
 
 /**
@@ -30,12 +30,12 @@ export const GAME_CONFIGURATION: GameConfiguration[] = [
 export function generateDeck(numberOfPlayers: number) {
   if (numberOfPlayers < MIN_PLAYERS || numberOfPlayers > MAX_PLAYERS) {
     throw new Error(
-      `The game can only be played with at least ${MIN_PLAYERS} and maximum ${MAX_PLAYERS} players.`
+      `The game can only be played with at least ${MIN_PLAYERS} and maximum ${MAX_PLAYERS} players.`,
     );
   }
 
   const { empty, gold, fire, guardians, adventurers } = GAME_CONFIGURATION.find(
-    ({ players }) => players === numberOfPlayers
+    ({ players }) => players === numberOfPlayers,
   );
 
   return [
@@ -43,7 +43,7 @@ export function generateDeck(numberOfPlayers: number) {
     ...generateCardsOfType(gold, CardType.Gold),
     ...generateCardsOfType(fire, CardType.Fire),
     ...generateCardsOfType(guardians, CardType.Guardian),
-    ...generateCardsOfType(adventurers, CardType.Adventurer)
+    ...generateCardsOfType(adventurers, CardType.Adventurer),
   ];
 }
 

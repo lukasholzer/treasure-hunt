@@ -5,7 +5,11 @@ import {
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
-import { CardType, MESSAGE_TYPES, Player } from '@treasure-hunt/shared/interfaces';
+import {
+  CardType,
+  MESSAGE_TYPES,
+  Player,
+} from '@treasure-hunt/shared/interfaces';
 import { Server } from 'http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';

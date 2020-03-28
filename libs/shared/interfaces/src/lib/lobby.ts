@@ -8,9 +8,6 @@ export interface SocketAction<T = any> {
   payload: T;
 }
 
-
-
-
 export interface SocketMessage<T = any> {
   type: MESSAGE_TYPES;
   value?: T;

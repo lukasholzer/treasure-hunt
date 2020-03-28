@@ -21,11 +21,6 @@ import { LobbyService } from './services';
     }),
     EffectsModule.forFeature([GameEffects]),
   ],
-  providers: [
-    LobbyService,
-    EventService,
-    GameFacade,
-    AuthenticationGuard,
-  ],
+  providers: [LobbyService, EventService, GameFacade, AuthenticationGuard],
 })
 export class DataAccessModule {}

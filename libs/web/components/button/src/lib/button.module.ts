@@ -5,6 +5,6 @@ import { Button } from './button';
 @NgModule({
   imports: [CommonModule],
   declarations: [Button],
-  exports: [Button]
+  exports: [Button],
 })
 export class ButtonModule {}

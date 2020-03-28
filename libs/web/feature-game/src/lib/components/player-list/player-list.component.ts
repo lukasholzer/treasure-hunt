@@ -2,7 +2,7 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  Input
+  Input,
 } from '@angular/core';
 import { Player } from '@treasure-hunt/shared/interfaces';
 
@@ -10,7 +10,7 @@ import { Player } from '@treasure-hunt/shared/interfaces';
   selector: 'fg-player-list',
   templateUrl: './player-list.component.html',
   styleUrls: ['./player-list.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlayerListComponent {
   @Input() players: Player[];
