@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { pluck, map } from 'rxjs/operators';
 import { GameState } from './store';
-import { Character } from '@treasure-hunt/api-interfaces';
+import { Character } from '@treasure-hunt/shared/interfaces';
 
 /** Select all players in the game */
 export const getPlayers = (state$: Observable<GameState>) =>

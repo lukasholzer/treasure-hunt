@@ -1,4 +1,4 @@
-import { CardType } from '@treasure-hunt/api-interfaces';
+import { CardType } from '@treasure-hunt/shared/interfaces';
 
 export interface GameConfiguration {
   players: number;
@@ -20,7 +20,7 @@ export const GAME_CONFIGURATION: GameConfiguration[] = [
   { players: 7, empty: 26, gold: 7, fire: 2, guardians: 5, adventurers: 3 },
   { players: 8, empty: 30, gold: 8, fire: 2, guardians: 6, adventurers: 3 },
   { players: 9, empty: 34, gold: 9, fire: 2, guardians: 6, adventurers: 3 },
-  { players: 10, empty: 38, gold: 10, fire: 3, guardians: 7, adventurers: 4 }
+  { players: 10, empty: 37, gold: 10, fire: 3, guardians: 7, adventurers: 4 }
 ];
 
 /**

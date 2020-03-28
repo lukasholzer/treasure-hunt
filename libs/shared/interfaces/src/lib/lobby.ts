@@ -1,3 +1,16 @@
+export const enum LobbyActions {
+  joinedLobby = '[LOBBY SOCKET] joined the Lobby',
+  leftLobby = '[LOBBY SOCKET] left the Lobby',
+}
+
+export interface SocketAction<T = any> {
+  type: LobbyActions;
+  payload: T;
+}
+
+
+
+
 export interface SocketMessage<T = any> {
   type: MESSAGE_TYPES;
   value?: T;

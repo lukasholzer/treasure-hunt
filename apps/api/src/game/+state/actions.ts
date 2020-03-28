@@ -1,4 +1,4 @@
-import { Player } from '@treasure-hunt/api-interfaces';
+import { Player } from '@treasure-hunt/shared/interfaces';
 
 /** Enum for all the possible action types */
 export enum ActionType {

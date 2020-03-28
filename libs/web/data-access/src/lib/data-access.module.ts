@@ -10,6 +10,7 @@ import { GAME_FEATURE_KEY } from './+state/game.state';
 import { EventService } from './services/event.service';
 import { AuthenticationGuard } from './guards';
 import { storageMetaReducer } from './storage.meta-reducer';
+import { LobbyService } from './services';
 
 @NgModule({
   imports: [
@@ -20,6 +21,11 @@ import { storageMetaReducer } from './storage.meta-reducer';
     }),
     EffectsModule.forFeature([GameEffects]),
   ],
-  providers: [EventService, GameFacade, AuthenticationGuard],
+  providers: [
+    LobbyService,
+    EventService,
+    GameFacade,
+    AuthenticationGuard,
+  ],
 })
 export class DataAccessModule {}

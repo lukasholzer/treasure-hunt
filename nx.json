@@ -16,12 +16,11 @@
     },
     "app-e2e": {
       "tags": [],
-      "implicitDependencies": ["app"]
+      "implicitDependencies": [
+        "app"
+      ]
     },
     "api": {
-      "tags": []
-    },
-    "api-interfaces": {
       "tags": []
     },
     "web-feature-game": {
@@ -43,6 +42,9 @@
       "tags": []
     },
     "shared-util": {
+      "tags": []
+    },
+    "shared-interfaces": {
       "tags": []
     }
   }

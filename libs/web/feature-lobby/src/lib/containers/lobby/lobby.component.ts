@@ -10,14 +10,15 @@ import { GameFacade } from '@treasure-hunt/web/data-access';
 export class LobbyComponent {
   activePlayers$ = this._gameFacade.activePlayers$;
   player$ = this._gameFacade.player$;
+  lobby$ = this._gameFacade.lobby$;
 
   constructor(private _gameFacade: GameFacade) {}
 
   _joinLobby(): void {
-    this._gameFacade.joinGame();
+    this._gameFacade.joinLobby();
   }
 
   _startGame(): void {
-    console.log('start game')
+    console.log('start game');
   }
 }

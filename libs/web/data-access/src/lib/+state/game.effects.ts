@@ -5,11 +5,12 @@ import {
   MESSAGE_TYPES,
   SocketMessage,
   CardType,
-} from '@treasure-hunt/api-interfaces';
-import { Socket } from 'ngx-socket-io';
+  LobbyActions,
+} from '@treasure-hunt/shared/interfaces';
 import { switchMap, tap, map, withLatestFrom, pluck } from 'rxjs/operators';
 import * as GameActions from './game.actions';
 import { GameFacade } from './game.facade';
+import { LobbyService } from '../services';
 
 @Injectable()
 export class GameEffects {
@@ -22,6 +23,25 @@ export class GameEffects {
         }),
       ),
     { dispatch: false },
+  );
+
+  joinLobby$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(GameActions.joinLobby),
+        withLatestFrom(this._facade.player$),
+        tap(([{ id }]) => {
+          this._lobbyService.join(id);
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  joinedLobby$ = createEffect(() =>
+    this._lobbyService.actions$.pipe(
+      ofType(LobbyActions.joinedLobby),
+      map(({ payload }) => GameActions.joinedLobbySuccess({ id: payload })),
+    ),
   );
 
   // joinGame$ = createEffect(() =>
@@ -49,7 +69,7 @@ export class GameEffects {
 
   constructor(
     private _actions$: Actions,
-    private _socket: Socket,
+    private _lobbyService: LobbyService,
     private _facade: GameFacade,
     private _router: Router,
   ) {}

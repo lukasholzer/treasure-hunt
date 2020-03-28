@@ -15,7 +15,6 @@ import { AppRoutingModule } from './app.routing.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    SocketIoModule.forRoot({ url: environment.api }),
     StoreModule.forRoot(
       {},
       {

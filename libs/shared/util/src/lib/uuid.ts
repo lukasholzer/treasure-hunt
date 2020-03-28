@@ -1,7 +1,7 @@
 // tslint:disable: no-bitwise
 
 /** Generates a UUid number */
-export function uuid(): string | number {
+export function uuid(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
     /[xy]/g,
     (character: string) => {

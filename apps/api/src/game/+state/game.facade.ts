@@ -1,5 +1,5 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
-import { Player, CardType } from '@treasure-hunt/api-interfaces';
+import { Player, CardType } from '@treasure-hunt/shared/interfaces';
 import { createGameStore } from './store';
 import { gameReducer } from './reducer';
 import * as Actions from './actions';

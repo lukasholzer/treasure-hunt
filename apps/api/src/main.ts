@@ -8,11 +8,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { Logger } from '@nestjs/common';
 
-const logger = new Logger('API')
+const logger = new Logger('API');
+const port = process.env.port || 3333;
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const port = process.env.port || 3333;
+  const app = await await NestFactory.create(AppModule);
+  app.enableCors({ origin: '*' });
   await app.listen(port);
   return `http://localhost:${port}`;
 }

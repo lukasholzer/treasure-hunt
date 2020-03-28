@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { CardType, Character, Player } from '@treasure-hunt/api-interfaces';
+import { CardType, Character, Player } from '@treasure-hunt/shared/interfaces';
 import { generateDeck, getRoleCards, shuffleDeck } from '../config';
 import { Action, ActionType } from './actions';
 import { GameState, initialState } from './store';

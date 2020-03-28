@@ -1,5 +1,6 @@
 <ng-container *ngIf="player$ | async as player">
   <ui-avatar [image]="player.image" [name]="player.name"></ui-avatar>
+  {{ lobby$ | async }}
 </ng-container>
 
 <h1>Lobby</h1>

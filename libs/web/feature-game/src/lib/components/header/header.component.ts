@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { CardType, Player } from '@treasure-hunt/api-interfaces';
+import { CardType, Player } from '@treasure-hunt/shared/interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
 
 @Component({

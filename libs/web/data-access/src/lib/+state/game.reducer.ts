@@ -1,30 +1,40 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { uuid } from '@treasure-hunt/shared/util'
+import { uuid } from '@treasure-hunt/shared/util';
 import { initialState, State } from './game.state';
-import * as GameActions from './game.actions';
+import {
+  login,
+  joinGameSuccess,
+  assignCharacterSuccess,
+  joinedLobbySuccess,
+} from './game.actions';
 
 const gameReducer = createReducer(
   initialState,
-  on(GameActions.login, (state, {name, image}) => ({
+  on(login, (state, { name, image }) => ({
     ...state,
     player: {
       name,
       image,
-      id: uuid()
-    }
+      id: uuid(),
+    },
   })),
-  on(GameActions.joinGameSuccess, (state, { player }) => ({
+  on(joinedLobbySuccess, (state, { id }) => ({
+    ...state,
+    lobby: id,
+  })),
+
+  on(joinGameSuccess, (state, { player }) => ({
     ...state,
     player,
   })),
-  on(GameActions.assignCharacterSuccess, (state, { character }) => ({
+  on(assignCharacterSuccess, (state, { character }) => ({
     ...state,
     character,
   })),
-  // on(GameActions.loadGameSuccess, (state, { game }) =>
+  // on(loadGameSuccess, (state, { game }) =>
   //   gameAdapter.addAll(game, { ...state, loaded: true })
   // ),
-  // on(GameActions.loadGameFailure, (state, { error }) => ({ ...state, error }))
+  // on(loadGameFailure, (state, { error }) => ({ ...state, error }))
 );
 
 export function reducer(state: State | undefined, action: Action) {
