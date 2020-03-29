@@ -57,7 +57,7 @@ jobs:
           echo "$SSL_DHPARAM" > ./.ssl/dhparam.pem
         shell: bash
         env:
-          SSH_KEY: ${{secrets.SSH_KEY}}
+          SSL_KEY: ${{secrets.SSL_KEY}}
           SSL_CRT: ${{secrets.SSL_CRT}}
           SSL_DHPARAM: ${{secrets.SSL_DHPARAM}}
 
