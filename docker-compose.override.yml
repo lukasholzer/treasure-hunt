@@ -8,4 +8,3 @@ services:
     image: treasurehunt/nginx:latest
     volumes:
       - ./app:/var/www/treasure-hunt.app
-
