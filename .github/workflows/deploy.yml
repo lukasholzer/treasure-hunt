@@ -31,7 +31,7 @@ jobs:
           node-version: '12.x'
 
       - name: Install Dependencies ⚙️
-        run: npm ci
+        run: npm ci &> /dev/null
 
       - name: Add SSH keys 🔐
         run: |
