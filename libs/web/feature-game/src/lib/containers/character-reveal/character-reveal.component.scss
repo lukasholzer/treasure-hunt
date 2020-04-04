@@ -1,9 +1,52 @@
 @import 'variables';
 
+:host {
+  --progress-size: 6px;
+  --progress-duration: 5s;
+
+  display: block;
+  height: 100vh;
+  background: linear-gradient(to right, $color-yellow 99.99%, transparent),
+    linear-gradient(to bottom, $color-yellow 99.99%, transparent),
+    linear-gradient(to right, $color-yellow 99.99%, transparent),
+    linear-gradient(to bottom, $color-yellow 99.99%, transparent);
+  background-size: 100% var(--progress-size), var(--progress-size) 100%, 100% var(--progress-size),
+    var(--progress-size) 100%;
+  background-repeat: no-repeat;
+  animation-name: progress;
+  animation-duration: var(--progress-duration);
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  background-position: -100vw 0, calc(100vw - var(--progress-size)) -100vh,
+    100vw calc(100vh - var(--progress-size)), 0 100vh;
+}
+
+@keyframes progress {
+  0% {
+    background-position: -100vw 0, calc(100vw - var(--progress-size)) -100vh,
+      100vw calc(100vh - var(--progress-size)), 0 100vh;
+  }
+  25% {
+    background-position: 0 0, calc(100vw - var(--progress-size)) -100vh,
+      100vw calc(100vh - var(--progress-size)), 0 100vh;
+  }
+  50% {
+    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
+      100vw calc(100vh - var(--progress-size)), 0 100vh;
+  }
+  75% {
+    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
+      0 calc(100vh - var(--progress-size)), 0 100vh;
+  }
+  100% {
+    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
+      0 calc(100vh - var(--progress-size)), 0 0;
+  }
+}
 
 .reveal {
   display: flex;
-  flex-flow:column;
+  flex-flow: column;
   align-items: center;
   padding: 3em;
 

@@ -16,6 +16,8 @@ export class AvatarComponent {
   }
   private _image: string;
 
+  @Input() size: 'small' | 'large';
+
   @Input() gold: number;
   @Input() fire: number;
   @Input() empty: number;
@@ -24,6 +26,6 @@ export class AvatarComponent {
 
   @HostBinding('class.is-small')
   get isSmall(): boolean {
-    return !Boolean(this.name);
+    return (this.size && this.size === 'small' ) ?? !Boolean(this.name);
   }
 }

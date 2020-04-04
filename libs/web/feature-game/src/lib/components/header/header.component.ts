@@ -1,12 +1,19 @@
-import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CardType, Player } from '@treasure-hunt/shared/interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
+import { zoomInOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'fg-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [zoomInOnEnterAnimation()],
 })
 export class HeaderComponent {
   /** Url for the avatar image */
@@ -16,15 +23,9 @@ export class HeaderComponent {
 
   @Input()
   set avatar(type: CardType) {
-    this.avatarUrl = this._getBackgroundUrl(
-      `/assets/${getImageUrlForType(type)}.png`,
-    );
+    this.avatarUrl = `/assets/${getImageUrlForType(type)}.png`;
     this._changeDetectorRef.markForCheck();
   }
 
   constructor(private _changeDetectorRef: ChangeDetectorRef) {}
-
-  _getBackgroundUrl(image: string): string {
-    return `url(${image})`;
-  }
 }

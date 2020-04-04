@@ -48,6 +48,7 @@
     "@ngrx/router-store": "9.0.0",
     "@ngrx/store": "9.0.0",
     "@nrwl/angular": "^9.1.2",
+    "angular-animations": "0.0.10",
     "core-js": "^2.5.4",
     "lodash-es": "^4.17.15",
     "ngx-socket-io": "^3.0.1",

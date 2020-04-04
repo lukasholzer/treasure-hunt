@@ -2,7 +2,11 @@
 
 <div class="reveal">
   <fg-card [type]="character$ | async" [flipped]="revealed$ | async"></fg-card>
-  <div class="character-details" *ngIf="revealed$ | async as character">
+  <div
+    class="character-details"
+    *ngIf="revealed$ | async as character"
+    [@zoomInOnEnter]
+  >
     <ng-container *ngIf="isGuardian(character); else adventurer">
       <h1>GUARDIAN</h1>
       <p>defend the temple and find the fire traps</p>

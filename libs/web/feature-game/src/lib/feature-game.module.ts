@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DataAccessModule, GameGuard, AuthenticationGuard } from '@treasure-hunt/web/data-access';
+import {
+  AuthenticationGuard,
+  DataAccessModule,
+  GameGuard,
+} from '@treasure-hunt/web/data-access';
+import { UiGameModule } from '@treasure-hunt/web/ui-game';
 import { CardComponent, HeaderComponent } from './components';
 import { PlayerListComponent } from './components/player-list/player-list.component';
 import { GameOverviewComponent } from './containers';
@@ -11,6 +16,7 @@ import { CharacterRevealComponent } from './containers/character-reveal/characte
   imports: [
     CommonModule,
     DataAccessModule,
+    UiGameModule,
     RouterModule.forChild([
       {
         path: '',

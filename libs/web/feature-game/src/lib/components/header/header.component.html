@@ -1,12 +1,21 @@
 <ng-container *ngIf="player">
-  <div
-    class="profile-image"
-    [style.background-image]="_getBackgroundUrl(player.image)"
-  ></div>
+  <ui-avatar
+    [image]="player.image"
+    [name]="!avatarUrl ? player.name : ''"
+    size="large"
+  ></ui-avatar>
+  <ui-avatar
+    class="avatar"
+    *ngIf="avatarUrl"
+    [@zoomInOnEnter]
+    [image]="avatarUrl"
+    [name]="player.name"
+  ></ui-avatar>
+  <!--
   <div
     *ngIf="avatarUrl"
     class="avatar"
     [style.background-image]="avatarUrl"
   ></div>
-  <div class="username">{{ player.name }}</div>
+  <div class="username">{{ player.name }}</div> -->
 </ng-container>
