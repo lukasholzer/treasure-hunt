@@ -13,10 +13,7 @@ import { GameFacade } from '../+state/game.facade';
 export class AuthenticationGuard implements CanActivate {
   constructor(private _gameFacade: GameFacade, private _router: Router) {}
 
-  canActivate(
-    _next: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot,
-  ): Observable<boolean> {
+  canActivate(): Observable<boolean> {
     return this._gameFacade.player$.pipe(
       map(player => Boolean(player)),
       tap(authenticated => {

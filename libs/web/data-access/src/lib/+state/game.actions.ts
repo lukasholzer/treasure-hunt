@@ -26,20 +26,29 @@ export const joinedLobbySuccess = createAction(
   props<{ id: string }>(),
 );
 
-export const playerJoined = createAction(
-  '[LOBBY] Player Joined',
+export const playersUpdated = createAction(
+  '[LOBBY] Updated players in the Lobby',
   props<{ players: Player[] }>(),
 );
 
-export const joinGameSuccess = createAction(
-  '[Game] Register Player Success',
-  props<{ player: Player }>(),
-);
+export const startGame = createAction('[LOBBY] Start Game');
+export const gameStarted = createAction('[LOBBY] Game has started');
 
-export const assignCharacter = createAction(
-  '[Game] Draw Character card and assign it.',
-);
-export const assignCharacterSuccess = createAction(
-  '[Game] Got successfully a character Assigned',
+export const revealCharacter = createAction('[GAME] Reveal Character');
+export const revealCharacterSuccess = createAction(
+  '[GAME] Successfully revealed the character',
   props<{ character: CardType }>(),
 );
+
+// export const joinGameSuccess = createAction(
+//   '[Game] Register Player Success',
+//   props<{ player: Player }>(),
+// );
+
+// export const assignCharacter = createAction(
+//   '[Game] Draw Character card and assign it.',
+// );
+// export const assignCharacterSuccess = createAction(
+//   '[Game] Got successfully a character Assigned',
+//   props<{ character: CardType }>(),
+// );

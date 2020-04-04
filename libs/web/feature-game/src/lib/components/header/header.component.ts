@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ChangeDetectorRef } from '@angular/core';
 import { CardType, Player } from '@treasure-hunt/shared/interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
 
@@ -19,7 +19,10 @@ export class HeaderComponent {
     this.avatarUrl = this._getBackgroundUrl(
       `/assets/${getImageUrlForType(type)}.png`,
     );
+    this._changeDetectorRef.markForCheck();
   }
+
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 
   _getBackgroundUrl(image: string): string {
     return `url(${image})`;

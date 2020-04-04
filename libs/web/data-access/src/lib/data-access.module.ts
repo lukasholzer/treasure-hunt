@@ -7,7 +7,7 @@ import { GameEffects } from './+state/game.effects';
 import { GameFacade } from './+state/game.facade';
 import * as fromGame from './+state/game.reducer';
 import { GAME_FEATURE_KEY } from './+state/game.state';
-import { AuthenticationGuard } from './guards';
+import { AuthenticationGuard, GameGuard } from './guards';
 import { storageMetaReducer } from './storage.meta-reducer';
 import { LobbyService, GameService } from './services';
 
@@ -20,6 +20,6 @@ import { LobbyService, GameService } from './services';
     }),
     EffectsModule.forFeature([GameEffects]),
   ],
-  providers: [LobbyService, GameService, GameFacade, AuthenticationGuard],
+  providers: [LobbyService, GameService, GameFacade, AuthenticationGuard, GameGuard],
 })
 export class DataAccessModule {}

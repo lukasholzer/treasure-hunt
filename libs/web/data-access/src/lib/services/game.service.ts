@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { shareReplay } from 'rxjs/operators';
 import { API_ENDPOINT } from '@treasure-hunt/web/shared';
+import { Player, GameMessageTypes } from '@treasure-hunt/shared/interfaces';
 
 @Injectable()
 export class GameService extends Socket {
@@ -12,11 +13,7 @@ export class GameService extends Socket {
 
   actions$ = this.fromEvent('actions').pipe(shareReplay(1));
 
-  start(name: string) {
-    this.emit('joinLobby', name);
-  }
-
-  leave(name: string) {
-    this.emit('leaveLobby', name);
+  revealCharacter(lobby: string, player: Player): void {
+    this.emit(GameMessageTypes.revealCharacter, { lobby, player });
   }
 }

@@ -1,0 +1,15 @@
+<fg-header [player]="player$ | async"></fg-header>
+
+<div class="reveal">
+  <fg-card [type]="character$ | async" [flipped]="revealed$ | async"></fg-card>
+  <div class="character-details" *ngIf="revealed$ | async as character">
+    <ng-container *ngIf="isGuardian(character); else adventurer">
+      <h1>GUARDIAN</h1>
+      <p>defend the temple and find the fire traps</p>
+    </ng-container>
+    <ng-template #adventurer>
+      <h1>Adventurer</h1>
+      <p>find the treasurers and be aware of the fire traps</p>
+    </ng-template>
+  </div>
+</div>

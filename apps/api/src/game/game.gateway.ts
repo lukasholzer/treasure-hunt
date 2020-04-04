@@ -2,10 +2,20 @@ import {
   WebSocketGateway,
   WebSocketServer,
   SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+  WsResponse,
 } from '@nestjs/websockets';
 
 import { Socket, Server } from 'socket.io';
 import { Logger } from '@nestjs/common';
+import {
+  GameActions,
+  Player,
+  GameMessageTypes,
+  SocketAction,
+} from '@treasure-hunt/shared/interfaces';
+import { GameService } from './game.service';
 
 @WebSocketGateway({ namespace: '/game' })
 export class GameGateway {
@@ -13,15 +23,23 @@ export class GameGateway {
 
   private logger: Logger = new Logger('Game Gateway');
 
-  afterInit(server: any) {
-    this.logger.log('Initialized!');
-  }
+  constructor(private readonly _gameService: GameService) {}
 
-  @SubscribeMessage('chatToServer')
-  handleMessage(
-    client: Socket,
-    message: { sender: string; room: string; message: string },
-  ) {
-    this.server.to(message.room).emit('chatToClient', message);
+  @SubscribeMessage(GameMessageTypes.revealCharacter)
+  getCharacter(
+    @MessageBody() data: { lobby: string; player: Player },
+  ): WsResponse<SocketAction> {
+    const { lobby, player } = data;
+
+    const game = this._gameService.getGame(lobby);
+    const playingPlayer = game.players.find(({ id }) => player.id === id);
+
+    return {
+      event: 'actions',
+      data: {
+        type: GameActions.getCharacterCard,
+        payload: playingPlayer.role,
+      },
+    };
   }
 }

@@ -1,0 +1,21 @@
+@import 'variables';
+
+
+.reveal {
+  display: flex;
+  flex-flow:column;
+  align-items: center;
+  padding: 3em;
+
+  fg-card {
+    width: 30vw;
+  }
+}
+
+.character-details {
+  text-align: center;
+
+  p {
+    color: $color-lightblue;
+  }
+}

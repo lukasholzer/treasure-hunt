@@ -21,6 +21,10 @@ export const getPlayers = createSelector(
   (state: State) => state.players,
 );
 
+export const getGameStarted = createSelector(
+  getGameState,
+  (state: State) => state.started,
+);
 
 export const getCharacter = createSelector(
   getGameState,

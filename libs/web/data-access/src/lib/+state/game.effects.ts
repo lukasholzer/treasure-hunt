@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { GameActions, LobbyActions } from '@treasure-hunt/shared/interfaces';
+import { map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { GameService, LobbyService } from '../services';
 import {
-  MESSAGE_TYPES,
-  SocketMessage,
-  CardType,
-  LobbyActions,
-} from '@treasure-hunt/shared/interfaces';
-import { switchMap, tap, map, withLatestFrom, pluck } from 'rxjs/operators';
-import * as GameActions from './game.actions';
+  gameStarted,
+  joinedLobbySuccess,
+  joinLobby,
+  leaveLobby,
+  leaveLobbySuccess,
+  lobbyReconnect,
+  login,
+  playersUpdated,
+  revealCharacter,
+  revealCharacterSuccess,
+  startGame,
+} from './game.actions';
 import { GameFacade } from './game.facade';
-import { LobbyService } from '../services';
 
 @Injectable()
 export class GameEffects {
   loginRedirect$ = createEffect(
     () =>
       this._actions$.pipe(
-        ofType(GameActions.login),
+        ofType(login),
         tap(() => {
           this._router.navigate(['/lobby']);
         }),
@@ -28,7 +35,7 @@ export class GameEffects {
   joinLobby$ = createEffect(
     () =>
       this._actions$.pipe(
-        ofType(GameActions.joinLobby),
+        ofType(joinLobby),
         withLatestFrom(this._facade.player$),
         tap(([{ id }, player]) => {
           this._lobbyService.join(id, player);
@@ -39,11 +46,11 @@ export class GameEffects {
 
   leaveLobby$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(GameActions.leaveLobby),
+      ofType(leaveLobby),
       withLatestFrom(this._facade.lobby$, this._facade.player$),
       map(([, name, { id }]) => {
         this._lobbyService.leave(name, id);
-        return GameActions.leaveLobbySuccess();
+        return leaveLobbySuccess();
       }),
     ),
   );
@@ -51,7 +58,7 @@ export class GameEffects {
   reconnectLobby$ = createEffect(
     () =>
       this._actions$.pipe(
-        ofType(GameActions.lobbyReconnect),
+        ofType(lobbyReconnect),
         withLatestFrom(this._facade.lobby$, this._facade.player$),
         tap(([, lobby, player]) => {
           if (lobby && player) {
@@ -62,46 +69,71 @@ export class GameEffects {
     { dispatch: false },
   );
 
+  startGame$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(startGame),
+        withLatestFrom(this._facade.lobby$),
+        tap(([, lobby]) => {
+          if (lobby) {
+            this._lobbyService.startGame(lobby);
+          }
+        }),
+      ),
+    { dispatch: false },
+  );
+
   joinedLobby$ = createEffect(() =>
     this._lobbyService.actions$.pipe(
       ofType(LobbyActions.joinedLobby),
-      map(({ payload }) => GameActions.joinedLobbySuccess({ id: payload })),
+      map(({ payload }) => joinedLobbySuccess({ id: payload })),
     ),
   );
 
-  playerJoined$ = createEffect(() =>
+  playersUpdated$ = createEffect(() =>
     this._lobbyService.actions$.pipe(
       ofType(LobbyActions.playersUpdated),
-      map(({ payload }) => GameActions.playerJoined({ players: payload })),
+      map(({ payload }) => playersUpdated({ players: payload })),
     ),
   );
 
-  // joinGame$ = createEffect(() =>
-  //   this._actions$.pipe(
-  //     ofType(GameActions.joinGame),
-  //     withLatestFrom(this._facade.player$),
-  //     tap(player => {
-  //       this._socket.emit(MESSAGE_TYPES.joinGame, player);
-  //     }),
-  //     map(player => GameActions.joinGameSuccess({ player })),
-  //   ),
-  // );
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+  // #
+  // #  GAME
+  // #
+  // #
+  // #
+  // # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-  // assignCharacter$ = createEffect(() =>
-  //   this._actions$.pipe(
-  //     ofType(GameActions.assignCharacter),
-  //     withLatestFrom(this._facade.player$),
-  //     switchMap(([, player]) => {
-  //       this._socket.emit(MESSAGE_TYPES.assignCharacter, player);
-  //       return this._socket.fromEvent<CardType>(MESSAGE_TYPES.assignCharacter);
-  //     }),
-  //     map(character => GameActions.assignCharacterSuccess({ character })),
-  //   ),
-  // );
+  gameStarted$ = createEffect(() =>
+    this._lobbyService.actions$.pipe(
+      ofType(LobbyActions.gameStarted),
+      tap(() => {
+        this._router.navigate(['/game/character']);
+      }),
+      map(({ payload }) => gameStarted()),
+    ),
+  );
+
+  revealCharacter$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(revealCharacter),
+      withLatestFrom(this._facade.lobby$, this._facade.player$),
+      switchMap(([, lobby, player]) => {
+        this._gameService.revealCharacter(lobby, player);
+        return this._gameService.actions$.pipe(
+          ofType(GameActions.getCharacterCard),
+          take(1),
+          map(({ payload }) => revealCharacterSuccess({ character: payload })),
+        );
+      }),
+    ),
+  );
 
   constructor(
     private _actions$: Actions,
     private _lobbyService: LobbyService,
+    private _gameService: GameService,
     private _facade: GameFacade,
     private _router: Router,
   ) {}

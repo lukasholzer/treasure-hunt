@@ -23,7 +23,7 @@ export class CardComponent {
   flipped = false;
 
   /** States wether a card is flip able or not */
-  @Input() locked = false;
+  @Input() locked = true;
 
   /** The card type */
   @Input()

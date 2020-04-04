@@ -29,6 +29,6 @@ export class LobbyComponent {
   }
 
   _startGame(): void {
-    console.log('start game');
+    this._gameFacade.startGame();
   }
 }

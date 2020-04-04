@@ -3,12 +3,14 @@ import { uuid } from '@treasure-hunt/shared/util';
 import { initialState, State } from './game.state';
 import {
   login,
-  joinGameSuccess,
-  assignCharacterSuccess,
+  // joinGameSuccess,
+  // assignCharacterSuccess,
   joinedLobbySuccess,
-  playerJoined,
+  playersUpdated,
   leaveLobby,
   leaveLobbySuccess,
+  gameStarted,
+  revealCharacterSuccess,
 } from './game.actions';
 
 const gameReducer = createReducer(
@@ -21,23 +23,23 @@ const gameReducer = createReducer(
       id: uuid(),
     },
   })),
-  on(joinedLobbySuccess, (state, { id }) => ({
-    ...state,
-    lobby: id,
-  })),
-  on(playerJoined, (state, { players }) => ({
-    ...state,
-    players,
-  })),
+  on(joinedLobbySuccess, (state, { id }) => ({ ...state, lobby: id })),
+  on(playersUpdated, (state, { players }) => ({ ...state, players })),
   on(leaveLobbySuccess, state => ({ ...state, lobby: null, players: [] })),
-  on(joinGameSuccess, (state, { player }) => ({
-    ...state,
-    player,
-  })),
-  on(assignCharacterSuccess, (state, { character }) => ({
+  on(gameStarted, state => ({ ...state, started: true })),
+  on(revealCharacterSuccess, (state, { character }) => ({
     ...state,
     character,
   })),
+
+  // on(joinGameSuccess, (state, { player }) => ({
+  //   ...state,
+  //   player,
+  // })),
+  // on(assignCharacterSuccess, (state, { character }) => ({
+  //   ...state,
+  //   character,
+  // })),
   // on(loadGameSuccess, (state, { game }) =>
   //   gameAdapter.addAll(game, { ...state, loaded: true })
   // ),

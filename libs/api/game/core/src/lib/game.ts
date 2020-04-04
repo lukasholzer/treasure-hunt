@@ -1,13 +1,6 @@
-import { Player, CardType } from '@treasure-hunt/shared/interfaces';
+import { CardType, Player } from '@treasure-hunt/shared/interfaces';
 import { uuid } from '@treasure-hunt/shared/util';
-import {
-  generateDeck,
-  shuffleDeck,
-  getRoleCards,
-  getGameCards,
-  GAME_CONFIGURATION,
-  GameConfiguration,
-} from './config';
+import { GameConfiguration, GAME_CONFIGURATION } from './config';
 import { Deck } from './deck';
 
 export interface PlayingPlayer extends Player {
