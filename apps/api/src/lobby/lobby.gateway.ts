@@ -18,19 +18,20 @@ import { of } from 'rxjs';
 const logger: Logger = new Logger('Lobby Gateway');
 
 @WebSocketGateway({ namespace: '/lobby' })
-export class LobbyGateway implements OnGatewayInit {
+export class LobbyGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;
 
 
   constructor(private _lobbyService: LobbyService) {}
 
-  afterInit(server: any) {
-    logger.log('Initialized!');
+  handleConnection(client: Socket, ...args: any[]) {
+    console.log(client.id, args)
   }
 
   @SubscribeMessage('chatToServer')
   handleMessage(
     client: Socket,
+
     message: { sender: string; room: string; message: string },
   ) {
     this.server.to(message.room).emit('chatToClient', message);
@@ -43,8 +44,11 @@ export class LobbyGateway implements OnGatewayInit {
   ) {
     const { name, player } = data;
 
-    if (this._lobbyService.joinLobby(name, player)) {
+    try {
+      this._lobbyService.joinLobby(name, player);
       client.join(name)
+    } catch(error) {
+      logger.error(error.message)
     }
 
     client.emit('actions', {
@@ -55,14 +59,14 @@ export class LobbyGateway implements OnGatewayInit {
     // send to all in the room the updated player list
     client.in(name).emit('actions', {
       type: LobbyActions.playersUpdated,
-      payload: this._lobbyService.lobbies.get(name),
+      payload: this._lobbyService.lobbies.get(name).players,
     });
 
     return {
       event: 'actions',
       data: {
         type: LobbyActions.playersUpdated,
-        payload: this._lobbyService.lobbies.get(name),
+        payload: this._lobbyService.lobbies.get(name).players,
       }
     }
   }
@@ -73,12 +77,19 @@ export class LobbyGateway implements OnGatewayInit {
     @ConnectedSocket() client: Socket,
   ) {
     const { name, id } = data;
-    this._lobbyService.leaveLobby(data.name, id)
-    client.leave(name);
 
-    client.to(data.name).emit('actions', {
-      type: LobbyActions.playersUpdated,
-      payload: this._lobbyService.lobbies.get(name),
-    });
+    try {
+      this._lobbyService.leaveLobby(data.name, id)
+      client.leave(name);
+
+      client.to(data.name).emit('actions', {
+        type: LobbyActions.playersUpdated,
+        payload: this._lobbyService.lobbies.get(name),
+      });
+
+    } catch(error) {
+      logger.error(error.message)
+    }
+
   }
 }

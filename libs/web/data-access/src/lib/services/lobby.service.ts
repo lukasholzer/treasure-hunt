@@ -8,7 +8,12 @@ import { Player } from '@treasure-hunt/shared/interfaces';
 @Injectable()
 export class LobbyService extends Socket {
   constructor() {
-    super({ url: 'http://localhost:3333/lobby' });
+    super({
+      url: 'http://localhost:3333/lobby',
+      options: {
+        forceNew: true,
+      },
+    });
     this.fromEvent('actions').subscribe(console.log);
   }
 
