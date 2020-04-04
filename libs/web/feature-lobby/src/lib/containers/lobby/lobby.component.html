@@ -19,7 +19,7 @@
     <button
       gc-button
       (click)="_startGame()"
-      [disabled]="(activePlayers$ | async).length > 1"
+      [disabled]="!(gameReady$ | async)"
     >
       Start Game
     </button>

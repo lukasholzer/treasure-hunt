@@ -16,7 +16,7 @@ import { LobbyService, GameService } from './services';
     CommonModule,
     HttpClientModule,
     StoreModule.forFeature(GAME_FEATURE_KEY, fromGame.reducer, {
-      metaReducers: [storageMetaReducer(['player'], '_th_game-state')],
+      metaReducers: [storageMetaReducer(['player', 'lobby'], '_th_game-state')],
     }),
     EffectsModule.forFeature([GameEffects]),
   ],

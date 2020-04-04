@@ -12,6 +12,12 @@ export const joinLobby = createAction(
   props<{ id: string }>(),
 );
 
+/**
+ * When the player gets kicked out of internet or the screen has to reload
+ * try to use the persisted lobby name and reconnect if it is still active
+ */
+export const lobbyReconnect = createAction('[LOBBY] Try lobby reconnect');
+
 export const leaveLobby = createAction('[LOBBY] Leave Lobby');
 export const leaveLobbySuccess = createAction('[LOBBY] Leave Lobby Success');
 

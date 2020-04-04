@@ -13,8 +13,11 @@ export class LobbyComponent {
   activePlayers$ = this._gameFacade.activePlayers$;
   player$ = this._gameFacade.player$;
   lobby$ = this._gameFacade.lobby$;
+  gameReady$ = this._gameFacade.gameReady$;
 
-  constructor(private _gameFacade: GameFacade) {}
+  constructor(private _gameFacade: GameFacade) {
+    this._gameFacade.reconnect()
+  }
 
   _joinLobby(): void {
     console.log('join')

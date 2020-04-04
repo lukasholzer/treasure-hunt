@@ -47,28 +47,21 @@ export class LobbyGateway implements OnGatewayConnection {
     try {
       this._lobbyService.joinLobby(name, player);
       client.join(name)
+
+      client.emit('actions', {
+        type: LobbyActions.joinedLobby,
+        payload: name,
+      });
+
+      // send to all in the room the updated player list
+      this.server.to(name).emit('actions', {
+        type: LobbyActions.playersUpdated,
+        payload: this._lobbyService.lobbies.get(name).players,
+      });
     } catch(error) {
       logger.error(error.message)
     }
 
-    client.emit('actions', {
-      type: LobbyActions.joinedLobby,
-      payload: name,
-    });
-
-    // send to all in the room the updated player list
-    client.in(name).emit('actions', {
-      type: LobbyActions.playersUpdated,
-      payload: this._lobbyService.lobbies.get(name).players,
-    });
-
-    return {
-      event: 'actions',
-      data: {
-        type: LobbyActions.playersUpdated,
-        payload: this._lobbyService.lobbies.get(name).players,
-      }
-    }
   }
 
   @SubscribeMessage('leaveLobby')
@@ -82,14 +75,13 @@ export class LobbyGateway implements OnGatewayConnection {
       this._lobbyService.leaveLobby(data.name, id)
       client.leave(name);
 
-      client.to(data.name).emit('actions', {
+      this.server.to(data.name).emit('actions', {
         type: LobbyActions.playersUpdated,
-        payload: this._lobbyService.lobbies.get(name),
+        payload: this._lobbyService.lobbies.get(name).players,
       });
 
     } catch(error) {
       logger.error(error.message)
     }
-
   }
 }

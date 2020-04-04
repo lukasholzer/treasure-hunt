@@ -48,6 +48,20 @@ export class GameEffects {
     ),
   );
 
+  reconnectLobby$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(GameActions.lobbyReconnect),
+        withLatestFrom(this._facade.lobby$, this._facade.player$),
+        tap(([, lobby, player]) => {
+          if (lobby && player) {
+            this._lobbyService.join(lobby, player);
+          }
+        }),
+      ),
+    { dispatch: false },
+  );
+
   joinedLobby$ = createEffect(() =>
     this._lobbyService.actions$.pipe(
       ofType(LobbyActions.joinedLobby),
