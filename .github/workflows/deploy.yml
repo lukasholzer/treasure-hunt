@@ -84,7 +84,7 @@ jobs:
           EOF
 
           scp -prq \
-            ./dist/apps/app/. \
+            ./dist/apps/app/ \
             ${DROPLET_USER}@${DROPLET_IP}:${DROPLET_PATH}/app/
 
           scp -prq \
