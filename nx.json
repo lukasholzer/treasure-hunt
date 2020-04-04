@@ -12,7 +12,8 @@
   },
   "projects": {
     "app": {
-      "tags": []
+      "tags": [],
+      "implicitDependencies": ["web-styles"]
     },
     "app-e2e": {
       "tags": [],
@@ -46,6 +47,9 @@
       "tags": []
     },
     "api-game-core": {
+      "tags": []
+    },
+    "web-shared": {
       "tags": []
     }
   }

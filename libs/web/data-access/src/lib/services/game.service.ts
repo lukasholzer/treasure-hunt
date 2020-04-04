@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { shareReplay } from 'rxjs/operators';
+import { API_ENDPOINT } from '@treasure-hunt/web/shared';
 
 @Injectable()
 export class GameService extends Socket {
-  constructor() {
-    super({ url: 'http://localhost:3333/game' });
+  constructor(@Inject(API_ENDPOINT) api: string) {
+    super({ url: `${api}game` });
     this.fromEvent('actions').subscribe(console.log);
   }
 

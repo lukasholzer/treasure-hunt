@@ -29,7 +29,8 @@
       "@treasure-hunt/shared/interfaces": [
         "libs/shared/interfaces/src/index.ts"
       ],
-      "@treasure-hunt/api/game/core": ["libs/api/game/core/src/index.ts"]
+      "@treasure-hunt/api/game/core": ["libs/api/game/core/src/index.ts"],
+      "@treasure-hunt/web/shared": ["libs/web/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

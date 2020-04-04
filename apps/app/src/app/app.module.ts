@@ -8,6 +8,7 @@ import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
+import { API_ENDPOINT } from '@treasure-hunt/web/shared';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,5 +33,6 @@ import { AppRoutingModule } from './app.routing.module';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   bootstrap: [AppComponent],
+  providers: [{ provide: API_ENDPOINT, useValue: environment.api }],
 })
 export class AppModule {}

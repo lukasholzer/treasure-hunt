@@ -1,15 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { merge, Observable } from 'rxjs';
 import { shareReplay, map } from 'rxjs/operators';
 import { props, Action, createAction } from '@ngrx/store';
 import { Player } from '@treasure-hunt/shared/interfaces';
+import { API_ENDPOINT } from '@treasure-hunt/web/shared';
 
 @Injectable()
 export class LobbyService extends Socket {
-  constructor() {
+  constructor(@Inject(API_ENDPOINT) api: string) {
     super({
-      url: 'http://localhost:3333/lobby',
+      url: `${api}lobby`,
       options: {
         forceNew: true,
       },
