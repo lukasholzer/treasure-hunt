@@ -79,7 +79,15 @@ jobs:
 
       - name: Deploy dist 🛫
         run: |
-          scp -r \
+          ssh ${DROPLET_USER}@${DROPLET_IP} /bin/bash << EOF
+            rm -rf "${DROPLET_PATH}/app"
+          EOF
+
+          scp -prq \
+            ./dist/apps/app/. \
+            ${DROPLET_USER}@${DROPLET_IP}:${DROPLET_PATH}/app/
+
+          scp -prq \
             ./docker-compose.yml \
             ./docker-compose.override.yml \
             ${DROPLET_USER}@${DROPLET_IP}:${DROPLET_PATH}/
