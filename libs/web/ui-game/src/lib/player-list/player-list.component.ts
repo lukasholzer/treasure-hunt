@@ -7,7 +7,7 @@ import {
 import { Player } from '@treasure-hunt/shared/interfaces';
 
 @Component({
-  selector: 'fg-player-list',
+  selector: 'ui-player-list',
   templateUrl: './player-list.component.html',
   styleUrls: ['./player-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

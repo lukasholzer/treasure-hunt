@@ -7,8 +7,6 @@ import {
   GameGuard,
 } from '@treasure-hunt/web/data-access';
 import { UiGameModule } from '@treasure-hunt/web/ui-game';
-import { CardComponent, HeaderComponent } from './components';
-import { PlayerListComponent } from './components/player-list/player-list.component';
 import { GameOverviewComponent } from './containers';
 import { CharacterRevealComponent } from './containers/character-reveal/character-reveal.component';
 
@@ -32,12 +30,6 @@ import { CharacterRevealComponent } from './containers/character-reveal/characte
       },
     ]),
   ],
-  declarations: [
-    CardComponent,
-    HeaderComponent,
-    PlayerListComponent,
-    GameOverviewComponent,
-    CharacterRevealComponent,
-  ],
+  declarations: [GameOverviewComponent, CharacterRevealComponent],
 })
 export class FeatureGameModule {}

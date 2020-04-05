@@ -9,7 +9,7 @@ import { getImageUrlForType } from '../get-image-url-for-type';
 import { zoomInOnEnterAnimation } from 'angular-animations';
 
 @Component({
-  selector: 'fg-header',
+  selector: 'ui-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,13 +17,25 @@ import { zoomInOnEnterAnimation } from 'angular-animations';
 })
 export class HeaderComponent {
   /** Url for the avatar image */
-  avatarUrl: string;
+  avatarUrl: string | null = null;
 
-  @Input() player: Player;
+  @Input()
+  get player(): Player {
+    return this._player;
+  }
+  set player(player: Player) {
+    this._player = player;
+    this._changeDetectorRef.markForCheck();
+  }
+  private _player: Player;
 
   @Input()
   set avatar(type: CardType) {
-    this.avatarUrl = `/assets/${getImageUrlForType(type)}.png`;
+    this.avatarUrl = null;
+    // tslint:disable-next-line: no-bitwise
+    if (Boolean(type & CardType.Characters)) {
+      this.avatarUrl = `/assets/${getImageUrlForType(type)}.png`;
+    }
     this._changeDetectorRef.markForCheck();
   }
 

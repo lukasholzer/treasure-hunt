@@ -116,6 +116,19 @@
             }
           }
         },
+        "storybook": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "pps/app-e2e/cypress.json",
+            "tsConfig": "apps/app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "web-ui-game:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "web-ui-game:storybook:ci"
+            }
+          }
+        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -346,6 +359,36 @@
             "tsConfig": "libs/web/ui-game/tsconfig.spec.json",
             "passWithNoTests": true,
             "setupFile": "libs/web/ui-game/src/test-setup.ts"
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/web/ui-game/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/web-ui-game",
+            "config": {
+              "configFolder": "libs/web/ui-game/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
           }
         }
       },
