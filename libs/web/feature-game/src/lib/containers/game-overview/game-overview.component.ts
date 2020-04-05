@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { GameFacade } from '@treasure-hunt/web/data-access';
+import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 
 @Component({
   selector: 'fg-game-overview',
@@ -8,9 +8,12 @@ import { GameFacade } from '@treasure-hunt/web/data-access';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GameOverviewComponent {
-  player$ = this._gameFacade.player$;
+  player$ = this._lobbyFacade.player$;
   character$ = this._gameFacade.character$;
-  activePlayers$ = this._gameFacade.activePlayers$;
+  activePlayers$ = this._lobbyFacade.activePlayers$;
 
-  constructor(private _gameFacade: GameFacade) {}
+  constructor(
+    private _lobbyFacade: LobbyFacade,
+    private _gameFacade: GameFacade,
+  ) {}
 }

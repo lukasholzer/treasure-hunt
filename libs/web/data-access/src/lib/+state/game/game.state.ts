@@ -1,28 +1,22 @@
-import { Player, CardType } from '@treasure-hunt/shared/interfaces';
+import { CardType } from '@treasure-hunt/shared/interfaces';
 
 export const GAME_FEATURE_KEY = 'game';
 
 export interface State {
   /** If the game has started */
   started: boolean;
-  player: Player | null;
+  /** The character that the player is assigned to */
   character: CardType | null;
+  /** The current hand of the player */
   hand: CardType[];
-  /** The id of the lobby */
-  lobby: string | null;
-  /** The list of all players in the lobby */
-  players: Player[];
 }
 
 export interface GamePartialState {
   readonly [GAME_FEATURE_KEY]: State;
 }
 
-export const initialState = {
+export const initialState: State = {
   started: false,
-  player: null,
   character: null,
-  lobby: null,
   hand: [],
-  players: [],
 };

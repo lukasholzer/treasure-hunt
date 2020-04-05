@@ -8,9 +8,11 @@ export class LobbyController {
   @Get('/all')
   listAllLobbies() {
     const lobbies = this._lobbyService.lobbies;
+    const players = Array.from(this._lobbyService['_playerList'].entries())
     return {
       count: lobbies.length,
       lobbies,
+      players,
     };
   }
 

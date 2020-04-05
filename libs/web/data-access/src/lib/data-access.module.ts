@@ -3,23 +3,35 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { GameEffects } from './+state/game.effects';
-import { GameFacade } from './+state/game.facade';
-import * as fromGame from './+state/game.reducer';
-import { GAME_FEATURE_KEY } from './+state/game.state';
+import { GameEffects } from './+state/game/game.effects';
+import { GameFacade } from './+state/game/game.facade';
+import { LobbyEffects } from './+state/lobby/lobby.effects';
+import { LobbyFacade } from './+state/lobby/lobby.facade';
+import { APP_FEATURE_KEY, reducers } from './+state/reducers';
 import { AuthenticationGuard, GameGuard } from './guards';
+import { GameService, LobbyService } from './services';
 import { storageMetaReducer } from './storage.meta-reducer';
-import { LobbyService, GameService } from './services';
+
+const localStorageKey = '_th_game-state';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
-    StoreModule.forFeature(GAME_FEATURE_KEY, fromGame.reducer, {
-      metaReducers: [storageMetaReducer(['player', 'lobby'], '_th_game-state')],
+    StoreModule.forFeature(APP_FEATURE_KEY, reducers, {
+      metaReducers: [
+        storageMetaReducer(['lobby.player', 'lobby.lobbyName'], localStorageKey),
+      ],
     }),
-    EffectsModule.forFeature([GameEffects]),
+    EffectsModule.forFeature([GameEffects, LobbyEffects]),
   ],
-  providers: [LobbyService, GameService, GameFacade, AuthenticationGuard, GameGuard],
+  providers: [
+    AuthenticationGuard,
+    GameFacade,
+    GameGuard,
+    GameService,
+    LobbyFacade,
+    LobbyService,
+  ],
 })
 export class DataAccessModule {}

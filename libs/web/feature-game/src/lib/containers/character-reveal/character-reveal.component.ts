@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { CardType } from '@treasure-hunt/shared/interfaces';
-import { GameFacade } from '@treasure-hunt/web/data-access';
+import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 import { delay, tap, take, filter } from 'rxjs/operators';
 import { HeaderComponent } from '@treasure-hunt/web/ui-game';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class CharacterRevealComponent {
   @ViewChild(HeaderComponent, { static: true })
   header: HeaderComponent;
 
-  player$ = this._gameFacade.player$;
+  player$ = this._lobbyFacade.player$;
   character$ = this._gameFacade.character$;
   revealed$ = this.character$.pipe(
     filter(Boolean),
@@ -27,7 +27,11 @@ export class CharacterRevealComponent {
     }),
   );
 
-  constructor(private _gameFacade: GameFacade, private _router: Router) {
+  constructor(
+    private _lobbyFacade: LobbyFacade,
+    private _gameFacade: GameFacade,
+    private _router: Router,
+  ) {
     this._gameFacade.revealCharacter();
 
     this.revealed$.pipe(delay(4000), take(1)).subscribe(() => {

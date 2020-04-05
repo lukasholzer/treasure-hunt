@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, ViewChild, ElementRef } from '@angular/core';
-import { GameFacade } from '@treasure-hunt/web/data-access';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 
 @Component({
   selector: 'fl-lobby',
@@ -10,22 +10,26 @@ import { GameFacade } from '@treasure-hunt/web/data-access';
 export class LobbyComponent {
   lobbyName = '';
 
-  activePlayers$ = this._gameFacade.activePlayers$;
-  player$ = this._gameFacade.player$;
-  lobby$ = this._gameFacade.lobby$;
-  gameReady$ = this._gameFacade.gameReady$;
+  activePlayers$ = this._lobbyFacade.activePlayers$;
+  player$ = this._lobbyFacade.player$;
+  lobby$ = this._lobbyFacade.lobbyName$;
+  gameReady$ = this._lobbyFacade.gameReady$;
 
-  constructor(private _gameFacade: GameFacade) {
-    this._gameFacade.reconnect()
+  constructor(
+    private _lobbyFacade: LobbyFacade,
+    private _gameFacade: GameFacade,
+  ) {
+    this._lobbyFacade.reconnect();
   }
 
   _joinLobby(): void {
-    console.log('join')
-    this._gameFacade.joinLobby(this.lobbyName);
+    if (this.lobbyName.length) {
+      this._lobbyFacade.joinLobby(this.lobbyName);
+    }
   }
 
   _leaveLobby(): void {
-    this._gameFacade.leaveLobby();
+    this._lobbyFacade.leaveLobby();
   }
 
   _startGame(): void {

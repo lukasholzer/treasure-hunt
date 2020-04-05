@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { GameFacade } from '../+state/game.facade';
+import { LobbyFacade } from '../+state/lobby/lobby.facade';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
-  constructor(private _gameFacade: GameFacade, private _router: Router) {}
+  constructor(private _lobbyFacade: LobbyFacade, private _router: Router) {}
 
   canActivate(): Observable<boolean> {
-    return this._gameFacade.player$.pipe(
+    return this._lobbyFacade.player$.pipe(
       map(player => Boolean(player)),
       tap(authenticated => {
         if (!authenticated) {

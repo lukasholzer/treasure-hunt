@@ -30,6 +30,7 @@ export class LobbyService {
   reset(): void {
     this._lobbies.clear();
     this._playerList.clear();
+    this._logger.verbose(`🛋\tAll lobbies are reset!`);
   }
 
   /** Get a lobby by its name */
@@ -59,14 +60,14 @@ export class LobbyService {
       const lobby = this._lobbies.get(lobbyName);
       lobby.addPlayer(player);
       this._logger.verbose(
-        `Player <${player.name}> joined the lobby: ${lobbyName}`,
+        `🛋\tPlayer <${player.name}> joined the lobby: ${lobbyName}`,
       );
     } else {
       const lobby = new Lobby(lobbyName);
       lobby.addPlayer(player);
       this._lobbies.set(lobbyName, lobby);
       this._logger.verbose(
-        `Player <${player.name}> created lobby: ${lobbyName}`,
+        `🛋\tPlayer <${player.name}> created lobby: ${lobbyName}`,
       );
     }
 
@@ -79,20 +80,23 @@ export class LobbyService {
       throw new Error(`The lobby ${lobbyName} does not exist!`);
     }
 
+    // delete player from playerList
+    this._playerList.delete(playerId);
+
     const lobby = this._lobbies.get(lobbyName);
     const player = lobby.getPlayer(playerId);
 
     if (player) {
       lobby.removePlayer(playerId);
       this._logger.verbose(
-        `Player <${player.name}> left the lobby ${lobbyName}`,
+        `🛋\tPlayer <${player.name}> left the lobby ${lobbyName}`,
       );
     }
 
     if (lobby.isEmpty) {
       this._lobbies.delete(lobbyName);
       this._logger.verbose(
-        `Removed the lobby ${lobbyName} after the last player left.`,
+        `🛋\tRemoved the lobby ${lobbyName} after the last player left.`,
       );
     }
   }

@@ -4,7 +4,7 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
-import { GameFacade } from '@treasure-hunt/web/data-access';
+import { LobbyFacade } from '@treasure-hunt/web/data-access';
 import { defer, fromEvent, Observable } from 'rxjs';
 import {
   debounceTime,
@@ -34,13 +34,13 @@ export class LoginComponent {
     ),
   );
 
-  constructor(private _gameFacade: GameFacade) {}
+  constructor(private _lobbyFacade: LobbyFacade) {}
 
   /** Is dispatching a login action with the generated image and the name */
   login(): void {
     const name = this.input.nativeElement.value;
     const image = this._getImageUrl(name);
-    this._gameFacade.login(name, image);
+    this._lobbyFacade.login(name, image);
   }
 
   /** Get a funny image for a provided name */
