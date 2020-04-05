@@ -45,4 +45,13 @@ export class Lobby {
     }
     return null;
   }
+
+  /** @internal represents the lobby as json for internal debugging usage */
+  toJSON() {
+    return {
+      name: this.name,
+      players: this.players,
+      maxPlayers: this._maxPlayers,
+    }
+  }
 }

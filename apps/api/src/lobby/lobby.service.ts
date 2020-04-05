@@ -21,6 +21,17 @@ export class LobbyService {
   /** Logger for the service */
   private readonly _logger = new Logger(this.constructor.name);
 
+  /** @internal A JSON representation of all lobbies */
+  get lobbies() {
+    return Array.from(this._lobbies.values()).map(lobby => lobby.toJSON());
+  }
+
+  /** @internal resets all lobbies and player lists */
+  reset(): void {
+    this._lobbies.clear();
+    this._playerList.clear();
+  }
+
   /** Get a lobby by its name */
   getLobby(lobbyName: string): Lobby {
     if (!this._lobbies.has(lobbyName)) {

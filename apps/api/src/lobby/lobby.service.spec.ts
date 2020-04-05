@@ -29,11 +29,11 @@ describe('LobbyService', () => {
   });
 
   it('should create a lobby if a player joins', () => {
-    expect(service['lobbies'].size).toBe(0);
+    expect(service.lobbies.length).toBe(0);
     service.joinLobby('test-lobby', players[0]);
-    expect(service['lobbies'].size).toBe(1);
+    expect(service.lobbies.length).toBe(1);
     service.joinLobby('test-lobby', players[1]);
-    expect(service['lobbies'].size).toBe(1);
+    expect(service.lobbies.length).toBe(1);
   });
 
   it('should return the lobby name if the player is already in a lobby', () => {
@@ -44,11 +44,11 @@ describe('LobbyService', () => {
   it('should not be possible to join another lobby if a player is already in a lobby', () => {
     service.joinLobby('test-lobby', players[0]);
     service.joinLobby('test-lobby', players[1]);
-    expect(service['lobbies'].size).toBe(1);
+    expect(service.lobbies.length).toBe(1);
 
     expect(() => service.joinLobby('other-lobby', players[1])).toThrowError(
       PLAYER_ALREADY_IN_LOBBY_ERROR('test-lobby'),
     );
-    expect(service['lobbies'].size).toBe(1);
+    expect(service.lobbies.length).toBe(1);
   });
 });
