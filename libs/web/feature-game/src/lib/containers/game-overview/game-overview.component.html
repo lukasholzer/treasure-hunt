@@ -1,12 +1,12 @@
-<fg-header [avatar]="character$ | async" [player]="player$ | async"></fg-header>
+<ui-header [avatar]="character$ | async" [player]="player$ | async"></ui-header>
 
-<fg-player-list [players]="activePlayers$ | async"></fg-player-list>
+<ui-player-list [players]="activePlayers$ | async"></ui-player-list>
 
 <div class="cards">
-  <fg-card type="1"></fg-card>
-  <fg-card type="2"></fg-card>
-  <fg-card type="4"></fg-card>
-  <fg-card type="4"></fg-card>
-  <fg-card type="1"></fg-card>
-  <fg-card type="1"></fg-card>
+  <ui-card type="1"></ui-card>
+  <ui-card type="2"></ui-card>
+  <ui-card type="4"></ui-card>
+  <ui-card type="4"></ui-card>
+  <ui-card type="1"></ui-card>
+  <ui-card type="1"></ui-card>
 </div>

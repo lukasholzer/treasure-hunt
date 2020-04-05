@@ -70,6 +70,7 @@
     "@nrwl/jest": "^9.1.2",
     "@nrwl/nest": "^9.1.2",
     "@nrwl/node": "^9.1.2",
+    "@nrwl/storybook": "^9.2.2",
     "@nrwl/workspace": "^9.1.2",
     "@types/jest": "~24.9.0",
     "@types/lodash-es": "^4.17.3",
@@ -90,6 +91,11 @@
     "ts-jest": "~24.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.0.0",
-    "typescript": "~3.7.4"
+    "typescript": "~3.7.4",
+    "@storybook/angular": "5.3.9",
+    "@storybook/react": "5.3.9",
+    "@storybook/addon-knobs": "5.3.9",
+    "babel-loader": "8.0.6",
+    "@babel/core": "7.8.3"
   }
 }

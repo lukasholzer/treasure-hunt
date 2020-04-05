@@ -9,7 +9,7 @@ import { CardType } from '@treasure-hunt/shared/interfaces';
 import { getImageUrlForType } from '../get-image-url-for-type';
 
 @Component({
-  selector: 'fg-card',
+  selector: 'ui-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

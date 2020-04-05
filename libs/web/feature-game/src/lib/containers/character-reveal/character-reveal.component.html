@@ -1,7 +1,7 @@
-<fg-header [player]="player$ | async"></fg-header>
+<ui-header [player]="player$ | async"></ui-header>
 
 <div class="reveal">
-  <fg-card [type]="character$ | async" [flipped]="revealed$ | async"></fg-card>
+  <ui-card [type]="character$ | async" [flipped]="revealed$ | async"></ui-card>
   <div
     class="character-details"
     *ngIf="revealed$ | async as character"

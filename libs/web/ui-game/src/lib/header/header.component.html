@@ -1,0 +1,11 @@
+<ng-container *ngIf="player">
+  <ui-avatar [image]="player.image" size="large"></ui-avatar>
+  <ui-avatar
+    *ngIf="avatarUrl"
+    class="avatar"
+    size="large"
+    [@zoomInOnEnter]
+    [image]="avatarUrl"
+  ></ui-avatar>
+  <div class="username">{{ player.name }}</div>
+</ng-container>

@@ -1,4 +1,11 @@
-import { Component, HostBinding, Input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostBinding,
+  Input,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'ui-avatar',
@@ -6,17 +13,18 @@ import { Component, HostBinding, Input } from '@angular/core';
   styleUrls: ['./avatar.component.scss'],
 })
 export class AvatarComponent {
-  @HostBinding('style.--avatar-image')
+  @ViewChild('avatar', { static: true })
+  avatar: ElementRef<HTMLDivElement>;
+
   @Input()
-  get image(): string {
-    return this._image;
-  }
   set image(image: string) {
     this._image = `url(${image})`;
+    this.avatar.nativeElement.style.backgroundImage = this._image;
+    this._changeDetectorRef.markForCheck();
   }
   private _image: string;
 
-  @Input() size: 'small' | 'large';
+  @Input() size: 'small' | 'large' | 'xlarge';
 
   @Input() gold: number;
   @Input() fire: number;
@@ -26,6 +34,8 @@ export class AvatarComponent {
 
   @HostBinding('class.is-small')
   get isSmall(): boolean {
-    return (this.size && this.size === 'small' ) ?? !Boolean(this.name);
+    return (this.size && this.size === 'small') ?? !Boolean(this.name);
   }
+
+  constructor(private _changeDetectorRef: ChangeDetectorRef) {}
 }
