@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, SimpleChanges } from '@angular/core';
 import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 
 @Component({
@@ -9,11 +9,17 @@ import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 })
 export class GameOverviewComponent {
   player$ = this._lobbyFacade.player$;
-  character$ = this._gameFacade.character$;
   activePlayers$ = this._lobbyFacade.activePlayers$;
+  character$ = this._gameFacade.character$;
+  hand$ = this._gameFacade.hand$;
 
   constructor(
     private _lobbyFacade: LobbyFacade,
     private _gameFacade: GameFacade,
   ) {}
+
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+  }
 }

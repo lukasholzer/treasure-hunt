@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { ButtonModule } from '@treasure-hunt/web/components/button';
 import {
   AuthenticationGuard,
   DataAccessModule,
@@ -14,6 +15,7 @@ import { CharacterRevealComponent } from './containers/character-reveal/characte
   imports: [
     CommonModule,
     DataAccessModule,
+    ButtonModule,
     UiGameModule,
     RouterModule.forChild([
       {

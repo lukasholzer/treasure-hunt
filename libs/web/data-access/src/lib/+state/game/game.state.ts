@@ -9,6 +9,8 @@ export interface State {
   character: CardType | null;
   /** The current hand of the player */
   hand: CardType[];
+  /** The current round in the game */
+  round: number | null;
 }
 
 export interface GamePartialState {
@@ -19,4 +21,5 @@ export const initialState: State = {
   started: false,
   character: null,
   hand: [],
+  round: null,
 };

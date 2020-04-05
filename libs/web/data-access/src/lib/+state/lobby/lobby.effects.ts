@@ -59,7 +59,6 @@ export class LobbyEffects {
         ofType(lobbyReconnect),
         withLatestFrom(this._lobbyFacade.lobbyName$, this._lobbyFacade.player$),
         tap(([, lobby, player]) => {
-          console.log(lobby, player)
           if (lobby && player) {
             this._lobbyService.join(lobby, player);
           }

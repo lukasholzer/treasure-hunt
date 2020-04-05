@@ -16,6 +16,12 @@ export class GameService {
   /** Logger for the game service */
   private readonly _logger = new Logger(this.constructor.name);
 
+  /** @internal resets all games */
+  reset(): void {
+    GAMES.clear();
+    this._logger.verbose(`🎲\tAll Games are reset!`);
+  }
+
   /** Get a game by its lobby name */
   getGame(lobbyName: string): Game {
     if (!GAMES.has(lobbyName)) {

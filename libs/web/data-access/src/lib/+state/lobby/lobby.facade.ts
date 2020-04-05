@@ -14,7 +14,30 @@ export class LobbyFacade {
   /** TODO: should be a response from a lobby */
   minPlayers$ = of(3);
   /** Stream of all active players in the lobby */
-  allPlayers$ = this._store.pipe(select(LobbySelectors.getPlayers));
+  // allPlayers$ = this._store.pipe(select(LobbySelectors.getPlayers));
+
+  allPlayers$ = of([
+    {
+      name: 'Kasti',
+      image: 'https://api.adorable.io/avatars/285/Kasti',
+      id: '159c0629-7348-4c49-a60f-d3f8e1505277',
+    },
+    {
+      name: 'Lukas',
+      image: 'https://api.adorable.io/avatars/285/Lukas',
+      id: '5295d391-3617-46b5-a6c6-2bff71511511',
+    },
+    {
+      name: 'Kathi',
+      image: 'https://api.adorable.io/avatars/285/Kathi',
+      id: '6c9212fa-28b7-4b78-9d8f-b0b32d1c6304',
+    },
+    {
+      name: 'Nadi',
+      image: 'https://api.adorable.io/avatars/285/Nadi',
+      id: '59197f08-bd4d-4f95-ba1e-5e5608ae3a09',
+    },
+  ]);
   /** Stream of all active players in the lobby excluding the user */
   activePlayers$ = this.allPlayers$.pipe(
     withLatestFrom(this.player$),

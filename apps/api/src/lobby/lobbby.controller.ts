@@ -1,6 +1,7 @@
 import { Controller, Get, Put } from '@nestjs/common';
 import { LobbyService } from './lobby.service';
 
+// TODO: add route protection for admins.
 @Controller('lobby')
 export class LobbyController {
   constructor(private _lobbyService: LobbyService) {}

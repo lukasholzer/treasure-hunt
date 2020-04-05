@@ -13,11 +13,11 @@
 
 <ng-container *ngIf="lobby$ | async; else loggedOut">
   <div class="actions">
-    <button gc-button (click)="_leaveLobby()" *ngIf="lobby$ | async">
+    <button th-button (click)="_leaveLobby()" *ngIf="lobby$ | async">
       Leave Lobby
     </button>
     <button
-      gc-button
+      th-button
       (click)="_startGame()"
       [disabled]="!(gameReady$ | async)"
     >
@@ -29,7 +29,7 @@
 <ng-template #loggedOut>
   <div class="lobby-input">
     <input type="text" [(ngModel)]="lobbyName" />
-    <button gc-button (click)="_joinLobby()" [disabled]="lobbyName.length < 2">
+    <button th-button (click)="_joinLobby()" [disabled]="lobbyName.length < 2">
       Join Lobby
     </button>
   </div>

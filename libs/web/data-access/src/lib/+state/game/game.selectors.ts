@@ -11,3 +11,8 @@ export const getCharacter = createSelector(
   selectGameState,
   (state: State) => state.character,
 );
+
+export const getHand = createSelector(
+  selectGameState,
+  (state: State) => state.hand,
+);

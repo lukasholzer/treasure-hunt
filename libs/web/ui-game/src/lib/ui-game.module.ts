@@ -3,13 +3,13 @@ import { NgModule } from '@angular/core';
 import { AvatarComponent } from './avatar/avatar.component';
 import { CardComponent } from './card/card.component';
 import { HeaderComponent } from './header/header.component';
-import { PlayerListComponent } from './player-list/player-list.component';
+import { Slider } from './slider/slider';
 
 const components = [
   AvatarComponent,
   CardComponent,
   HeaderComponent,
-  PlayerListComponent,
+  Slider,
 ];
 
 @NgModule({

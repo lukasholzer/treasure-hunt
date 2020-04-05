@@ -9,9 +9,11 @@ import {
   revealCharacter,
   revealCharacterSuccess,
   startGame,
+  handUpdatedSuccess,
 } from './game.actions';
 import { GameFacade } from './game.facade';
 import { LobbyFacade } from '../lobby/lobby.facade';
+import { of } from 'rxjs';
 
 @Injectable()
 export class GameEffects {
@@ -45,12 +47,21 @@ export class GameEffects {
       withLatestFrom(this._lobbyFacade.lobbyName$, this._lobbyFacade.player$),
       switchMap(([, lobby, player]) => {
         this._gameService.revealCharacter(lobby, player);
+        this._gameService.getHand(lobby, player);
+
         return this._gameService.actions$.pipe(
-          ofType(GameActions.getCharacterCard),
+          ofType(GameActions.getCharacterCard, GameActions.getHand),
           take(1),
           map(({ payload }) => revealCharacterSuccess({ character: payload })),
         );
       }),
+    ),
+  );
+
+  handUpdated$ = createEffect(() =>
+    this._gameService.actions$.pipe(
+      ofType(GameActions.getHand),
+      map(({ payload }) => handUpdatedSuccess({ hand: payload })),
     ),
   );
 

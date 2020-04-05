@@ -1,18 +1,9 @@
 :host {
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-template-rows: 6em auto;
-  grid-template-areas:
-    'header header'
-    'sidebar main';
+  display: block
 }
 
-fg-header {
-  grid-area: header;
-}
-
-fg-player-list {
-  grid-area: sidebar;
+.player-list {
+  display: flex;
 }
 
 .cards {
@@ -20,6 +11,10 @@ fg-player-list {
   margin: 1em;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: center;
   align-content: flex-start;
+
+  ui-card {
+    margin: 0.3rem;
+  }
 }

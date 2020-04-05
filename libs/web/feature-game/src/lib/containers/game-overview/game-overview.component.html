@@ -1,12 +1,20 @@
 <ui-header [avatar]="character$ | async" [player]="player$ | async"></ui-header>
 
-<ui-player-list [players]="activePlayers$ | async"></ui-player-list>
+<div class="player-list">
+  <ui-avatar
+    [image]="player.image"
+    *ngFor="let player of activePlayers$ | async"
+  ></ui-avatar>
+</div>
+
+<h1>tell your hand</h1>
+
+<button th-button>call your hand</button>
 
 <div class="cards">
-  <ui-card type="1"></ui-card>
-  <ui-card type="2"></ui-card>
-  <ui-card type="4"></ui-card>
-  <ui-card type="4"></ui-card>
-  <ui-card type="1"></ui-card>
-  <ui-card type="1"></ui-card>
+  <ui-card
+    *ngFor="let card of hand$ | async"
+    [type]="card"
+    flipped="true"
+  ></ui-card>
 </div>

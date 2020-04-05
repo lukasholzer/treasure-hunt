@@ -9,18 +9,18 @@ import {
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
-  selector: 'button[th-button], a[th-button]',
-  templateUrl: './button.html',
-  styleUrls: ['./button.scss'],
+  selector: 'ui-slider',
+  templateUrl: './slider.html',
+  styleUrls: ['./slider.scss'],
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
   preserveWhitespaces: false,
-  host: {
-    '[attr.tabindex]': '0',
-    '[disabled]': 'disabled || null',
-  },
 })
-export class Button {
+export class Slider {
+
+  @Input() min = 0;
+  @Input() max = 10;
+  @Input() step = 1;
 
   @Input()
   get disabled(): boolean {
