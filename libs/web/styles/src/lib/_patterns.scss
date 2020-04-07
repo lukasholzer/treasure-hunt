@@ -12,3 +12,9 @@
   letter-spacing: 0.03em;
   line-height: 1em;
 }
+
+
+%focus {
+  outline: none;
+  border-color: $color-yellow;
+}

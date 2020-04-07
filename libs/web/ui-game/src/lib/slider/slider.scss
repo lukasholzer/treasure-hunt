@@ -1,0 +1,49 @@
+@import 'variables';
+@import 'patterns';
+
+:host {
+  --knob-size: 0.8rem;
+  --rail-size: 5rem;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  width: var(--knob-size);
+  height: var(--rail-size);
+}
+
+.slider-rail {
+  border-right: 1px solid white;
+  width: 50%;
+  height: 100%;
+}
+
+.slider-knob {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 150ms ease-in-out;
+
+  &:focus {
+    outline: none;
+    &:before {
+      @extend %focus;
+    }
+  }
+
+  &:active:before {
+    background-color: $color-yellow;
+  }
+}
+
+.slider-knob::before {
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  transform: translate3d(0, 50%, 0);
+  border: 1px solid white;
+  border-radius: 50%;
+  background-color: $color-blue;
+  width: var(--knob-size);
+  height: var(--knob-size);
+  content: ' ';
+}
