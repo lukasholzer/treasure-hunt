@@ -4,12 +4,14 @@ import { AvatarComponent } from './avatar/avatar.component';
 import { CardComponent } from './card/card.component';
 import { HeaderComponent } from './header/header.component';
 import { Slider } from './slider/slider';
+import { ClaimSlider } from './claim-slider';
 
 const components = [
   AvatarComponent,
   CardComponent,
   HeaderComponent,
   Slider,
+  ClaimSlider,
 ];
 
 @NgModule({

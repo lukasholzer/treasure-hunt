@@ -21,7 +21,8 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  transition: transform 150ms ease-in-out;
+  transition: transform 0.1s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
   &:focus {
     outline: none;

@@ -13,6 +13,18 @@
   line-height: 1em;
 }
 
+%button {
+  border: 1px solid white;
+  border-radius: 1.1em;
+  background: transparent;
+  padding: 0.55em 1.1em;
+  line-height: 1em;
+  letter-spacing: 0.03em;
+  color: $color-white;
+  font-family: $font-primary;
+  font-size: 1rem;
+}
+
 
 %focus {
   outline: none;

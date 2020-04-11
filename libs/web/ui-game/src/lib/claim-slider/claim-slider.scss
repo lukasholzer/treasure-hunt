@@ -1,0 +1,25 @@
+@import 'variables';
+@import 'patterns';
+
+:host {
+  display: inline-flex;
+  flex-flow: column;
+  justify-items: center;
+  align-items: center;
+}
+
+ui-slider {
+  margin: 1em 0;
+}
+
+.value {
+  @extend %button;
+  display: inline-block;
+  padding: 0.25rem 0.7rem;
+  min-width: 2.2rem;
+  text-align: center;
+}
+
+.type {
+  font-size: 1.5em;
+}
