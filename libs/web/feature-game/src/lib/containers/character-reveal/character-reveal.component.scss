@@ -21,29 +21,6 @@
     100vw calc(100vh - var(--progress-size)), 0 100vh;
 }
 
-@keyframes progress {
-  0% {
-    background-position: -100vw 0, calc(100vw - var(--progress-size)) -100vh,
-      100vw calc(100vh - var(--progress-size)), 0 100vh;
-  }
-  25% {
-    background-position: 0 0, calc(100vw - var(--progress-size)) -100vh,
-      100vw calc(100vh - var(--progress-size)), 0 100vh;
-  }
-  50% {
-    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
-      100vw calc(100vh - var(--progress-size)), 0 100vh;
-  }
-  75% {
-    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
-      0 calc(100vh - var(--progress-size)), 0 100vh;
-  }
-  100% {
-    background-position: 0 0, calc(100vw - var(--progress-size)) 0,
-      0 calc(100vh - var(--progress-size)), 0 0;
-  }
-}
-
 .reveal {
   display: flex;
   flex-flow: column;

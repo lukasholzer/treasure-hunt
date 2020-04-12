@@ -1,14 +1,29 @@
 :host {
-  display: block
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  height: 100vh;
+}
+
+ui-header {
+  align-self: flex-start;
 }
 
 .player-list {
   display: flex;
 }
 
+.claim-cards {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  justify-self: flex-end;
+}
+
 .cards {
   grid-area: main;
-  margin: 1em;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

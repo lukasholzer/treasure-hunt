@@ -10,12 +10,14 @@ import {
 import { UiGameModule } from '@treasure-hunt/web/ui-game';
 import { GameOverviewComponent } from './containers';
 import { CharacterRevealComponent } from './containers/character-reveal/character-reveal.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   imports: [
     CommonModule,
     DataAccessModule,
     ButtonModule,
+    OverlayModule,
     UiGameModule,
     RouterModule.forChild([
       {

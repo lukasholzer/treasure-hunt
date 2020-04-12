@@ -9,12 +9,18 @@
 
 <h1>tell your hand</h1>
 
-<button th-button>call your hand</button>
+<button th-button (claim)="_claimHand()">call your hand</button>
 
-<div class="cards">
-  <ui-card
-    *ngFor="let card of hand$ | async"
-    [type]="card"
-    flipped="true"
-  ></ui-card>
+<div class="claim-cards">
+  <ui-claim-slider [type]="2"></ui-claim-slider>
+
+  <div class="cards">
+    <ui-card
+      *ngFor="let card of hand$ | async"
+      [type]="card"
+      flipped="true"
+    ></ui-card>
+  </div>
+
+  <ui-claim-slider [type]="4"></ui-claim-slider>
 </div>

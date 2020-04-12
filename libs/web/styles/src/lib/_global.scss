@@ -10,6 +10,12 @@ body {
   color: $color-white;
 }
 
+body {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
 * {
   box-sizing: border-box;
 }
