@@ -7,11 +7,8 @@ import { of } from 'rxjs';
 
 @Injectable()
 export class GameFacade {
-  // character$ = this._store.pipe(select(GameSelectors.getCharacter));
-  // hand$ = this._store.pipe(select(GameSelectors.getHand));
-
-  character$ = of(16);
-  hand$ = of([1, 4, 2, 1, 4]);
+  character$ = this._store.pipe(select(GameSelectors.getCharacter));
+  hand$ = this._store.pipe(select(GameSelectors.getHand));
 
   constructor(private _store: Store<GamePartialState>) {}
 

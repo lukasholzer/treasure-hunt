@@ -23,9 +23,9 @@ export class GameGuard implements CanActivate {
 
   canActivate(_next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
     return this._lobbyFacade.lobbyName$.pipe(
-      // switchMap(lobbyName =>
-      //   this._httpClient.get(`${this._apiEndpoint}game/exists/${lobbyName}`),
-      // ),
+      switchMap(lobbyName =>
+        this._httpClient.get(`${this._apiEndpoint}game/exists/${lobbyName}`),
+      ),
       mapTo(true),
       catchError(() => of(this._router.parseUrl('/lobby')))
     );
