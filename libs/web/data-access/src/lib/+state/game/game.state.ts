@@ -11,6 +11,8 @@ export interface State {
   hand: CardType[];
   /** The current round in the game */
   round: number | null;
+  /** The id of the player that is deciding */
+  keyPlayer: string | null;
 }
 
 export interface GamePartialState {
@@ -22,4 +24,5 @@ export const initialState: State = {
   character: null,
   hand: [],
   round: null,
+  keyPlayer: null,
 };

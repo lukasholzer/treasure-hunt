@@ -17,6 +17,14 @@ export const handUpdatedSuccess = createAction(
   '[GAME] Successfully updated the current hand',
   props<{ hand: CardType[] }>(),
 );
+
+/** Call the current hand to the other players */
+export const callHand = createAction(
+  '[GAME] Call Hand to the other players',
+  props<{ hand: CardType[] }>(),
+);
+
+
 /** Notification from the server that a player called his hand */
 export const playerCalled = createAction(
   '[GAME] Player called his hand',
