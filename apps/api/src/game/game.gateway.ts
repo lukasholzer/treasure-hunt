@@ -30,7 +30,6 @@ export class GameGateway implements OnGatewayDisconnect {
   constructor(private readonly _gameService: GameService) {}
 
   handleDisconnect(client: Socket) {
-    console.log(client.rooms)
     // TODO:
     // handle client disconnects maybe dispatch the
     // playerUnavailable = '[GAME SOCKET] Player Unavailable',

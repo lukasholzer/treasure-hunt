@@ -5,16 +5,20 @@ import { Player } from '@treasure-hunt/shared/interfaces';
 export const GAME_NOT_FOUND_ERROR = (lobbyName: string) =>
   `No game found for the lobby ${lobbyName}!`;
 
-
 /** List of all games id is the lobby name */
 const GAMES = new Map<string, Game>();
 
 @Injectable({
-  scope: Scope.DEFAULT
+  scope: Scope.DEFAULT,
 })
 export class GameService {
   /** Logger for the game service */
   private readonly _logger = new Logger(this.constructor.name);
+
+  /** @internal A JSON representation of all games */
+  get games() {
+    return Array.from(GAMES.values()).map(game => game.toJSON());
+  }
 
   /** @internal resets all games */
   reset(): void {
@@ -29,7 +33,6 @@ export class GameService {
     }
     return GAMES.get(lobbyName);
   }
-
 
   /** starts a new Game */
   startGame(lobbyName: string, players: Player[]): void {

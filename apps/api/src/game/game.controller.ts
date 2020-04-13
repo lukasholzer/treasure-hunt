@@ -12,6 +12,17 @@ import { GameService } from './game.service';
 export class GameController {
   constructor(private _gameService: GameService) {}
 
+  // TODO: add route protection for admins.
+  @Get('/all')
+  listAllGames() {
+    const games = this._gameService.games;
+    return {
+      count: games.length,
+      games,
+    };
+  }
+
+  /** Used by the game guard to check if the game exists */
   @Get('exists/:id')
   gameExists(@Param('id') id: string): void {
     try {

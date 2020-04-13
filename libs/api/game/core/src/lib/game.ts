@@ -75,6 +75,16 @@ export class Game {
     return gold.length === this._config.gold;
   }
 
+  /** @internal represents the game as json for internal debugging usage */
+  toJSON(): object {
+    return {
+      name: this.id,
+      rounds: this.rounds,
+      players: this.players,
+      deck: this._deck,
+    };
+  }
+
   /** Deals the cards */
   private _dealCards() {
     this._clearHands();
