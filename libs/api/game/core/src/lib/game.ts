@@ -3,8 +3,7 @@ import { uuid } from '@treasure-hunt/shared/util';
 import { GameConfiguration, GAME_CONFIGURATION } from './config';
 import { Deck } from './deck';
 
-export interface PlayingPlayer  {
-  id: string;
+export interface PlayingPlayer extends Player {
   role: CardType;
   hand: CardType[];
   pretendedHand: CardType[];
@@ -27,7 +26,7 @@ export class Game {
   /** The current game configuration */
   private _config: GameConfiguration;
 
-  constructor(players: string[]) {
+  constructor(players: Player[]) {
     this._config = GAME_CONFIGURATION.find(
       config => config.players === players.length,
     );
@@ -36,10 +35,10 @@ export class Game {
     // set the number of rounds to play
     this.rounds = this._deck.gameCards.length / players.length;
     // set the key player that should start
-    this.keyPlayer = players[Math.floor(Math.random() * players.length)];
+    this.keyPlayer = players[Math.floor(Math.random() * players.length)].id;
     // assign the roles to the players
-    this.players = players.map(id => ({
-      id,
+    this.players = players.map(player => ({
+      ...player,
       role: this._deck.drawRole(),
       hand: [],
       pretendedHand: []

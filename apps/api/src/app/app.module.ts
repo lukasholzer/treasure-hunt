@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { AppGateway } from './app.gateway';
 import { GameService } from './game.service';
 
@@ -7,6 +7,7 @@ import { GameService } from './game.service';
 
 @Module({
   imports: [
+    HttpModule,
     // GameModule,
     // LobbyModule
   ],

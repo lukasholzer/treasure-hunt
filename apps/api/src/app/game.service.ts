@@ -1,6 +1,6 @@
 import { Injectable, Logger, Scope } from '@nestjs/common';
 import { Game } from '@treasure-hunt/api/game/core';
-import { CardType } from '../../../../libs/shared/interfaces/src';
+import { CardType, Player } from '@treasure-hunt/shared/interfaces';
 
 /** List of all games id is the lobby name */
 const GAMES = new Map<string, Game>();
@@ -25,19 +25,13 @@ export class GameService {
       rounds: game.rounds,
       role: player.role,
       hand: player.hand,
-      players: game.players.map(({ id, pretendedHand }) => ({
-        id,
-        pretendedHand,
-      })),
     };
   }
 
-  pretendHand(id: string, hand: CardType[]) {
+  pretendHand(id: string, hand: CardType[]): void {
     const game = GAMES.get(lobbyName);
     const playerIndex = game.getPlayerIndex(id);
     game.pretend(playerIndex, hand);
-
-    return this.getGameState(id);
   }
 
   resetGame() {
@@ -45,7 +39,7 @@ export class GameService {
   }
 
   /** starts a new Game */
-  startGame(players: string[]): void {
+  startGame(players: Player[]): void {
     // If there is no game for the lobby then start one
     if (!GAMES.has(lobbyName)) {
       const game = new Game(players);
