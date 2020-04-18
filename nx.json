@@ -51,6 +51,9 @@
     },
     "web-shared": {
       "tags": []
+    },
+    "shared-actions": {
+      "tags": []
     }
   }
 }

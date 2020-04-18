@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { mapTo, map, share, take } from 'rxjs/operators';
+import { Action } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class SocketService {
     );
   }
 
-  get actions$() {
+  get actions$(): Observable<Action> {
     return this.fromEvent('actions');
   }
 

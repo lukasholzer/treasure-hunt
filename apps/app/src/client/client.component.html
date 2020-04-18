@@ -1,61 +1,66 @@
 <div class="content">
-  <strong>{{ role$ | async }} {{ id$ | async }}</strong>
+  <strong>{{ _getDisplay(role$ | async) }} {{ playerId$ | async }}</strong>
 
-  <div class="state" *ngIf="gameState$ | async as state">
+  <div class="state">
     <div>
-      <span *ngFor="let card of state.hand"> {{ getDisplay(card) }}</span>
+      <h4>My hand</h4>
+      <span *ngFor="let card of hand$ | async"> {{ _getDisplay(card) }}</span>
     </div>
 
-    <ng-container *ngIf="shouldShowPlayers; else elseTemplate">
-      <h4>Players:</h4>
-      <div class="players">
-        <div class="player" *ngFor="let player of players; let i = index">
-          Player {{ i }}
-          <div>
-            <span *ngFor="let card of player.pretendedHand"> {{ getDisplay(card) }}</span>
-          </div>
-          <button  (click)="_askPlayer(player.id)">
-            ask
-          </button>
+    <h4>Players:</h4>
+    <div class="players">
+      <div
+        class="player"
+        *ngFor="let player of players$ | async; let i = index"
+      >
+        {{ player.name }}
+        <div>
+          <span *ngFor="let card of player.pretendedHand">
+            {{ _getDisplay(card) }}</span
+          >
         </div>
+        <button>
+          ask
+        </button>
       </div>
-    </ng-container>
-
-    <ng-template #elseTemplate>
-      <form #tellForm="ngForm" class="tell" (ngSubmit)="_tellHand(tellForm)">
-        <h4>tell your hand</h4>
-        <label for="gold">
-          <span>👑</span>
-          <input
-            id="gold"
-            name="2"
-            type="number"
-            [ngModel]="_getOccurrences(state.hand, 2)"
-          />
-        </label>
-        <label for="empty">
-          <span>💨</span>
-          <input
-            id="empty"
-            name="1"
-            type="number"
-            [ngModel]="_getOccurrences(state.hand, 1)"
-          />
-        </label>
-        <label for="fire">
-          <span>🔥</span>
-          <input
-            id="fire"
-            name="4"
-            type="number"
-            [ngModel]="_getOccurrences(state.hand, 4)"
-          />
-        </label>
-
-        <button type="submit">tell</button>
-      </form>
-    </ng-template>
+    </div>
   </div>
 </div>
 
-<pre class="debug">{{ actions$ | async | json }}</pre>
+<pre class="sidebar">
+  <form *ngIf="hand$ | async as hand" #tellForm="ngForm" (ngSubmit)="_tellHand(tellForm)">
+    <h4>tell your hand</h4>
+    <div class="tell">
+      <label for="gold">
+        <span>👑</span>
+        <input
+          id="gold"
+          name="2"
+          type="number"
+          [ngModel]="_getOccurrences(hand, 2)"
+        />
+      </label>
+      <label for="empty">
+        <span>💨</span>
+        <input
+          id="empty"
+          name="1"
+          type="number"
+          [ngModel]="_getOccurrences(hand, 1)"
+        />
+      </label>
+      <label for="fire">
+        <span>🔥</span>
+        <input
+          id="fire"
+          name="4"
+          type="number"
+          [ngModel]="_getOccurrences(hand, 4)"
+        />
+      </label>
+
+    </div>
+
+    <button type="submit">tell</button>
+  </form>
+</pre>
