@@ -3,9 +3,11 @@ import { uuid } from '@treasure-hunt/shared/util';
 import { GameConfiguration, GAME_CONFIGURATION } from './config';
 import { Deck } from './deck';
 
-export interface PlayingPlayer extends Player {
+export interface PlayingPlayer  {
+  id: string;
   role: CardType;
   hand: CardType[];
+  pretendedHand: CardType[];
 }
 
 export class Game {
@@ -13,6 +15,8 @@ export class Game {
   players: PlayingPlayer[];
   /** The number of rounds to play */
   rounds: number;
+  /** The id of the player that is deciding */
+  keyPlayer: string;
   /** The read only unique id of the game */
   get id(): string {
     return this._id;
@@ -23,7 +27,7 @@ export class Game {
   /** The current game configuration */
   private _config: GameConfiguration;
 
-  constructor(players: Player[]) {
+  constructor(players: string[]) {
     this._config = GAME_CONFIGURATION.find(
       config => config.players === players.length,
     );
@@ -31,14 +35,22 @@ export class Game {
     this._deck = new Deck(players.length);
     // set the number of rounds to play
     this.rounds = this._deck.gameCards.length / players.length;
+    // set the key player that should start
+    this.keyPlayer = players[Math.floor(Math.random() * players.length)];
     // assign the roles to the players
-    this.players = players.map(player => ({
-      ...player,
+    this.players = players.map(id => ({
+      id,
       role: this._deck.drawRole(),
       hand: [],
+      pretendedHand: []
     }));
     // start dealing game cards
     this._dealCards();
+  }
+
+  /** Get the index of a player */
+  getPlayerIndex(id: string): number {
+    return this.players.findIndex((player) => player.id === id);
   }
 
   /** Reveals a card from a player */
@@ -46,6 +58,11 @@ export class Game {
     const card = this.players[playerIndex].hand.splice(cardIndex, 1);
     this._deck.revealed.push(card[0]);
     return card[0];
+  }
+
+  /** A player pretends to have this hand */
+  pretend(playerIndex: number, hand: CardType[]): void {
+    this.players[playerIndex].pretendedHand = hand;
   }
 
   /** Finishes a round and deals the cards again */
@@ -78,7 +95,7 @@ export class Game {
   /** @internal represents the game as json for internal debugging usage */
   toJSON(): object {
     return {
-      name: this.id,
+      id: this.id,
       rounds: this.rounds,
       players: this.players,
       deck: this._deck,
@@ -109,6 +126,7 @@ export class Game {
     this.players = this.players.map(player => ({
       ...player,
       hand: [],
+      pretendedHand: []
     }));
   }
 }

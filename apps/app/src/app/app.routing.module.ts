@@ -5,20 +5,27 @@ export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/lobby',
+    redirectTo: '/client',
   },
+  // {
+  //   path: 'game',
+  //   loadChildren: () =>
+  //     import('@treasure-hunt/web/feature-game').then(
+  //       module => module.FeatureGameModule,
+  //     ),
+  // },
+  // {
+  //   path: 'lobby',
+  //   loadChildren: () =>
+  //     import('@treasure-hunt/web/feature-lobby').then(
+  //       module => module.FeatureLobbyModule,
+  //     ),
+  // },
   {
-    path: 'game',
+    path: 'client',
     loadChildren: () =>
-      import('@treasure-hunt/web/feature-game').then(
-        module => module.FeatureGameModule,
-      ),
-  },
-  {
-    path: 'lobby',
-    loadChildren: () =>
-      import('@treasure-hunt/web/feature-lobby').then(
-        module => module.FeatureLobbyModule,
+      import('../client/client.module').then(
+        module => module.ClientModule,
       ),
   },
 ];
