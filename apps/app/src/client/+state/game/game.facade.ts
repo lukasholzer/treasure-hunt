@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Action, select, Store } from '@ngrx/store';
+import {
+  SocketMessages,
+  LoginData,
+  TellHandData,
+  RevealCardData,
+  JoinLobbyData,
+} from '@treasure-hunt/shared/actions';
+import { CardType } from '@treasure-hunt/shared/interfaces';
+import { SocketService } from '../../services/socket.service';
 import * as GameSelectors from './game.selectors';
 import { GamePartialState } from './game.state';
-import { CardType } from '@treasure-hunt/shared/interfaces';
-import { tellHand, revealCard } from './game.actions';
 
 @Injectable()
 export class GameFacade {
@@ -16,17 +23,34 @@ export class GameFacade {
   revealed$ = this._store.pipe(select(GameSelectors.getRevealed));
   isKeyPlayer$ = this._store.pipe(select(GameSelectors.isKeyPlayer));
 
-  constructor(private _store: Store<GamePartialState>) {}
+  constructor(
+    private _store: Store<GamePartialState>,
+    private _socketService: SocketService,
+  ) {}
 
-  dispatch(action: Action) {
-    this._store.dispatch(action);
+  login(name: string) {
+    this._socketService.sendMessage<LoginData>(SocketMessages.Login, {
+      name,
+      avatar: `https://api.adorable.io/avatars/400/${name}`,
+    });
+  }
+
+  joinLobby(lobbyName: string) {
+    this._socketService.sendMessage<JoinLobbyData>(SocketMessages.JoinLobby, {
+      lobbyName,
+    });
   }
 
   tellHand(hand: CardType[]) {
-    this._store.dispatch(tellHand({ hand }));
+    this._socketService.sendMessage<TellHandData>(SocketMessages.TellHand, {
+      hand,
+    });
   }
 
   revealCard(playerId: string, cardIndex: number) {
-    this._store.dispatch(revealCard({ playerId, cardIndex }));
+    this._socketService.sendMessage<RevealCardData>(SocketMessages.RevealCard, {
+      cardIndex,
+      playerId,
+    });
   }
 }

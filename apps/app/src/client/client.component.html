@@ -1,4 +1,10 @@
 <div class="content" [class.key-player]="isKeyPlayer$ | async">
+
+  <input type="text" #login>
+  <button (click)="_login(login.value)">Login</button>
+
+  <input type="text" #lobby>
+  <button (click)="_joinLobby(lobby.value)">Join Lobby</button>
   <h3>
     {{ _getDisplay(role$ | async) }}
     {{ playerId$ | async }}

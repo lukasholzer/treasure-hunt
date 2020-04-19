@@ -45,10 +45,10 @@ const gameReducer = createReducer(
     role,
     hand,
   })),
-  on(playerPretendedHand, (state, { hand, id }) => ({
+  on(playerPretendedHand, (state, { hand, playerId }) => ({
     ...state,
     players: playerAdapter.updateOne(
-      { id, changes: { pretendedHand: hand } },
+      { id: playerId, changes: { pretendedHand: hand } },
       state.players,
     ),
   })),

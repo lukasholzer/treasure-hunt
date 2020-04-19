@@ -7,10 +7,13 @@ import {
   playerPretendedHand,
 } from '@treasure-hunt/shared/actions';
 import { CardType, Player } from '@treasure-hunt/shared/interfaces';
+import { LobbyService } from '../lobby/lobby.service';
+
+const NO_GAME_FOR_LOBBY_ERROR = (lobbyName: string) =>
+  `No active Game for the lobby <${lobbyName}>`;
+
 /** List of all games id is the lobby name */
 const GAMES = new Map<string, Game>();
-
-const lobbyName = 'test';
 
 @Injectable()
 export class GameService {
@@ -20,13 +23,21 @@ export class GameService {
     return Array.from(GAMES.values());
   }
 
-  getGameState() {
+  constructor(private _lobbyService: LobbyService) {}
+
+  /** Get a game for the provided lobbyName if no game is found an error is thrown */
+  getGame(playerId: string): Game {
+    const lobbyName = this._lobbyService.getJoinedLobby(playerId);
     const game = GAMES.get(lobbyName);
 
     if (!game) {
-      return null;
+      throw new Error(NO_GAME_FOR_LOBBY_ERROR(lobbyName));
     }
+    return game;
+  }
 
+  getGameState(playerId: string) {
+    const game = this.getGame(playerId);
     return getGameStateSuccess({
       keyPlayer: game.keyPlayer,
       revealed: game.deck.revealed,
@@ -37,7 +48,7 @@ export class GameService {
   }
 
   getPlayerDetails(playerId: string) {
-    const game = GAMES.get(lobbyName);
+    const game = this.getGame(playerId);
     const player = game._players.find(({ id }) => id === playerId);
 
     return getPlayerInfoSuccess({
@@ -46,39 +57,35 @@ export class GameService {
     });
   }
 
-  pretendHand(id: string, hand: CardType[]) {
-    const game = GAMES.get(lobbyName);
-    const playerIndex = game.getPlayerIndex(id);
+  pretendHand(playerId: string, hand: CardType[]) {
+    const game = this.getGame(playerId);
+    const playerIndex = game.getPlayerIndex(playerId);
     game.pretend(playerIndex, hand);
-    return playerPretendedHand({ id, hand });
+    return playerPretendedHand({ playerId, hand });
   }
 
-  hasStarted(): boolean {
-    return GAMES.has(lobbyName);
-  }
-
-  resetGame() {
+  resetGame(lobbyName: string): void {
     GAMES.delete(lobbyName);
   }
 
   revealCard(clientId: string, playerId: string, cardIndex: number) {
-    const game = GAMES.get(lobbyName);
+    const game = this.getGame(clientId);
 
     // if (clientId === game.keyPlayer) {
-      const card = game.reveal(playerId, cardIndex);
-      game.keyPlayer = playerId;
+    const card = game.reveal(playerId, cardIndex);
+    game.keyPlayer = playerId;
 
-      if (game.moves === game.rounds) {
-        game.finishRound();
-      }
+    if (game.moves === game.rounds) {
+      game.finishRound();
+    }
 
-      return cardRevealSuccess({ id: playerId, card });
+    return cardRevealSuccess({ id: playerId, card });
     // }
     // throw Error('The player is not the key Player!');
   }
 
   /** starts a new Game */
-  startGame(players: Player[]): void {
+  startGame(players: Player[], lobbyName: string): void {
     // If there is no game for the lobby then start one
     if (!GAMES.has(lobbyName)) {
       const game = new Game(players);
@@ -87,6 +94,8 @@ export class GameService {
       this._logger.verbose(
         `Started a new game for the lobby <${lobbyName}> with ${players.length} players.`,
       );
+    } else {
+      throw new Error("Game has already started for lobby")
     }
   }
 }

@@ -5,6 +5,26 @@ import {
   Player,
 } from '@treasure-hunt/shared/interfaces';
 
+export const loginFailed = createAction(
+  '[SERVER] Login Failed',
+  props<{ message: string }>(),
+);
+
+export const joinLobbySuccess = createAction(
+  '[SERVER] Join Lobby Success',
+  props<{ player: Player }>(),
+);
+
+export const joinLobbyFailed = createAction(
+  '[SERVER] Join Lobby Failed',
+  props<{ message: string }>(),
+);
+
+export const leaveLobbySuccess = createAction(
+  '[SERVER] Player left the Lobby',
+  props<{ playerId: string }>(),
+);
+
 export const playerJoined = createAction(
   '[SERVER] Player joined the game',
   props<{ player: Player }>(),
@@ -35,7 +55,7 @@ export const getGameStateSuccess = createAction(
 export const playerPretendedHand = createAction(
   '[SERVER] Player pretended Hand',
   props<{
-    id: string;
+    playerId: string;
     hand: CardType[];
   }>(),
 );

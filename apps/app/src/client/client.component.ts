@@ -30,6 +30,14 @@ export class ClientComponent {
     this._gameFacade.tellHand(hand);
   }
 
+  _login(name: string) {
+    this._gameFacade.login(name);
+  }
+
+  _joinLobby(lobbyName: string) {
+    this._gameFacade.joinLobby(lobbyName);
+  }
+
   _reveal(playerId: string, cardIndex: number) {
     this._gameFacade.revealCard(playerId, cardIndex);
   }

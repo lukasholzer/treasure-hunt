@@ -21,13 +21,4 @@ export class GameController {
       games,
     };
   }
-
-  // TODO: add route protection for admins.
-  @Get('/reset')
-  reset() {
-    this._gameService.resetGame();
-    return {
-      message: 'Game reset!'
-    };
-  }
 }

@@ -19,7 +19,7 @@ export class LobbyService {
   /** List of lobbies with their players */
   private readonly _lobbies = new Map<string, Lobby>();
   /** Logger for the service */
-  private readonly _logger = new Logger(this.constructor.name);
+  private readonly _logger = new Logger('Lobby Service');
 
   /** @internal A JSON representation of all lobbies */
   get lobbies() {
@@ -31,6 +31,11 @@ export class LobbyService {
     this._lobbies.clear();
     this._playerList.clear();
     this._logger.verbose(`🛋\tAll lobbies are reset!`);
+  }
+
+  /** Get the lobby name for the player id */
+  getJoinedLobby(playerId: string): string {
+    return this._playerList.get(playerId);
   }
 
   /** Get a lobby by its name */
@@ -77,7 +82,7 @@ export class LobbyService {
   /** Leaves the lobby */
   leaveLobby(lobbyName: string, playerId: string) {
     if (!this._lobbies.has(lobbyName)) {
-      throw new Error(`The lobby ${lobbyName} does not exist!`);
+      return;
     }
 
     // delete player from playerList

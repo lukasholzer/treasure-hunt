@@ -15,7 +15,7 @@ export class SocketService {
 
   constructor() {}
 
-  sendMessage(event: string, data?: any) {
+  sendMessage<T>(event: string, data?: T) {
     this._socket.emit(event, data);
   }
 
