@@ -1,7 +1,12 @@
-import { Injectable, Logger, Scope } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Game } from '@treasure-hunt/api/game/core';
+import {
+  cardRevealSuccess,
+  getGameStateSuccess,
+  getPlayerInfoSuccess,
+  playerPretendedHand,
+} from '@treasure-hunt/shared/actions';
 import { CardType, Player } from '@treasure-hunt/shared/interfaces';
-
 /** List of all games id is the lobby name */
 const GAMES = new Map<string, Game>();
 
@@ -15,29 +20,37 @@ export class GameService {
     return Array.from(GAMES.values());
   }
 
-  getGameState(id: string) {
+  getGameState() {
     const game = GAMES.get(lobbyName);
 
     if (!game) {
       return null;
     }
 
-    const player = game._players.find(p => p.id === id);
-
-    return {
+    return getGameStateSuccess({
       keyPlayer: game.keyPlayer,
       revealed: game.deck.revealed,
-      rounds: game.rounds,
-      role: player.role,
-      hand: player.hand,
+      roundsLeft: game.rounds,
+      winner: game.isFinished(),
       players: game.players,
-    };
+    });
   }
 
-  pretendHand(id: string, hand: CardType[]): void {
+  getPlayerDetails(playerId: string) {
+    const game = GAMES.get(lobbyName);
+    const player = game._players.find(({ id }) => id === playerId);
+
+    return getPlayerInfoSuccess({
+      role: player.role,
+      hand: player.hand,
+    });
+  }
+
+  pretendHand(id: string, hand: CardType[]) {
     const game = GAMES.get(lobbyName);
     const playerIndex = game.getPlayerIndex(id);
     game.pretend(playerIndex, hand);
+    return playerPretendedHand({ id, hand });
   }
 
   hasStarted(): boolean {
@@ -48,20 +61,20 @@ export class GameService {
     GAMES.delete(lobbyName);
   }
 
-  revealCard(clientId: string, playerId: string, cardIndex: number): CardType {
+  revealCard(clientId: string, playerId: string, cardIndex: number) {
     const game = GAMES.get(lobbyName);
 
     // if (clientId === game.keyPlayer) {
-      const revealed = game.reveal(playerId, cardIndex);
+      const card = game.reveal(playerId, cardIndex);
       game.keyPlayer = playerId;
 
-      if (game.deck.revealed.length === game.rounds) {
+      if (game.moves === game.rounds) {
         game.finishRound();
       }
 
-      return revealed;
+      return cardRevealSuccess({ id: playerId, card });
     // }
-    // throw Error('The player is not the key Player!')
+    // throw Error('The player is not the key Player!');
   }
 
   /** starts a new Game */

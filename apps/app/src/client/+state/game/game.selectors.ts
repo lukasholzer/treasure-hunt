@@ -63,7 +63,7 @@ export const getHand = createSelector(
 
 export const getRounds = createSelector(
   getGameState,
-  (state: State) => state.rounds,
+  (state: State) => state.roundsLeft,
 );
 
 export const getRevealed = createSelector(

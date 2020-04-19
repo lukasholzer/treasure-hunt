@@ -15,14 +15,12 @@ export class SocketService {
 
   constructor() {}
 
-  sendMessage(data: any) {
-    this._socket.emit('actions', data);
+  sendMessage(event: string, data?: any) {
+    this._socket.emit(event, data);
   }
 
   get id$() {
-    return this.fromEvent('connect').pipe(
-      map(() => this._socket.id),
-    );
+    return this.fromEvent('connect').pipe(map(() => this._socket.id));
   }
 
   get actions$(): Observable<Action> {

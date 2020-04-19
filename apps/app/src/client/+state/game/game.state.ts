@@ -4,9 +4,10 @@ import { EntityState } from '@ngrx/entity';
 export const GAME_FEATURE_KEY = 'game';
 
 export interface State {
+  winner: CardType | null;
   playerId: string | null;
   keyPlayer?: string;
-  rounds?: number;
+  roundsLeft?: number;
   role?: CardType;
   revealed?: CardType[];
   hand?: CardType[];

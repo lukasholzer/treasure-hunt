@@ -7,27 +7,23 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  OnGatewayInit,
 } from '@nestjs/websockets';
 import {
   gameStarted,
   playerJoined,
   playerLeft,
-  getGameStateSuccess,
-  playerPretendedHand,
-  getGameState,
-  cardRevealSuccess,
+  RevealCardData,
+  SocketMessages,
+  TellHandData,
 } from '@treasure-hunt/shared/actions';
 import { Player } from '@treasure-hunt/shared/interfaces';
 import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { GameService } from './game.service';
-import { of } from 'rxjs';
-import { ofType } from '@ngrx/effects';
 
 const PLAYERS = new Map<string, Player>();
 
-@WebSocketGateway({ transports: ['websocket']})
+@WebSocketGateway({ transports: ['websocket'] })
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('App Gateway');
@@ -64,37 +60,40 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
     PLAYERS.delete(client.id);
   }
 
-  @SubscribeMessage('actions')
-  call(@ConnectedSocket() client: Socket, @MessageBody() data: any) {
-    const { type, payload } = data;
+  @SubscribeMessage(SocketMessages.TellHand)
+  tellHand(
+    @ConnectedSocket() { id }: Socket,
+    @MessageBody() data: TellHandData,
+  ) {
+    const { hand } = data;
+    this.server.emit('actions', this._gameService.pretendHand(id, hand));
+  }
 
-    switch (type) {
-      case 'tell-hand':
-        this._gameService.pretendHand(client.id, payload.hand);
-        this.server.emit(
-          'actions',
-          playerPretendedHand({
-            id: client.id,
-            hand: payload.hand,
-          }),
-        );
-        break;
-      case 'get-game-state':
-        return {
-          event: 'actions',
-          data: getGameStateSuccess(this._gameService.getGameState(client.id)),
-        };
-      case 'reveal-card':
-        const card = this._gameService.revealCard(
-          client.id,
-          payload.playerId,
-          parseInt(payload.cardIndex, 10),
-        );
-        this.server.emit(
-          'actions',
-          cardRevealSuccess({ id: payload.playerId, card }),
-        );
-        break;
-    }
+  @SubscribeMessage(SocketMessages.RevealCard)
+  revealCard(
+    @ConnectedSocket() { id }: Socket,
+    @MessageBody() data: RevealCardData,
+  ) {
+    const { playerId, cardIndex } = data;
+    this.server.emit(
+      'actions',
+      this._gameService.revealCard(id, playerId, +cardIndex),
+    );
+  }
+
+  @SubscribeMessage(SocketMessages.GetGameState)
+  getGameState() {
+    return {
+      event: 'actions',
+      data: this._gameService.getGameState(),
+    };
+  }
+
+  @SubscribeMessage(SocketMessages.GetPlayerDetails)
+  getPlayerDetails(@ConnectedSocket() { id }: Socket) {
+    return {
+      event: 'actions',
+      data: this._gameService.getPlayerDetails(id),
+    };
   }
 }

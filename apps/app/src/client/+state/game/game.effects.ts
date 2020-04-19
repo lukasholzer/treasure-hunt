@@ -2,8 +2,19 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, tap } from 'rxjs/operators';
 import { SocketService } from '../../services/socket.service';
-import { setPlayerId, tellHand, revealCard } from './game.actions';
-import { gameStarted, cardRevealSuccess } from '@treasure-hunt/shared/actions';
+import {
+  setPlayerId,
+  tellHand,
+  revealCard,
+  gameFinish,
+  noop,
+} from './game.actions';
+import {
+  gameStarted,
+  cardRevealSuccess,
+  SocketMessages,
+  getGameStateSuccess,
+} from '@treasure-hunt/shared/actions';
 
 @Injectable()
 export class GameEffects {
@@ -13,14 +24,27 @@ export class GameEffects {
     this._socketService.id$.pipe(map(playerId => setPlayerId({ playerId }))),
   );
 
+  gameFinish$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(getGameStateSuccess),
+      map(({ winner }) => {
+        if (winner) {
+          alert('GAME Ended!')
+          return gameFinish({ winner });
+        }
+        return noop();
+      }),
+    ),
+  );
+
   revealCard$ = createEffect(
     () =>
       this._actions$.pipe(
         ofType(revealCard),
         tap(({ cardIndex, playerId }) => {
-          this._socketService.sendMessage({
-            type: 'reveal-card',
-            payload: { cardIndex, playerId },
+          this._socketService.sendMessage(SocketMessages.RevealCard, {
+            cardIndex,
+            playerId,
           });
         }),
       ),
@@ -32,10 +56,7 @@ export class GameEffects {
       this._actions$.pipe(
         ofType(tellHand),
         tap(({ hand }) => {
-          this._socketService.sendMessage({
-            type: 'tell-hand',
-            payload: { hand },
-          });
+          this._socketService.sendMessage(SocketMessages.TellHand, { hand });
         }),
       ),
     { dispatch: false },
@@ -46,9 +67,8 @@ export class GameEffects {
       this._actions$.pipe(
         ofType(gameStarted, cardRevealSuccess),
         tap(() => {
-          this._socketService.sendMessage({
-            type: 'get-game-state',
-          });
+          this._socketService.sendMessage(SocketMessages.GetGameState);
+          this._socketService.sendMessage(SocketMessages.GetPlayerDetails);
         }),
       ),
     { dispatch: false },
