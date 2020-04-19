@@ -34,8 +34,18 @@ export class GameService {
     game.pretend(playerIndex, hand);
   }
 
+  hasStarted(): boolean {
+    return GAMES.has(lobbyName);
+  }
+
   resetGame() {
     GAMES.delete(lobbyName);
+  }
+
+  revealCard(playerId: string, cardIndex: number): CardType {
+    const game = GAMES.get(lobbyName);
+    const playerIndex = game.getPlayerIndex(playerId);
+    return game.reveal(playerIndex, cardIndex);
   }
 
   /** starts a new Game */

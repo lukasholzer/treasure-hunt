@@ -45,6 +45,12 @@ export const getAllPlayingPlayers = createSelector(
   (players, id) => players.filter(player => player.id !== id),
 );
 
+export const isKeyPlayer = createSelector(
+  getPlayerId,
+  getKeyPlayerId,
+  (playerId, keyPlayerId) => playerId === keyPlayerId,
+);
+
 export const getRole = createSelector(
   getGameState,
   (state: State) => state.role,

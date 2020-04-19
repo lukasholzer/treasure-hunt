@@ -3,7 +3,7 @@ import { Action, select, Store } from '@ngrx/store';
 import * as GameSelectors from './game.selectors';
 import { GamePartialState } from './game.state';
 import { CardType } from '@treasure-hunt/shared/interfaces';
-import { tellHand } from './game.actions';
+import { tellHand, revealCard } from './game.actions';
 
 @Injectable()
 export class GameFacade {
@@ -13,6 +13,7 @@ export class GameFacade {
   role$ = this._store.pipe(select(GameSelectors.getRole));
   hand$ = this._store.pipe(select(GameSelectors.getHand));
   rounds$ = this._store.pipe(select(GameSelectors.getRounds));
+  isKeyPlayer$ = this._store.pipe(select(GameSelectors.isKeyPlayer));
 
   constructor(private _store: Store<GamePartialState>) {}
 
@@ -22,5 +23,9 @@ export class GameFacade {
 
   tellHand(hand: CardType[]) {
     this._store.dispatch(tellHand({ hand }));
+  }
+
+  revealCard(playerId: string, cardIndex: number) {
+    this._store.dispatch(revealCard({ playerId, cardIndex }));
   }
 }

@@ -26,6 +26,10 @@ export class Deck {
     }
   }
 
+  toJSON() {
+    return { revealed: this.revealed };
+  }
+
   drawRole(): CardType {
     return this.roleCards.pop();
   }

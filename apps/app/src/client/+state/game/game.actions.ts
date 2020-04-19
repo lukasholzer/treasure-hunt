@@ -10,3 +10,8 @@ export const tellHand = createAction(
   '[GAME] Tell my hand',
   props<{ hand: CardType[] }>(),
 );
+
+export const revealCard = createAction(
+  '[GAME] Reveal Card',
+  props<{ playerId: string, cardIndex: number }>(),
+)
