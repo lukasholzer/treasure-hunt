@@ -16,6 +16,7 @@ export class ClientComponent {
   hand$ = this._gameFacade.hand$;
   role$ = this._gameFacade.role$;
   rounds$ = this._gameFacade.rounds$;
+  revealed$ = this._gameFacade.revealed$;
   isKeyPlayer$ = this._gameFacade.isKeyPlayer$;
 
   constructor(private _gameFacade: GameFacade) {}
@@ -39,6 +40,8 @@ export class ClientComponent {
 
   _getDisplay(card: CardType): string {
     switch (card) {
+      case CardType.Back:
+        return '🚪';
       case CardType.Adventurer:
         return '👨🏻‍🌾';
       case CardType.Guardian:

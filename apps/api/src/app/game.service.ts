@@ -11,6 +11,10 @@ const lobbyName = 'test';
 export class GameService {
   private _logger: Logger = new Logger('Game Service');
 
+  get games() {
+    return Array.from(GAMES.values());
+  }
+
   getGameState(id: string) {
     const game = GAMES.get(lobbyName);
 
@@ -18,13 +22,15 @@ export class GameService {
       return null;
     }
 
-    const player = game.players.find(p => p.id === id);
+    const player = game._players.find(p => p.id === id);
 
     return {
       keyPlayer: game.keyPlayer,
+      revealed: game.deck.revealed,
       rounds: game.rounds,
       role: player.role,
       hand: player.hand,
+      players: game.players,
     };
   }
 
@@ -42,10 +48,15 @@ export class GameService {
     GAMES.delete(lobbyName);
   }
 
-  revealCard(playerId: string, cardIndex: number): CardType {
+  revealCard(clientId: string, playerId: string, cardIndex: number): CardType {
     const game = GAMES.get(lobbyName);
-    const playerIndex = game.getPlayerIndex(playerId);
-    return game.reveal(playerIndex, cardIndex);
+
+    // if (clientId === game.keyPlayer) {
+      const revealed = game.reveal(playerId, cardIndex);
+      game.keyPlayer = playerId;
+      return revealed;
+    // }
+    // throw Error('The player is not the key Player!')
   }
 
   /** starts a new Game */

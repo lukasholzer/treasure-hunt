@@ -32,7 +32,7 @@ it('', () => {
 
   console.log(`Finished after ${game.rounds} rounds`);
 
-  printPlayers(game.players);
+  printPlayers(game._players);
 });
 
 function displayInfo(playerCount: number): void {

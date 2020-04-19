@@ -9,7 +9,9 @@ import { Action } from '@ngrx/store';
 })
 export class SocketService {
   private _url = 'http://localhost:3333';
-  private _socket = io(this._url);
+  private _socket = io(this._url, {
+    transports: ['websocket'],
+  });
 
   constructor() {}
 
@@ -19,7 +21,6 @@ export class SocketService {
 
   get id$() {
     return this.fromEvent('connect').pipe(
-      take(1),
       map(() => this._socket.id),
     );
   }

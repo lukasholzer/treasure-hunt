@@ -6,6 +6,9 @@ import {
 } from './config';
 import { CardType } from '@treasure-hunt/shared/interfaces';
 
+export const DECK_DEAL_CARDS_ERROR =
+  'Something went wrong with dealing the cards';
+
 export class Deck {
   roleCards: CardType[];
   gameCards: CardType[];
@@ -22,7 +25,7 @@ export class Deck {
     this.gameCards = shuffleDeck(getGameCards(deck));
 
     if (this.gameCards.length % this._playersCount !== 0) {
-      throw Error('Something went wrong with dealing the cards');
+      throw new Error(DECK_DEAL_CARDS_ERROR);
     }
   }
 

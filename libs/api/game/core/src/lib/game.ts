@@ -1,28 +1,51 @@
-import { CardType, Player } from '@treasure-hunt/shared/interfaces';
+import {
+  CardType,
+  Player,
+  PlayingPlayer,
+} from '@treasure-hunt/shared/interfaces';
 import { uuid } from '@treasure-hunt/shared/util';
 import { GameConfiguration, GAME_CONFIGURATION } from './config';
 import { Deck } from './deck';
 
-export interface PlayingPlayer extends Player {
+export const HAND_CARD_INDEX_NOT_FOUND = (
+  cardCount: number,
+  cardIndex: number,
+) =>
+  `Cannot reveal card at the index ${cardIndex} because there are only ${cardCount} cards.`;
+
+export interface PrivatePlayingPlayer extends PlayingPlayer {
   role: CardType;
   hand: CardType[];
-  pretendedHand: CardType[];
 }
 
 export class Game {
   /** The list of all participating players in this game */
-  players: PlayingPlayer[];
+  _players: PrivatePlayingPlayer[];
   /** The number of rounds to play */
   rounds: number;
   /** The id of the player that is deciding */
   keyPlayer: string;
+
   /** The read only unique id of the game */
   get id(): string {
     return this._id;
   }
+
+  get players(): PlayingPlayer[] {
+    return this._players.map(player => ({
+      ...player,
+      role: undefined,
+      hand: undefined,
+    }));
+  }
+
+  get deck() {
+    return this._deck.toJSON();
+  }
+
   private _id = uuid();
   /** The card deck that is used for the game */
-  deck: Deck;
+  private _deck: Deck;
   /** The current game configuration */
   private _config: GameConfiguration;
 
@@ -31,17 +54,18 @@ export class Game {
       config => config.players === players.length,
     );
     // generate the deck for the amount of players
-    this.deck = new Deck(players.length);
+    this._deck = new Deck(players.length);
     // set the number of rounds to play
-    this.rounds = this.deck.gameCards.length / players.length;
+    this.rounds = this._deck.gameCards.length / players.length;
     // set the key player that should start
     this.keyPlayer = players[Math.floor(Math.random() * players.length)].id;
     // assign the roles to the players
-    this.players = players.map(player => ({
+    this._players = players.map(player => ({
       ...player,
-      role: this.deck.drawRole(),
+      role: this._deck.drawRole(),
       hand: [],
-      pretendedHand: []
+      revealed: [],
+      pretendedHand: [],
     }));
     // start dealing game cards
     this._dealCards();
@@ -49,25 +73,39 @@ export class Game {
 
   /** Get the index of a player */
   getPlayerIndex(id: string): number {
-    return this.players.findIndex((player) => player.id === id);
+    return this._players.findIndex(player => player.id === id);
+  }
+
+  getPlayerById(id: string): PrivatePlayingPlayer {
+    return this._players.find(player => player.id === id);
   }
 
   /** Reveals a card from a player */
-  reveal(playerIndex: number, cardIndex): CardType {
-    const card = this.players[playerIndex].hand.splice(cardIndex, 1);
-    this.deck.revealed.push(card[0]);
-    return card[0];
+  reveal(playerId: string, cardIndex: number): CardType {
+    const player = this.getPlayerById(playerId);
+
+    if (cardIndex >= player.hand.length) {
+      throw new Error(HAND_CARD_INDEX_NOT_FOUND(player.hand.length, cardIndex));
+    }
+
+    if (player.revealed[cardIndex] !== CardType.Back ) {
+      throw new Error('Card already revealed!');
+    }
+    const card = player.hand[cardIndex];
+    player.revealed[cardIndex] = card;
+    this._deck.revealed.push(card);
+    return card;
   }
 
   /** A player pretends to have this hand */
   pretend(playerIndex: number, hand: CardType[]): void {
-    this.players[playerIndex].pretendedHand = hand;
+    this._players[playerIndex].pretendedHand = hand;
   }
 
   /** Finishes a round and deals the cards again */
   finishRound() {
-    this.players.forEach(player => {
-      this.deck.gameCards.push(...player.hand);
+    this._players.forEach(player => {
+      this._deck.gameCards.push(...player.hand);
     });
     this._clearHands();
     this.rounds -= 1;
@@ -81,13 +119,13 @@ export class Game {
 
   /** Checks if the guardians have won */
   guardiansHaveWon(): boolean {
-    const fires = this.deck.revealed.filter(card => card & CardType.Fire);
+    const fires = this._deck.revealed.filter(card => card & CardType.Fire);
     return fires.length === this._config.fire;
   }
 
   /** Checks if the adventurers have won */
   adventurersHaveWon(): boolean {
-    const gold = this.deck.revealed.filter(card => card & CardType.Gold);
+    const gold = this._deck.revealed.filter(card => card & CardType.Gold);
     return gold.length === this._config.gold;
   }
 
@@ -96,8 +134,9 @@ export class Game {
     return {
       id: this.id,
       rounds: this.rounds,
-      players: this.players,
-      deck: this.deck,
+      keyPlayer: this.keyPlayer,
+      deck: this._deck,
+      players: this._players,
     };
   }
 
@@ -108,11 +147,12 @@ export class Game {
     // the index of the player that gets dealt
     let currentDealing = 0;
 
-    while (this.deck.gameCards.length) {
-      const player = this.players[currentDealing];
-      player.hand.push(this.deck.drawCard());
+    while (this._deck.gameCards.length) {
+      const player = this._players[currentDealing];
+      player.hand.push(this._deck.drawCard());
+      player.revealed.push(CardType.Back);
 
-      if (currentDealing < this.players.length - 1) {
+      if (currentDealing < this._players.length - 1) {
         currentDealing++;
       } else {
         currentDealing = 0;
@@ -122,10 +162,10 @@ export class Game {
 
   /** Clears the hand of every player */
   private _clearHands(): void {
-    this.players = this.players.map(player => ({
+    this._players = this._players.map(player => ({
       ...player,
       hand: [],
-      pretendedHand: []
+      pretendedHand: [],
     }));
   }
 }
