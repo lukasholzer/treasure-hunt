@@ -54,6 +54,11 @@ export class GameService {
     // if (clientId === game.keyPlayer) {
       const revealed = game.reveal(playerId, cardIndex);
       game.keyPlayer = playerId;
+
+      if (game.deck.revealed.length === game.rounds) {
+        game.finishRound();
+      }
+
       return revealed;
     // }
     // throw Error('The player is not the key Player!')

@@ -30,16 +30,14 @@
         <hr/>
         hand:
         <div>
-          <span *ngFor="let card of player.revealed">
-            {{ _getDisplay(card) }}</span
-          >
-        </div>
-        <!-- <ng-container *ngIf="isKeyPlayer$ | async"> -->
-          <input type="number" value="0" #revealIndex>
-          <button (click)="_reveal(player.id, revealIndex.value)">
-            Reveal
+          <button
+            class="player-card"
+            *ngFor="let card of player.revealed; let cardIndex = index"
+            [attr.disabled]="_cardAlreadyRevealed(card) ? true : undefined"
+            (click)="_reveal(player.id, cardIndex)">
+            {{ _getDisplay(card) }}
           </button>
-        <!-- </ng-container> -->
+        </div>
       </div>
     </div>
   </div>
@@ -53,27 +51,27 @@
         <span>👑</span>
         <input
           id="gold"
-          name="2"
+          name="4"
           type="number"
-          [ngModel]="_getOccurrences(hand, 2)"
+          [ngModel]="_getOccurrences(hand, 4)"
         />
       </label>
       <label for="empty">
         <span>💨</span>
         <input
           id="empty"
-          name="1"
+          name="2"
           type="number"
-          [ngModel]="_getOccurrences(hand, 1)"
+          [ngModel]="_getOccurrences(hand, 2)"
         />
       </label>
       <label for="fire">
         <span>🔥</span>
         <input
           id="fire"
-          name="4"
+          name="8"
           type="number"
-          [ngModel]="_getOccurrences(hand, 4)"
+          [ngModel]="_getOccurrences(hand, 8)"
         />
       </label>
 

@@ -88,7 +88,7 @@ export class Game {
       throw new Error(HAND_CARD_INDEX_NOT_FOUND(player.hand.length, cardIndex));
     }
 
-    if (player.revealed[cardIndex] !== CardType.Back ) {
+    if (player.revealed[cardIndex] !== CardType.Back) {
       throw new Error('Card already revealed!');
     }
     const card = player.hand[cardIndex];
@@ -136,6 +136,8 @@ export class Game {
       rounds: this.rounds,
       keyPlayer: this.keyPlayer,
       deck: this._deck,
+      guardiansHaveWon: this.guardiansHaveWon(),
+      adventurersHaveWon: this.adventurersHaveWon(),
       players: this._players,
     };
   }
@@ -165,6 +167,7 @@ export class Game {
     this._players = this._players.map(player => ({
       ...player,
       hand: [],
+      revealed: [],
       pretendedHand: [],
     }));
   }
