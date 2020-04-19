@@ -4,8 +4,6 @@ import { map, tap } from 'rxjs/operators';
 import { SocketService } from '../../services/socket.service';
 import {
   setPlayerId,
-  tellHand,
-  revealCard,
   gameFinish,
   noop,
 } from './game.actions';
@@ -24,7 +22,7 @@ export class GameEffects {
     this._socketService.id$.pipe(map(playerId => setPlayerId({ playerId }))),
   );
 
-  gameFinish$ = createEffect(() =>
+  gameFinished$ = createEffect(() =>
     this._actions$.pipe(
       ofType(getGameStateSuccess),
       map(({ winner }) => {
@@ -35,31 +33,6 @@ export class GameEffects {
         return noop();
       }),
     ),
-  );
-
-  revealCard$ = createEffect(
-    () =>
-      this._actions$.pipe(
-        ofType(revealCard),
-        tap(({ cardIndex, playerId }) => {
-          this._socketService.sendMessage(SocketMessages.RevealCard, {
-            cardIndex,
-            playerId,
-          });
-        }),
-      ),
-    { dispatch: false },
-  );
-
-  tellHand$ = createEffect(
-    () =>
-      this._actions$.pipe(
-        ofType(tellHand),
-        tap(({ hand }) => {
-          this._socketService.sendMessage(SocketMessages.TellHand, { hand });
-        }),
-      ),
-    { dispatch: false },
   );
 
   requestGameState$ = createEffect(

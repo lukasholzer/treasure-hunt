@@ -11,6 +11,7 @@ export class Lobby {
 
   constructor(public name: string) {}
 
+  /** Get all players inside a lobby */
   get players(): Player[] {
     return Array.from(this._players.values())
   }
