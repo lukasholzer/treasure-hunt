@@ -3,7 +3,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import {
   cardRevealSuccess,
   getGameStateSuccess,
-  playerJoined,
+  getPlayerInfoSuccess,
   playerLeft,
   playerPretendedHand,
 } from '@treasure-hunt/shared/actions';
@@ -17,6 +17,7 @@ export const playerAdapter: EntityAdapter<PlayingPlayer> = createEntityAdapter<
 
 export const initialState: State = {
   playerId: null,
+  winner: null,
   players: playerAdapter.getInitialState(),
 };
 
@@ -30,16 +31,20 @@ const gameReducer = createReducer(
   on(playerLeft, state => initialState),
   on(
     getGameStateSuccess,
-    (state, { role, hand, rounds, keyPlayer, revealed, players }) => ({
+    (state, { roundsLeft, keyPlayer, revealed, players, winner }) => ({
       ...state,
-      role,
-      hand,
-      rounds,
+      roundsLeft,
       keyPlayer,
       revealed,
+      winner,
       players: playerAdapter.setAll(players, state.players),
     }),
   ),
+  on(getPlayerInfoSuccess, (state, { role, hand }) => ({
+    ...state,
+    role,
+    hand,
+  })),
   on(playerPretendedHand, (state, { hand, id }) => ({
     ...state,
     players: playerAdapter.updateOne(

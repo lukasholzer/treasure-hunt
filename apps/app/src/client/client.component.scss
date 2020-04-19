@@ -10,6 +10,7 @@
 
 .content {
   padding: 1em;
+  width: 100%;
 }
 
 .sidebar {
@@ -56,4 +57,9 @@
     display: flex;
     flex-flow: column;
   }
+}
+
+
+.key-player {
+  border: 5px solid gold;
 }

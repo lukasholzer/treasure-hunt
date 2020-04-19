@@ -13,5 +13,12 @@ export const tellHand = createAction(
 
 export const revealCard = createAction(
   '[GAME] Reveal Card',
-  props<{ playerId: string, cardIndex: number }>(),
-)
+  props<{ playerId: string; cardIndex: number }>(),
+);
+
+export const gameFinish = createAction(
+  '[GAME] The game has ended!',
+  props<{ winner: CardType }>(),
+);
+
+export const noop = createAction('noop');

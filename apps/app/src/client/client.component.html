@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" [class.key-player]="isKeyPlayer$ | async">
   <h3>
     {{ _getDisplay(role$ | async) }}
     {{ playerId$ | async }}

@@ -25,6 +25,8 @@ export class Game {
   rounds: number;
   /** The id of the player that is deciding */
   keyPlayer: string;
+  /** Number of moves per round */
+  moves = 0;
 
   /** The read only unique id of the game */
   get id(): string {
@@ -94,6 +96,7 @@ export class Game {
     const card = player.hand[cardIndex];
     player.revealed[cardIndex] = card;
     this._deck.revealed.push(card);
+    this.moves ++;
     return card;
   }
 
@@ -109,24 +112,24 @@ export class Game {
     });
     this._clearHands();
     this.rounds -= 1;
+    this.moves = 0
     this._dealCards();
   }
 
   /** Checks if the game is over */
-  isFinished(): boolean {
-    return this.guardiansHaveWon() || this.adventurersHaveWon();
-  }
-
-  /** Checks if the guardians have won */
-  guardiansHaveWon(): boolean {
+  isFinished(): CardType | null {
     const fires = this._deck.revealed.filter(card => card & CardType.Fire);
-    return fires.length === this._config.fire;
-  }
-
-  /** Checks if the adventurers have won */
-  adventurersHaveWon(): boolean {
     const gold = this._deck.revealed.filter(card => card & CardType.Gold);
-    return gold.length === this._config.gold;
+
+    if (fires.length === this._config.fire) {
+      return CardType.Guardian;
+    }
+
+    if (gold.length === this._config.gold) {
+      return CardType.Adventurer;
+    }
+
+    return null;
   }
 
   /** @internal represents the game as json for internal debugging usage */
@@ -136,8 +139,7 @@ export class Game {
       rounds: this.rounds,
       keyPlayer: this.keyPlayer,
       deck: this._deck,
-      guardiansHaveWon: this.guardiansHaveWon(),
-      adventurersHaveWon: this.adventurersHaveWon(),
+      winner: this.isFinished(),
       players: this._players,
     };
   }
