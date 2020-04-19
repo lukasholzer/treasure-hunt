@@ -1,20 +1,16 @@
-import { CardType, Player } from '@treasure-hunt/shared/interfaces';
+import { CardType, Player, PlayingPlayer } from '@treasure-hunt/shared/interfaces';
 import { EntityState } from '@ngrx/entity';
 
 export const GAME_FEATURE_KEY = 'game';
-
-export interface PlayerEntity extends Player {
-  pretendedHand: CardType[];
-  revealed: CardType[];
-}
 
 export interface State {
   playerId: string | null;
   keyPlayer?: string;
   rounds?: number;
   role?: CardType;
+  revealed?: CardType[];
   hand?: CardType[];
-  players: EntityState<PlayerEntity>;
+  players: EntityState<PlayingPlayer>;
   error?: string | null; // last none error (if any)
 }
 

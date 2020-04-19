@@ -5,6 +5,7 @@
   </h3>
 
   <strong>Round: {{ rounds$ | async }}</strong>
+  <h4>Revealed: <span *ngFor="let card of revealed$ | async"> {{ _getDisplay(card) }}</span></h4>
 
   <div class="state">
     <div>
@@ -27,10 +28,12 @@
           >
         </div>
         <hr/>
-        revealed:
-        <span *ngFor="let card of player.revealed">
-          {{ _getDisplay(card) }}</span
-        >
+        hand:
+        <div>
+          <span *ngFor="let card of player.revealed">
+            {{ _getDisplay(card) }}</span
+          >
+        </div>
         <!-- <ng-container *ngIf="isKeyPlayer$ | async"> -->
           <input type="number" value="0" #revealIndex>
           <button (click)="_reveal(player.id, revealIndex.value)">

@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { Player, CardType } from '@treasure-hunt/shared/interfaces';
+import { PlayingPlayer, CardType, Player } from '@treasure-hunt/shared/interfaces';
+
 
 export const playerJoined = createAction(
   '[SERVER] Player joined the game',
-  props<{ players: Player[] }>(),
+  props<{ player: Player }>(),
 );
-
 
 export const gameStarted = createAction('[SERVER] The game has started now');
 export const playerLeft = createAction('[SERVER] A player left the game');
@@ -16,8 +16,10 @@ export const getGameStateSuccess = createAction(
   props<{
     keyPlayer: string;
     rounds: number;
+    revealed: CardType[];
     role: CardType;
     hand: CardType[];
+    players: PlayingPlayer[]
   }>(),
 );
 
@@ -35,4 +37,4 @@ export const cardRevealSuccess = createAction(
     id: string;
     card: CardType;
   }>(),
-)
+);

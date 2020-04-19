@@ -65,3 +65,8 @@ export const getRounds = createSelector(
   getGameState,
   (state: State) => state.rounds,
 );
+
+export const getRevealed = createSelector(
+  getGameState,
+  (state: State) => state.revealed,
+);

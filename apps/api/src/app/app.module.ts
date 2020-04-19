@@ -1,6 +1,7 @@
 import { Module, HttpModule } from '@nestjs/common';
 import { AppGateway } from './app.gateway';
 import { GameService } from './game.service';
+import { GameController } from './game.controller';
 
 // import { GameModule } from '../game/game.module';
 // import { LobbyModule } from '../lobby/lobby.module';
@@ -11,7 +12,7 @@ import { GameService } from './game.service';
     // GameModule,
     // LobbyModule
   ],
-  controllers: [],
+  controllers: [GameController],
   providers: [AppGateway, GameService],
 })
 export class AppModule {}

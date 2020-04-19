@@ -7,6 +7,7 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  OnGatewayInit,
 } from '@nestjs/websockets';
 import {
   gameStarted,
@@ -26,7 +27,7 @@ import { ofType } from '@ngrx/effects';
 
 const PLAYERS = new Map<string, Player>();
 
-@WebSocketGateway()
+@WebSocketGateway({ transports: ['websocket']})
 export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('App Gateway');
@@ -39,15 +40,17 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
       .pipe(map(({ data }) => data.results[0]))
       .toPromise();
 
-    PLAYERS.set(client.id, {
+    const player = {
       id: client.id,
       name: name.first,
       image: `https://api.adorable.io/avatars/400/${name.first}`,
-    });
+    };
+
+    PLAYERS.set(client.id, player);
 
     const players = Array.from(PLAYERS.values());
 
-    this.server.emit('actions', playerJoined({ players }));
+    this.server.emit('actions', playerJoined({ player }));
 
     if (players.length === 3) {
       this._gameService.startGame(players);
@@ -83,8 +86,9 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
         };
       case 'reveal-card':
         const card = this._gameService.revealCard(
+          client.id,
           payload.playerId,
-          payload.cardIndex,
+          parseInt(payload.cardIndex, 10),
         );
         this.server.emit(
           'actions',

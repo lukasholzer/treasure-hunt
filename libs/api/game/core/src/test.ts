@@ -1,5 +1,5 @@
 // export * from './lib/game';
-import { Game, PlayingPlayer } from './lib/game';
+import { Game, PrivatePlayingPlayer } from './lib/game';
 import { Player, CardType } from '@treasure-hunt/shared/interfaces';
 import { uuid } from '@treasure-hunt/shared/util';
 import { GAME_CONFIGURATION } from './lib/config';
@@ -20,7 +20,7 @@ while (!game.isFinished() && game.rounds >= 0) {
 
   console.log(
     'CARDS in HAND: ',
-    game.players.map(p => p.hand.map(c => getDisplay(c))),
+    game._players.map(p => p.hand.map(c => getDisplay(c))),
   );
 
   for (let i = 0, max = game.rounds; i < max; i++) {
@@ -38,7 +38,7 @@ if (game.adventurersHaveWon()) {
   console.log('The Guardins have won!');
 }
 
-printPlayers(game.players);
+printPlayers(game._players);
 
 function displayInfo(playerCount: number): void {
   const config = GAME_CONFIGURATION.find(

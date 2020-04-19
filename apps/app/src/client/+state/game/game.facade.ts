@@ -13,6 +13,7 @@ export class GameFacade {
   role$ = this._store.pipe(select(GameSelectors.getRole));
   hand$ = this._store.pipe(select(GameSelectors.getHand));
   rounds$ = this._store.pipe(select(GameSelectors.getRounds));
+  revealed$ = this._store.pipe(select(GameSelectors.getRevealed));
   isKeyPlayer$ = this._store.pipe(select(GameSelectors.isKeyPlayer));
 
   constructor(private _store: Store<GamePartialState>) {}

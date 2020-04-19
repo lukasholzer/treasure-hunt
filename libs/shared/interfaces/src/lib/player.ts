@@ -9,3 +9,8 @@ export interface Player {
   image: string;
   name: string;
 }
+
+export interface PlayingPlayer extends Player{
+  revealed: CardType[];
+  pretendedHand: CardType[];
+}

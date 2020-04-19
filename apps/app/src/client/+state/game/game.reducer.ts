@@ -1,18 +1,18 @@
-import { createReducer, on, Action } from '@ngrx/store';
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-
-import { setPlayerId } from './game.actions';
-import { State, PlayerEntity } from './game.state';
+import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import { Action, createReducer, on } from '@ngrx/store';
 import {
-  playerJoined,
-  getGameStateSuccess,
-  playerPretendedHand,
   cardRevealSuccess,
+  getGameStateSuccess,
+  playerJoined,
   playerLeft,
+  playerPretendedHand,
 } from '@treasure-hunt/shared/actions';
+import { PlayingPlayer } from '@treasure-hunt/shared/interfaces';
+import { setPlayerId } from './game.actions';
+import { State } from './game.state';
 
-export const playerAdapter: EntityAdapter<PlayerEntity> = createEntityAdapter<
-  PlayerEntity
+export const playerAdapter: EntityAdapter<PlayingPlayer> = createEntityAdapter<
+  PlayingPlayer
 >();
 
 export const initialState: State = {
@@ -23,21 +23,23 @@ export const initialState: State = {
 const gameReducer = createReducer(
   initialState,
   on(setPlayerId, (state, { playerId }) => ({ ...state, playerId })),
-  on(playerJoined, (state, { players }) => ({
-    ...state,
-    players: playerAdapter.addMany(
-      players.map(p => ({ ...p, pretendedHand: [], revealed: [] })),
-      state.players,
-    ),
-  })),
-  on(playerLeft, (state) => initialState),
-  on(getGameStateSuccess, (state, { role, hand, rounds, keyPlayer }) => ({
-    ...state,
-    role,
-    hand,
-    rounds,
-    keyPlayer,
-  })),
+  // on(playerJoined, (state, { players }) => ({
+  //   ...state,
+  //   players: playerAdapter.setAll(players, state.players),
+  // })),
+  on(playerLeft, state => initialState),
+  on(
+    getGameStateSuccess,
+    (state, { role, hand, rounds, keyPlayer, revealed, players }) => ({
+      ...state,
+      role,
+      hand,
+      rounds,
+      keyPlayer,
+      revealed,
+      players: playerAdapter.setAll(players, state.players),
+    }),
+  ),
   on(playerPretendedHand, (state, { hand, id }) => ({
     ...state,
     players: playerAdapter.updateOne(
