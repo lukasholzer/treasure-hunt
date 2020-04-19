@@ -38,6 +38,10 @@ export class ClientComponent {
     return countBy(hand)[type] || 0;
   }
 
+  _cardAlreadyRevealed(card: CardType): boolean {
+    return card !== CardType.Back;
+  }
+
   _getDisplay(card: CardType): string {
     switch (card) {
       case CardType.Back:
