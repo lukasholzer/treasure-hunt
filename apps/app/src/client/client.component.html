@@ -1,5 +1,10 @@
 <div class="content">
-  <strong>{{ _getDisplay(role$ | async) }} {{ playerId$ | async }}</strong>
+  <h3>
+    {{ _getDisplay(role$ | async) }}
+    {{ playerId$ | async }}
+  </h3>
+
+  <strong>Round: {{ rounds$ | async }}</strong>
 
   <div class="state">
     <div>
@@ -14,14 +19,24 @@
         *ngFor="let player of players$ | async; let i = index"
       >
         {{ player.name }}
+        <hr/>
+        pretended:
         <div>
           <span *ngFor="let card of player.pretendedHand">
             {{ _getDisplay(card) }}</span
           >
         </div>
-        <button>
-          ask
-        </button>
+        <hr/>
+        revealed:
+        <span *ngFor="let card of player.revealed">
+          {{ _getDisplay(card) }}</span
+        >
+        <!-- <ng-container *ngIf="isKeyPlayer$ | async"> -->
+          <input type="number" value="0" #revealIndex>
+          <button (click)="_reveal(player.id, revealIndex.value)">
+            Reveal
+          </button>
+        <!-- </ng-container> -->
       </div>
     </div>
   </div>

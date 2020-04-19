@@ -7,6 +7,8 @@ import {
   playerJoined,
   getGameStateSuccess,
   playerPretendedHand,
+  cardRevealSuccess,
+  playerLeft,
 } from '@treasure-hunt/shared/actions';
 
 export const playerAdapter: EntityAdapter<PlayerEntity> = createEntityAdapter<
@@ -24,10 +26,11 @@ const gameReducer = createReducer(
   on(playerJoined, (state, { players }) => ({
     ...state,
     players: playerAdapter.addMany(
-      players.map(p => ({ ...p, pretendedHand: [] })),
+      players.map(p => ({ ...p, pretendedHand: [], revealed: [] })),
       state.players,
     ),
   })),
+  on(playerLeft, (state) => initialState),
   on(getGameStateSuccess, (state, { role, hand, rounds, keyPlayer }) => ({
     ...state,
     role,
@@ -39,6 +42,16 @@ const gameReducer = createReducer(
     ...state,
     players: playerAdapter.updateOne(
       { id, changes: { pretendedHand: hand } },
+      state.players,
+    ),
+  })),
+  on(cardRevealSuccess, (state, { card, id }) => ({
+    ...state,
+    players: playerAdapter.updateOne(
+      {
+        id,
+        changes: { revealed: [...state.players.entities[id].revealed, card] },
+      },
       state.players,
     ),
   })),

@@ -14,11 +14,15 @@ import {
   playerLeft,
   getGameStateSuccess,
   playerPretendedHand,
+  getGameState,
+  cardRevealSuccess,
 } from '@treasure-hunt/shared/actions';
 import { Player } from '@treasure-hunt/shared/interfaces';
 import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { GameService } from './game.service';
+import { of } from 'rxjs';
+import { ofType } from '@ngrx/effects';
 
 const PLAYERS = new Map<string, Player>();
 
@@ -59,29 +63,34 @@ export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('actions')
   call(@ConnectedSocket() client: Socket, @MessageBody() data: any) {
-    console.log(data)
+    const { type, payload } = data;
 
-    switch (data.type) {
+    switch (type) {
       case 'tell-hand':
-        this._gameService.pretendHand(client.id, data.payload.hand);
+        this._gameService.pretendHand(client.id, payload.hand);
         this.server.emit(
           'actions',
           playerPretendedHand({
             id: client.id,
-            hand: data.payload.hand,
+            hand: payload.hand,
           }),
         );
         break;
-      case 'GameMessageTypes.RequestGameState':
+      case 'get-game-state':
         return {
           event: 'actions',
           data: getGameStateSuccess(this._gameService.getGameState(client.id)),
         };
-      // case 'ask-players-hand':
-      //   client.to(payload.id).emit('actions', {
-      //     type: 'ask-hand',
-      //   });
-      //   break;
+      case 'reveal-card':
+        const card = this._gameService.revealCard(
+          payload.playerId,
+          payload.cardIndex,
+        );
+        this.server.emit(
+          'actions',
+          cardRevealSuccess({ id: payload.playerId, card }),
+        );
+        break;
     }
   }
 }

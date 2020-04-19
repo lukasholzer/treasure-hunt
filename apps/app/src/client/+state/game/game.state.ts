@@ -5,6 +5,7 @@ export const GAME_FEATURE_KEY = 'game';
 
 export interface PlayerEntity extends Player {
   pretendedHand: CardType[];
+  revealed: CardType[];
 }
 
 export interface State {

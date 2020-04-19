@@ -1,25 +1,8 @@
-import {
-  Component,
-  OnInit,
-  ViewChildren,
-  TemplateRef,
-  QueryList,
-  ViewChild,
-} from '@angular/core';
-import { SocketService } from './services/socket.service';
-import {
-  shareReplay,
-  tap,
-  filter,
-  map,
-  share,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { CardType } from '@treasure-hunt/shared/interfaces';
 import { countBy } from 'lodash-es';
-import { NgForm } from '@angular/forms';
 import { GameFacade } from './+state/game/game.facade';
-import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-client',
@@ -32,6 +15,8 @@ export class ClientComponent {
   playerId$ = this._gameFacade.playerId$;
   hand$ = this._gameFacade.hand$;
   role$ = this._gameFacade.role$;
+  rounds$ = this._gameFacade.rounds$;
+  isKeyPlayer$ = this._gameFacade.isKeyPlayer$;
 
   constructor(private _gameFacade: GameFacade) {}
 
@@ -42,6 +27,10 @@ export class ClientComponent {
     });
 
     this._gameFacade.tellHand(hand);
+  }
+
+  _reveal(playerId: string, cardIndex: number) {
+    this._gameFacade.revealCard(playerId, cardIndex);
   }
 
   _getOccurrences(hand: CardType[], type: CardType) {

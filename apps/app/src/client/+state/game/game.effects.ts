@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, tap } from 'rxjs/operators';
 import { SocketService } from '../../services/socket.service';
-import { setPlayerId, tellHand } from './game.actions';
-import { gameStarted } from '@treasure-hunt/shared/actions';
+import { setPlayerId, tellHand, revealCard } from './game.actions';
+import { gameStarted, cardRevealSuccess } from '@treasure-hunt/shared/actions';
 
 @Injectable()
 export class GameEffects {
@@ -11,6 +11,20 @@ export class GameEffects {
 
   id$ = createEffect(() =>
     this._socketService.id$.pipe(map(playerId => setPlayerId({ playerId }))),
+  );
+
+  revealCard$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(revealCard),
+        tap(({ cardIndex, playerId }) => {
+          this._socketService.sendMessage({
+            type: 'reveal-card',
+            payload: { cardIndex, playerId },
+          });
+        }),
+      ),
+    { dispatch: false },
   );
 
   tellHand$ = createEffect(
@@ -30,10 +44,10 @@ export class GameEffects {
   requestGameState$ = createEffect(
     () =>
       this._actions$.pipe(
-        ofType(gameStarted),
+        ofType(gameStarted, cardRevealSuccess),
         tap(() => {
           this._socketService.sendMessage({
-            type: 'GameMessageTypes.RequestGameState',
+            type: 'get-game-state',
           });
         }),
       ),
