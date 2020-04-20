@@ -38,6 +38,10 @@ export class ClientComponent {
     this._gameFacade.joinLobby(lobbyName);
   }
 
+  _startGame() {
+    this._gameFacade.startGame();
+  }
+
   _reveal(playerId: string, cardIndex: number) {
     this._gameFacade.revealCard(playerId, cardIndex);
   }

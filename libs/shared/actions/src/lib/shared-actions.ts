@@ -10,6 +10,8 @@ export const loginFailed = createAction(
   props<{ message: string }>(),
 );
 
+export const loginSuccess = createAction('[SERVER] Login Success');
+
 export const joinLobbySuccess = createAction(
   '[SERVER] Join Lobby Success',
   props<{ player: Player }>(),
@@ -28,6 +30,11 @@ export const leaveLobbySuccess = createAction(
 export const playerJoined = createAction(
   '[SERVER] Player joined the game',
   props<{ player: Player }>(),
+);
+
+export const startGameFailed = createAction(
+  '[SERVER] Starting the game failed',
+  props<{ message: string }>(),
 );
 
 export const gameStarted = createAction('[SERVER] The game has started now');
