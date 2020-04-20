@@ -6,7 +6,9 @@ COPY .deployment/nginx/sites-available /etc/nginx/sites-available
 
 RUN ln -s /etc/nginx/sites-available /etc/nginx/sites-enabled
 
-COPY .ssl/dhparam.pem /etc/nginx/dhparam.pem
+COPY .ssl/dhparam.pem \
+     .deployment/nginx/.htpasswd \
+     /etc/nginx/
 
 EXPOSE 80
 EXPOSE 443
