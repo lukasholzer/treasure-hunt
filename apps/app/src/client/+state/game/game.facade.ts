@@ -41,6 +41,10 @@ export class GameFacade {
     });
   }
 
+  startGame() {
+    this._socketService.sendMessage(SocketMessages.StartGame);
+  }
+
   tellHand(hand: CardType[]) {
     this._socketService.sendMessage<TellHandData>(SocketMessages.TellHand, {
       hand,

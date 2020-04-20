@@ -5,6 +5,7 @@
 
   <input type="text" #lobby>
   <button (click)="_joinLobby(lobby.value)">Join Lobby</button>
+  <button (click)="_startGame()">Start game</button>
   <h3>
     {{ _getDisplay(role$ | async) }}
     {{ playerId$ | async }}

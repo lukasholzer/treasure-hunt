@@ -22,12 +22,15 @@ import {
   leaveLobbySuccess,
   joinLobbyFailed,
   loginFailed,
+  loginSuccess,
+  startGameFailed,
 } from '@treasure-hunt/shared/actions';
 import { Player } from '@treasure-hunt/shared/interfaces';
 import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { GameService } from './game/game.service';
 import { LobbyService } from './lobby/lobby.service';
+import { MIN_PLAYERS } from '@treasure-hunt/api/game/core';
 
 const PLAYERS = new Map<string, Player>();
 
@@ -56,12 +59,17 @@ export class AppGateway implements OnGatewayDisconnect {
     if (!name || !image) {
       return {
         event: 'actions',
-        data: loginFailed({ message: 'No name or avatar provided!'})
-      }
+        data: loginFailed({ message: 'No name or avatar provided!' }),
+      };
     }
 
     PLAYERS.set(id, { id, name, image });
     this.logger.log(`Player <${name}> logged in with socket id ${id}`);
+
+    return {
+      event: 'actions',
+      data: loginSuccess(),
+    };
   }
 
   @SubscribeMessage(SocketMessages.JoinLobby)
@@ -109,8 +117,16 @@ export class AppGateway implements OnGatewayDisconnect {
   startGame(@ConnectedSocket() client: Socket) {
     const lobbyName = this._lobbyService.getJoinedLobby(client.id);
     const lobby = this._lobbyService.getLobby(lobbyName);
-    this._gameService.startGame(lobby.players, lobbyName);
-    this.server.to(lobbyName).emit('actions', gameStarted());
+
+    if (lobby.players.length >= MIN_PLAYERS) {
+      this._gameService.startGame(lobby.players, lobbyName);
+      this.server.to(lobbyName).emit('actions', gameStarted());
+    } else {
+      return {
+        event: 'actions',
+        data: startGameFailed({ message: `Starting the game failed needed at least ${MIN_PLAYERS} players`}),
+      };
+    }
   }
 
   @SubscribeMessage(SocketMessages.TellHand)
