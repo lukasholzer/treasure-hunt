@@ -9,8 +9,9 @@ import { LobbyEffects } from './+state/lobby/lobby.effects';
 import { LobbyFacade } from './+state/lobby/lobby.facade';
 import { APP_FEATURE_KEY, reducers } from './+state/reducers';
 import { AuthenticationGuard, GameGuard } from './guards';
-import { GameService, LobbyService } from './services';
+import { SocketService } from './services';
 import { storageMetaReducer } from './storage.meta-reducer';
+import { ServerEffects } from './+state/server.effects';
 
 const localStorageKey = '_th_game-state';
 
@@ -19,19 +20,16 @@ const localStorageKey = '_th_game-state';
     CommonModule,
     HttpClientModule,
     StoreModule.forFeature(APP_FEATURE_KEY, reducers, {
-      metaReducers: [
-        storageMetaReducer(['lobby.player', 'lobby.lobbyName'], localStorageKey),
-      ],
+      metaReducers: [storageMetaReducer([], localStorageKey)], //'lobby.player'
     }),
-    EffectsModule.forFeature([GameEffects, LobbyEffects]),
+    EffectsModule.forFeature([ServerEffects, GameEffects, LobbyEffects]),
   ],
   providers: [
+    SocketService,
     AuthenticationGuard,
     GameFacade,
     GameGuard,
-    GameService,
     LobbyFacade,
-    LobbyService,
   ],
 })
 export class DataAccessModule {}

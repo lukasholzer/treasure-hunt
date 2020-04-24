@@ -6,7 +6,7 @@
 <h1>Lobby</h1>
 
 <ui-avatar
-  *ngFor="let player of activePlayers$ | async"
+  *ngFor="let player of lobbyMembers$ | async"
   [image]="player.image"
   [name]="player.name"
 ></ui-avatar>

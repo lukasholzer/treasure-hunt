@@ -10,25 +10,37 @@ export const loginFailed = createAction(
   props<{ message: string }>(),
 );
 
-export const loginSuccess = createAction('[SERVER] Login Success');
-
-export const joinLobbySuccess = createAction(
-  '[SERVER] Join Lobby Success',
+export const loginSuccess = createAction(
+  '[SERVER] Login Success',
   props<{ player: Player }>(),
 );
 
+/** Only dispatched to the sender when he joins successfully the lobby */
+export const joinLobbySuccess = createAction(
+  '[SERVER] Join Lobby Success',
+  props<{ players: Player[]; minPlayers: number; lobbyName: string }>(),
+);
+
+/** Dispatched to the sender when the joining to a lobby failed */
 export const joinLobbyFailed = createAction(
   '[SERVER] Join Lobby Failed',
   props<{ message: string }>(),
 );
 
-export const leaveLobbySuccess = createAction(
+/** Dispatched to all the remaining lobby members when a player leaves the lobby */
+export const playerLeftLobby = createAction(
   '[SERVER] Player left the Lobby',
   props<{ playerId: string }>(),
 );
 
-export const playerJoined = createAction(
-  '[SERVER] Player joined the game',
+/** Dispatched to the sender when he leaves the lobby */
+export const leaveLobbySuccess = createAction(
+  '[SERVER] Leave the lobby Success',
+);
+
+/** Dispatched to all participants in a lobby when a new player joins */
+export const playerJoinedLobby = createAction(
+  '[SERVER] Player joined the lobby',
   props<{ player: Player }>(),
 );
 

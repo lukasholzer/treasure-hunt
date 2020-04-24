@@ -11,8 +11,8 @@ import { Countdown } from '../../services/countdown.service';
 })
 export class GameOverviewComponent {
   player$ = this._lobbyFacade.player$;
-  activePlayers$ = this._lobbyFacade.activePlayers$;
-  character$ = this._gameFacade.character$;
+  players$ = this._gameFacade.players$;
+  role$ = this._gameFacade.role$;
   hand$ = this._gameFacade.hand$;
 
   constructor(
@@ -20,12 +20,7 @@ export class GameOverviewComponent {
     private _gameFacade: GameFacade,
     private _countdown: Countdown,
   ) {
-    this._countdown.open()
-  }
-
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
+    // this._countdown.open()
   }
 
   _claimHand() {

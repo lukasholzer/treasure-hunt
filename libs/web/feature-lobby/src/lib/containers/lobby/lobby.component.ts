@@ -9,8 +9,7 @@ import { GameFacade, LobbyFacade } from '@treasure-hunt/web/data-access';
 })
 export class LobbyComponent {
   lobbyName = '';
-
-  activePlayers$ = this._lobbyFacade.activePlayers$;
+  lobbyMembers$ = this._lobbyFacade.lobbyMembers$;
   player$ = this._lobbyFacade.player$;
   lobby$ = this._lobbyFacade.lobbyName$;
   gameReady$ = this._lobbyFacade.gameReady$;
@@ -18,9 +17,7 @@ export class LobbyComponent {
   constructor(
     private _lobbyFacade: LobbyFacade,
     private _gameFacade: GameFacade,
-  ) {
-    this._lobbyFacade.reconnect();
-  }
+  ) {}
 
   _joinLobby(): void {
     if (this.lobbyName.length) {

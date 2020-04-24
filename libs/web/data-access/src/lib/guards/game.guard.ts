@@ -1,21 +1,24 @@
-import { Injectable, Inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map, tap, mapTo, switchMap, catchError } from 'rxjs/operators';
-import { GameFacade } from '../+state/game/game.facade';
-import { HttpClient } from '@angular/common/http';
-import { API_ENDPOINT } from '@treasure-hunt/web/shared';
+import {
+  ApiConfiguration,
+  API_CONFIGURATION_TOKEN,
+} from '@treasure-hunt/web/shared';
+import { of } from 'rxjs';
+import { catchError, mapTo, switchMap } from 'rxjs/operators';
 import { LobbyFacade } from '../+state/lobby/lobby.facade';
 
 @Injectable()
 export class GameGuard implements CanActivate {
   constructor(
-    @Inject(API_ENDPOINT) private _apiEndpoint: string,
+    @Inject(API_CONFIGURATION_TOKEN)
+    private _apiConfiguration: ApiConfiguration,
     private _httpClient: HttpClient,
     private _lobbyFacade: LobbyFacade,
     private _router: Router,
@@ -24,10 +27,12 @@ export class GameGuard implements CanActivate {
   canActivate(_next: ActivatedRouteSnapshot, _state: RouterStateSnapshot) {
     return this._lobbyFacade.lobbyName$.pipe(
       switchMap(lobbyName =>
-        this._httpClient.get(`${this._apiEndpoint}game/exists/${lobbyName}`),
+        this._httpClient.get(
+          `${this._apiConfiguration.url}game/exists/${lobbyName}`,
+        ),
       ),
       mapTo(true),
-      catchError(() => of(this._router.parseUrl('/lobby')))
+      catchError(() => of(this._router.parseUrl('/lobby'))),
     );
   }
 }

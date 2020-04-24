@@ -47,7 +47,7 @@ export class LobbyService {
   }
 
   /** A player joins the lobby returns true if successful */
-  joinLobby(lobbyName: string, player: Player): void {
+  joinLobby(lobbyName: string, player: Player): Player[] {
     if (this._playerList.has(player.id)) {
       if (this._playerList.get(player.id) !== lobbyName) {
         throw new Error(
@@ -58,7 +58,7 @@ export class LobbyService {
       this._logger.verbose(
         `Player <${player.name}> is already in the lobby: ${lobbyName}`,
       );
-      return;
+      return this._lobbies.get(lobbyName).players;
     }
 
     if (this._lobbies.has(lobbyName)) {
@@ -67,16 +67,19 @@ export class LobbyService {
       this._logger.verbose(
         `🛋\tPlayer <${player.name}> joined the lobby: ${lobbyName}`,
       );
-    } else {
-      const lobby = new Lobby(lobbyName);
-      lobby.addPlayer(player);
-      this._lobbies.set(lobbyName, lobby);
-      this._logger.verbose(
-        `🛋\tPlayer <${player.name}> created lobby: ${lobbyName}`,
-      );
+
+      return lobby.players;
     }
 
+    const lobby = new Lobby(lobbyName);
+    lobby.addPlayer(player);
+    this._lobbies.set(lobbyName, lobby);
+    this._logger.verbose(
+      `🛋\tPlayer <${player.name}> created lobby: ${lobbyName}`,
+    );
+
     this._playerList.set(player.id, lobbyName);
+    return [player];
   }
 
   /** Leaves the lobby */

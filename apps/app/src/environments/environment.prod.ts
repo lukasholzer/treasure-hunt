@@ -1,4 +1,6 @@
 export const environment = {
   production: true,
-  api: 'https://api.treasure-hunt.app/',
+  api: {
+    url: 'https://api.treasure-hunt.app/',
+  },
 };

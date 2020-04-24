@@ -1,36 +1,35 @@
-import { HttpService, Logger } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
-  OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
 } from '@nestjs/websockets';
+import { MIN_PLAYERS } from '@treasure-hunt/api/game/core';
 import {
   gameStarted,
-  playerJoined,
+  JoinLobbyData,
+  joinLobbyFailed,
+  joinLobbySuccess,
+  playerLeftLobby,
+  LoginData,
+  loginFailed,
+  loginSuccess,
+  playerJoinedLobby,
   playerLeft,
   RevealCardData,
   SocketMessages,
-  TellHandData,
-  LoginData,
-  JoinLobbyData,
-  joinLobbySuccess,
-  leaveLobbySuccess,
-  joinLobbyFailed,
-  loginFailed,
-  loginSuccess,
   startGameFailed,
+  TellHandData,
+  leaveLobbySuccess,
 } from '@treasure-hunt/shared/actions';
 import { Player } from '@treasure-hunt/shared/interfaces';
-import { map } from 'rxjs/operators';
 import { Server, Socket } from 'socket.io';
 import { GameService } from './game/game.service';
 import { LobbyService } from './lobby/lobby.service';
-import { MIN_PLAYERS } from '@treasure-hunt/api/game/core';
 
 const PLAYERS = new Map<string, Player>();
 
@@ -46,9 +45,12 @@ export class AppGateway implements OnGatewayDisconnect {
 
   handleDisconnect(client: Socket) {
     const lobbyName = this._lobbyService.getJoinedLobby(client.id);
-    this.server.to(lobbyName).emit('actions', playerLeft());
-    this._lobbyService.leaveLobby(lobbyName, client.id);
-    this._gameService.resetGame(lobbyName);
+    this.logger.verbose(`Player Left the lobby <${lobbyName}`);
+    if (lobbyName) {
+      this.server.to(lobbyName).emit('actions', playerLeft());
+      this._lobbyService.leaveLobby(lobbyName, client.id);
+      this._gameService.resetGame(lobbyName);
+    }
     PLAYERS.delete(client.id);
   }
 
@@ -63,12 +65,14 @@ export class AppGateway implements OnGatewayDisconnect {
       };
     }
 
-    PLAYERS.set(id, { id, name, image });
+    const player: Player = { id, name, image };
+
+    PLAYERS.set(id, player);
     this.logger.log(`Player <${name}> logged in with socket id ${id}`);
 
     return {
       event: 'actions',
-      data: loginSuccess(),
+      data: loginSuccess({ player }),
     };
   }
 
@@ -88,10 +92,13 @@ export class AppGateway implements OnGatewayDisconnect {
     }
 
     try {
-      this._lobbyService.joinLobby(lobbyName, player);
+      const players = this._lobbyService.joinLobby(lobbyName, player);
+      this.server.to(lobbyName).emit('actions', playerJoinedLobby({ player }));
       client.join(lobbyName);
-      client.emit('actions', joinLobbySuccess({ player }));
-      this.server.to(lobbyName).emit('actions', playerJoined({ player }));
+      return {
+        event: 'actions',
+        data: joinLobbySuccess({ players, minPlayers: MIN_PLAYERS, lobbyName }),
+      };
     } catch (error) {
       this.logger.error(error.message);
     }
@@ -100,14 +107,18 @@ export class AppGateway implements OnGatewayDisconnect {
   @SubscribeMessage(SocketMessages.LeaveLobby)
   leaveLobby(@ConnectedSocket() client: Socket) {
     const lobbyName = this._lobbyService.getJoinedLobby(client.id);
-
     try {
       this._lobbyService.leaveLobby(lobbyName, client.id);
-      client.leave(name);
+      client.leave(lobbyName);
 
       this.server
         .to(lobbyName)
-        .emit('actions', leaveLobbySuccess({ playerId: client.id }));
+        .emit('actions', playerLeftLobby({ playerId: client.id }));
+
+      return {
+        event: 'actions',
+        data: leaveLobbySuccess(),
+      };
     } catch (error) {
       this.logger.error(error.message);
     }
@@ -124,7 +135,9 @@ export class AppGateway implements OnGatewayDisconnect {
     } else {
       return {
         event: 'actions',
-        data: startGameFailed({ message: `Starting the game failed needed at least ${MIN_PLAYERS} players`}),
+        data: startGameFailed({
+          message: `Starting the game failed needed at least ${MIN_PLAYERS} players`,
+        }),
       };
     }
   }

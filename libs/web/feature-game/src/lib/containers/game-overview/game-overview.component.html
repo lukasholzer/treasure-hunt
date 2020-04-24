@@ -1,9 +1,9 @@
-<ui-header [avatar]="character$ | async" [player]="player$ | async"></ui-header>
+<ui-header [avatar]="role$ | async" [player]="player$ | async"></ui-header>
 
 <div class="player-list">
   <ui-avatar
     [image]="player.image"
-    *ngFor="let player of activePlayers$ | async"
+    *ngFor="let player of players$ | async"
   ></ui-avatar>
 </div>
 

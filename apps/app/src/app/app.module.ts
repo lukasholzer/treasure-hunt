@@ -7,7 +7,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.routing.module';
-import { API_ENDPOINT } from '@treasure-hunt/web/shared';
+import { API_CONFIGURATION_TOKEN } from '@treasure-hunt/web/shared';
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,6 +32,6 @@ import { API_ENDPOINT } from '@treasure-hunt/web/shared';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
   ],
   bootstrap: [AppComponent],
-  providers: [{ provide: API_ENDPOINT, useValue: environment.api }],
+  providers: [{ provide: API_CONFIGURATION_TOKEN, useValue: environment.api }],
 })
 export class AppModule {}

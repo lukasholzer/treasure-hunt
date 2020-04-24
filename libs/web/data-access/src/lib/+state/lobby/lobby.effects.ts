@@ -1,82 +1,54 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { LobbyActions } from '@treasure-hunt/shared/interfaces';
-import { map, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { LobbyService } from '../../services';
+import { Actions, createEffect, ofType, Effect } from '@ngrx/effects';
 import {
-  joinedLobbySuccess,
-  joinLobby,
-  leaveLobby,
-  leaveLobbySuccess,
-  lobbyReconnect,
-  login,
-  playersUpdated,
-} from './lobby.actions';
+  JoinLobbyData,
+  loginSuccess,
+  SocketMessages,
+} from '@treasure-hunt/shared/actions';
+import { tap, withLatestFrom } from 'rxjs/operators';
+import { SocketService } from '../../services';
 import { LobbyFacade } from './lobby.facade';
+import { socketDisconnected } from '../server.effects';
 
 @Injectable()
 export class LobbyEffects {
-  loginRedirect$ = createEffect(
-    () =>
-      this._actions$.pipe(
-        ofType(login),
-        tap(() => {
-          this._router.navigate(['/lobby']);
-        }),
-      ),
-    { dispatch: false },
+  @Effect({ dispatch: false })
+  loginRedirect$ = this._actions$.pipe(
+    ofType(loginSuccess),
+    tap(() => {
+      this._router.navigate(['/lobby']);
+    }),
   );
 
-  joinLobby$ = createEffect(() =>
-    this._actions$.pipe(
-      ofType(joinLobby),
-      withLatestFrom(this._lobbyFacade.player$),
-      switchMap(([{ id }, player]) => {
-        this._lobbyService.join(id, player);
-        return this._lobbyService.actions$.pipe(
-          ofType(LobbyActions.joinedLobby),
-          map(({ payload }) => joinedLobbySuccess({ id: payload })),
-        );
-      }),
-    ),
+  @Effect({ dispatch: false })
+  disconnected$ = this._actions$.pipe(
+    ofType(socketDisconnected),
+    tap(() => {
+      this._router.navigate(['/lobby/login'])
+    })
   );
 
-  leaveLobby$ = createEffect(() =>
-    this._actions$.pipe(
-      ofType(leaveLobby),
-      withLatestFrom(this._lobbyFacade.lobbyName$, this._lobbyFacade.player$),
-      map(([, name, { id }]) => {
-        this._lobbyService.leave(name, id);
-        return leaveLobbySuccess();
-      }),
-    ),
-  );
-
-  reconnectLobby$ = createEffect(
-    () =>
-      this._actions$.pipe(
-        ofType(lobbyReconnect),
-        withLatestFrom(this._lobbyFacade.lobbyName$, this._lobbyFacade.player$),
-        tap(([, lobby, player]) => {
-          if (lobby && player) {
-            this._lobbyService.join(lobby, player);
-          }
-        }),
-      ),
-    { dispatch: false },
-  );
-
-  playersUpdated$ = createEffect(() =>
-    this._lobbyService.actions$.pipe(
-      ofType(LobbyActions.playersUpdated),
-      map(({ payload }) => playersUpdated({ players: payload })),
-    ),
-  );
+  // reconnectLobby$ = createEffect(
+  //   () =>
+  //     this._actions$.pipe(
+  //       ofType(lobbyReconnect),
+  //       withLatestFrom(this._lobbyFacade.lobbyName$),
+  //       tap(([, lobbyName]) => {
+  //         if (lobbyName) {
+  //           this._socketService.sendMessage<JoinLobbyData>(
+  //             SocketMessages.JoinLobby,
+  //             { lobbyName },
+  //           );
+  //         }
+  //       }),
+  //     ),
+  //   { dispatch: false },
+  // );
 
   constructor(
     private _actions$: Actions,
-    private _lobbyService: LobbyService,
+    private _socketService: SocketService,
     private _lobbyFacade: LobbyFacade,
     private _router: Router,
   ) {}

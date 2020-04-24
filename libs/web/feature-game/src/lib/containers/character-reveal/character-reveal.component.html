@@ -1,7 +1,7 @@
 <ui-header [player]="player$ | async"></ui-header>
 
 <div class="reveal">
-  <ui-card [type]="character$ | async" [flipped]="revealed$ | async"></ui-card>
+  <ui-card [type]="role$ | async" [flipped]="revealed$ | async"></ui-card>
   <div
     class="character-details"
     *ngIf="revealed$ | async as character"

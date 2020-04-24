@@ -1,19 +1,65 @@
+import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
 import {
-  gameStarted,
-  revealCharacterSuccess,
-  handUpdatedSuccess,
-} from './game.actions';
-import { initialState, State } from './game.state';
+  cardRevealSuccess,
+  getGameStateSuccess,
+  getPlayerInfoSuccess,
+  playerLeft,
+  playerPretendedHand,
+} from '@treasure-hunt/shared/actions';
+import { PlayingPlayer } from '@treasure-hunt/shared/interfaces';
+import { State } from './game.state';
+
+export const playerAdapter: EntityAdapter<PlayingPlayer> = createEntityAdapter<
+  PlayingPlayer
+>();
+
+export const initialState: State = {
+  playerId: null,
+  winner: null,
+  players: playerAdapter.getInitialState(),
+};
 
 const gameReducer = createReducer(
   initialState,
-  on(gameStarted, state => ({ ...state, started: true })),
-  on(revealCharacterSuccess, (state, { character }) => ({
+  // on(playerJoined, (state, { players }) => ({
+  //   ...state,
+  //   players: playerAdapter.setAll(players, state.players),
+  // })),
+  on(playerLeft, state => initialState),
+  on(
+    getGameStateSuccess,
+    (state, { roundsLeft, keyPlayer, revealed, players, winner }) => ({
+      ...state,
+      roundsLeft,
+      keyPlayer,
+      revealed,
+      winner,
+      players: playerAdapter.setAll(players, state.players),
+    }),
+  ),
+  on(getPlayerInfoSuccess, (state, { role, hand }) => ({
     ...state,
-    character,
+    role,
+    hand,
   })),
-  on(handUpdatedSuccess, (state, { hand }) => ({ ...state, hand })),
+  on(playerPretendedHand, (state, { hand, playerId }) => ({
+    ...state,
+    players: playerAdapter.updateOne(
+      { id: playerId, changes: { pretendedHand: hand } },
+      state.players,
+    ),
+  })),
+  on(cardRevealSuccess, (state, { card, id }) => ({
+    ...state,
+    players: playerAdapter.updateOne(
+      {
+        id,
+        changes: { revealed: [...state.players.entities[id].revealed, card] },
+      },
+      state.players,
+    ),
+  })),
 );
 
 export function reducer(state: State | undefined, action: Action) {

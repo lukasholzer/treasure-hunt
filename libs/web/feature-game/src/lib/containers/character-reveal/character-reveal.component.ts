@@ -18,8 +18,8 @@ export class CharacterRevealComponent {
   header: HeaderComponent;
 
   player$ = this._lobbyFacade.player$;
-  character$ = this._gameFacade.character$;
-  revealed$ = this.character$.pipe(
+  role$ = this._gameFacade.role$;
+  revealed$ = this.role$.pipe(
     filter(Boolean),
     delay(1000),
     tap((character: CardType) => {
@@ -32,11 +32,10 @@ export class CharacterRevealComponent {
     private _gameFacade: GameFacade,
     private _router: Router,
   ) {
-    this._gameFacade.revealCharacter();
-
-    this.revealed$.pipe(delay(4000), take(1)).subscribe(() => {
-      this._router.navigate(['/game']);
-    });
+    // this._gameFacade.revealCharacter();
+    // this.revealed$.pipe(delay(4000), take(1)).subscribe(() => {
+    //   this._router.navigate(['/game']);
+    // });
   }
 
   isGuardian(character: CardType): boolean {
