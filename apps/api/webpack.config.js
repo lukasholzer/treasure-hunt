@@ -1,5 +1,6 @@
 const { join } = require('path');
 const { readFileSync } = require('fs');
+const nodeExternals = require('webpack-node-externals');
 const GeneratePackageJsonPlugin = require('generate-package-json-webpack-plugin');
 
 const rootPackageJsonPath = join(process.cwd(), 'package.json');
@@ -26,6 +27,7 @@ module.exports = config => {
   );
 
   config.plugins.push(generatePackageJsonPlugin);
+  config.externals = [nodeExternals({ whitelist: /@ngrx\/store/ })];
 
   return config;
 };
