@@ -5,11 +5,13 @@ import {
   JoinLobbyData,
   loginSuccess,
   SocketMessages,
+  LeaveLobbyData,
 } from '@treasure-hunt/shared/actions';
 import { tap, withLatestFrom } from 'rxjs/operators';
 import { SocketService } from '../../services';
 import { LobbyFacade } from './lobby.facade';
 import { socketDisconnected } from '../server.effects';
+import { leaveLobby } from './lobby.actions';
 
 @Injectable()
 export class LobbyEffects {
@@ -25,8 +27,20 @@ export class LobbyEffects {
   disconnected$ = this._actions$.pipe(
     ofType(socketDisconnected),
     tap(() => {
-      this._router.navigate(['/lobby/login'])
-    })
+      this._router.navigate(['/lobby/login']);
+    }),
+  );
+
+  @Effect({ dispatch: false })
+  leaveLobby$ = this._actions$.pipe(
+    ofType(leaveLobby),
+    withLatestFrom(this._lobbyFacade.lobbyName$),
+    tap(([, lobbyName]) => {
+      this._socketService.sendMessage<LeaveLobbyData>(
+        SocketMessages.LeaveLobby,
+        { lobbyName },
+      );
+    }),
   );
 
   // reconnectLobby$ = createEffect(

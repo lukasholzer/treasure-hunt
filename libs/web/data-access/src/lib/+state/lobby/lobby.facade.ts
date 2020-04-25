@@ -6,10 +6,11 @@ import {
   JoinLobbyData,
   LoginData,
   SocketMessages,
-} from '../../../../../../shared/actions/src';
+} from '@treasure-hunt/shared/actions';
 import { SocketService } from '../../services';
 import * as LobbySelectors from './lobby.selectors';
 import { LobbyPartialState } from './lobby.state';
+import { leaveLobby } from './lobby.actions';
 
 @Injectable()
 export class LobbyFacade {
@@ -42,6 +43,6 @@ export class LobbyFacade {
   }
 
   leaveLobby() {
-    this._socketService.sendMessage(SocketMessages.LeaveLobby);
+    this._store.dispatch(leaveLobby());
   }
 }

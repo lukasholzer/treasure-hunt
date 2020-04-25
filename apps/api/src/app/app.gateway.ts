@@ -7,6 +7,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
   WsResponse,
+  OnGatewayInit,
 } from '@nestjs/websockets';
 import { MIN_PLAYERS } from '@treasure-hunt/api/game/core';
 import {
@@ -30,8 +31,9 @@ import { Player } from '@treasure-hunt/shared/interfaces';
 import { Server, Socket } from 'socket.io';
 import { GameService } from './game/game.service';
 import { LobbyService } from './lobby/lobby.service';
-
-const PLAYERS = new Map<string, Player>();
+import { RedisService } from 'nestjs-redis';
+import { Redis } from 'ioredis';
+import { PlayerService } from './player/player.service';
 
 @WebSocketGateway({ transports: ['websocket'] })
 export class AppGateway implements OnGatewayDisconnect {
@@ -39,11 +41,12 @@ export class AppGateway implements OnGatewayDisconnect {
   private logger: Logger = new Logger('App Gateway');
 
   constructor(
-    private _lobbyService: LobbyService,
-    private _gameService: GameService,
+    private readonly _lobbyService: LobbyService,
+    private readonly _gameService: GameService,
+    private _playerService: PlayerService,
   ) {}
 
-  handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     const lobbyName = this._lobbyService.getJoinedLobby(client.id);
     this.logger.verbose(`Player Left the lobby <${lobbyName}`);
     if (lobbyName) {
@@ -51,11 +54,14 @@ export class AppGateway implements OnGatewayDisconnect {
       this._lobbyService.leaveLobby(lobbyName, client.id);
       this._gameService.resetGame(lobbyName);
     }
-    PLAYERS.delete(client.id);
+    this._playerService.logout(client.id);
   }
 
   @SubscribeMessage(SocketMessages.Login)
-  login(@ConnectedSocket() { id }: Socket, @MessageBody() data: LoginData) {
+  async login(
+    @ConnectedSocket() { id }: Socket,
+    @MessageBody() data: LoginData,
+  ) {
     const { name, avatar: image } = data;
 
     if (!name || !image) {
@@ -66,9 +72,7 @@ export class AppGateway implements OnGatewayDisconnect {
     }
 
     const player: Player = { id, name, image };
-
-    PLAYERS.set(id, player);
-    this.logger.log(`Player <${name}> logged in with socket id ${id}`);
+    this._playerService.login(player);
 
     return {
       event: 'actions',
@@ -77,12 +81,12 @@ export class AppGateway implements OnGatewayDisconnect {
   }
 
   @SubscribeMessage(SocketMessages.JoinLobby)
-  joinLobby(
+  async joinLobby(
     @ConnectedSocket() client: Socket,
     @MessageBody() data: JoinLobbyData,
-  ): WsResponse {
-    const player = PLAYERS.get(client.id);
+  ): Promise<WsResponse> {
     const { lobbyName } = data;
+    const player = await this._playerService.getPlayer(client.id);
 
     if (!player) {
       return {
@@ -107,6 +111,7 @@ export class AppGateway implements OnGatewayDisconnect {
   @SubscribeMessage(SocketMessages.LeaveLobby)
   leaveLobby(@ConnectedSocket() client: Socket) {
     const lobbyName = this._lobbyService.getJoinedLobby(client.id);
+    this.logger.log(`Player left lobby ${lobbyName}`);
     try {
       this._lobbyService.leaveLobby(lobbyName, client.id);
       client.leave(lobbyName);

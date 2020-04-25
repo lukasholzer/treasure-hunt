@@ -11,6 +11,10 @@ export const enum SocketMessages {
   TellHand = 'tell-hand',
 }
 
+export interface LeaveLobbyData {
+  lobbyName: string;
+}
+
 export interface JoinLobbyData {
   lobbyName: string;
 }
