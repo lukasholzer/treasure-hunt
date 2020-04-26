@@ -2,12 +2,20 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// export const environment = {
+//   production: false,
+//   api: {
+//     url: 'http://localhost:3333/',
+//   },
+// };
+
 export const environment = {
   production: false,
   api: {
-    url: 'http://localhost:3333/',
+    url: 'https://api.treasure-hunt.app/',
   },
 };
+
 
 /*
  * For easier debugging in development mode, you can import the following file

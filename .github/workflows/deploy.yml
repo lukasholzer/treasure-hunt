@@ -47,7 +47,8 @@ jobs:
       - name: Build Application 📦
         run: |
           npm run nx build api -- --configuration=production
-          npm run nx build app -- --configuration=production
+          npm run nx build app
+          # -- --configuration=production
 
       - name: Write SSL keys 🔒
         run: |
