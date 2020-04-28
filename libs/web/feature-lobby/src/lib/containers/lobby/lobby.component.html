@@ -16,11 +16,7 @@
     <button th-button (click)="_leaveLobby()" *ngIf="lobby$ | async">
       Leave Lobby
     </button>
-    <button
-      th-button
-      (click)="_startGame()"
-      [disabled]="!(gameReady$ | async)"
-    >
+    <button th-button (click)="_startGame()" [disabled]="!(gameReady$ | async)">
       Start Game
     </button>
   </div>
@@ -29,8 +25,13 @@
 <ng-template #loggedOut>
   <div class="lobby-input">
     <input type="text" [(ngModel)]="lobbyName" />
-    <button th-button (click)="_joinLobby()" [disabled]="lobbyName.length < 2">
-      Join Lobby
-    </button>
+    <div class="button-row">
+      <button th-button (click)="_joinLobby()" [disabled]="lobbyName.length < 2">
+        Join Lobby
+      </button>
+      <button th-button (click)="_logout()">
+        Logout
+      </button>
+    </div>
   </div>
 </ng-template>

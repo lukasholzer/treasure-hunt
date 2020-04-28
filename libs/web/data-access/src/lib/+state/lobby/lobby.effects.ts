@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actions, createEffect, ofType, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import {
-  JoinLobbyData,
+  LeaveLobbyData,
   loginSuccess,
   SocketMessages,
-  LeaveLobbyData,
 } from '@treasure-hunt/shared/actions';
 import { tap, withLatestFrom } from 'rxjs/operators';
 import { SocketService } from '../../services';
+import { socketConnected, socketDisconnected } from '../server.effects';
+import { leaveLobby, logout } from './lobby.actions';
 import { LobbyFacade } from './lobby.facade';
-import { socketDisconnected } from '../server.effects';
-import { leaveLobby } from './lobby.actions';
 
 @Injectable()
 export class LobbyEffects {
@@ -25,7 +24,7 @@ export class LobbyEffects {
 
   @Effect({ dispatch: false })
   disconnected$ = this._actions$.pipe(
-    ofType(socketDisconnected),
+    ofType(socketDisconnected, logout),
     tap(() => {
       this._router.navigate(['/lobby/login']);
     }),
@@ -43,22 +42,16 @@ export class LobbyEffects {
     }),
   );
 
-  // reconnectLobby$ = createEffect(
-  //   () =>
-  //     this._actions$.pipe(
-  //       ofType(lobbyReconnect),
-  //       withLatestFrom(this._lobbyFacade.lobbyName$),
-  //       tap(([, lobbyName]) => {
-  //         if (lobbyName) {
-  //           this._socketService.sendMessage<JoinLobbyData>(
-  //             SocketMessages.JoinLobby,
-  //             { lobbyName },
-  //           );
-  //         }
-  //       }),
-  //     ),
-  //   { dispatch: false },
-  // );
+  @Effect({ dispatch: false })
+  reconnect$ = this._actions$.pipe(
+    ofType(socketConnected),
+    withLatestFrom(this._lobbyFacade.player$),
+    tap(([, { name, image }]) => {
+      if (name && image) {
+        this._lobbyFacade.login(name, image);
+      }
+    }),
+  );
 
   constructor(
     private _actions$: Actions,

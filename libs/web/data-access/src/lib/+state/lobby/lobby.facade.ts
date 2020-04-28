@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
 import {
   JoinLobbyData,
   LoginData,
   SocketMessages,
 } from '@treasure-hunt/shared/actions';
 import { SocketService } from '../../services';
+import { leaveLobby, logout } from './lobby.actions';
 import * as LobbySelectors from './lobby.selectors';
 import { LobbyPartialState } from './lobby.state';
-import { leaveLobby } from './lobby.actions';
 
 @Injectable()
 export class LobbyFacade {
@@ -26,6 +24,10 @@ export class LobbyFacade {
     private _store: Store<LobbyPartialState>,
     private _socketService: SocketService,
   ) {}
+
+  logout() {
+    this._store.dispatch(logout());
+  }
 
   /** Login with a username and a player profile */
   login(name: string, avatar: string) {

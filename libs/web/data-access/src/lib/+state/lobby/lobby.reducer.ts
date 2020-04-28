@@ -10,6 +10,7 @@ import {
 import { Player } from '@treasure-hunt/shared/interfaces';
 import { socketConnected, socketDisconnected } from '../server.effects';
 import { State } from './lobby.state';
+import { logout } from './lobby.actions';
 
 export const playerAdapter: EntityAdapter<Player> = createEntityAdapter<
   Player
@@ -44,6 +45,10 @@ const gameReducer = createReducer<State>(
     players: playerAdapter.getInitialState(),
     minPlayers: null,
     lobbyName: null,
+  })),
+  on(logout, (state) => ({
+    ...state,
+    player: null,
   })),
   on(playerLeftLobby, (state, { playerId }) => ({
     ...state,

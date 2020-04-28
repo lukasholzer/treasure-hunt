@@ -9,7 +9,7 @@ import { LobbyEffects } from './+state/lobby/lobby.effects';
 import { LobbyFacade } from './+state/lobby/lobby.facade';
 import { APP_FEATURE_KEY, reducers } from './+state/reducers';
 import { AuthenticationGuard, GameGuard } from './guards';
-import { SocketService } from './services';
+import { SocketService, LocalStorageService } from './services';
 import { storageMetaReducer } from './storage.meta-reducer';
 import { ServerEffects } from './+state/server.effects';
 
@@ -20,12 +20,13 @@ const localStorageKey = '_th_game-state';
     CommonModule,
     HttpClientModule,
     StoreModule.forFeature(APP_FEATURE_KEY, reducers, {
-      metaReducers: [storageMetaReducer([], localStorageKey)], //'lobby.player'
+      metaReducers: [storageMetaReducer(['lobby.player'], localStorageKey)],
     }),
-    EffectsModule.forFeature([ServerEffects, GameEffects, LobbyEffects]),
+    EffectsModule.forFeature([LobbyEffects, GameEffects, ServerEffects]),
   ],
   providers: [
     SocketService,
+    LocalStorageService,
     AuthenticationGuard,
     GameFacade,
     GameGuard,

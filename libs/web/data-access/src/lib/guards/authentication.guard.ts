@@ -10,7 +10,7 @@ export class AuthenticationGuard implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this._lobbyFacade.player$.pipe(
-      map(player => Boolean(player)),
+      map(player => player?.name?.length && Boolean(player?.image)),
       tap(authenticated => {
         if (!authenticated) {
           this._router.navigate(['/lobby/login']);

@@ -15,10 +15,12 @@ export const socketDisconnected = createAction('[SOCKET] Socket disconnected');
 @Injectable()
 export class ServerEffects {
   id$ = createEffect(() =>
-    this._socketService.id$.pipe(map(socketId => socketConnected({ socketId }))),
+    this._socketService.id$.pipe(
+      map(socketId => socketConnected({ socketId })),
+    ),
   );
 
-  reconnect$ = createEffect(() =>
+  disconnect$ = createEffect(() =>
     this._socketService.disconnect$.pipe(map(() => socketDisconnected())),
   );
 

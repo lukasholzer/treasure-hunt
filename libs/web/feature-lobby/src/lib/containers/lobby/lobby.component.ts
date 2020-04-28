@@ -29,6 +29,10 @@ export class LobbyComponent {
     this._lobbyFacade.leaveLobby();
   }
 
+  _logout(): void {
+    this._lobbyFacade.logout();
+  }
+
   _startGame(): void {
     this._gameFacade.startGame();
   }
