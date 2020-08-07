@@ -50,7 +50,7 @@
     "@ngrx/store": "9.0.0",
     "@nrwl/angular": "^9.1.2",
     "angular-animations": "0.0.10",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "core-js": "^2.5.4",
     "ioredis": "^4.16.3",
     "lodash-es": "^4.17.15",
